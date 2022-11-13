@@ -85,6 +85,24 @@ class RaceP:
                         self.addAresta(estado,e,1)
                         estados.append(e)
 
+    def cria_grafo2(self):
+        estados = [Node(self.pos_inicial, (0, 0))] 
+        visitados = set()
+
+        while estados:
+            estado = estados.pop()
+            visitados.add(estado)
+            expansao = self.expande(estado)
+            for e in expansao:
+                if e not in visitados:
+                    if self.possiblePath2(estado.position,e.position):
+                        self.addAresta(estado,e,1)
+                        estados.append(e)
+                    else:
+                        if estado.velocity != (0,0):
+                            self.addAresta(estado,Node(estado.position,(0,0)),25)
+                            estados.append(e)
+
 
 
     def get_matrix(self):
@@ -121,7 +139,6 @@ class RaceP:
     def possiblePath(self, pos_i: tuple, pos_f: tuple):
         """
         Esta funcção verifica se é possível ir de uma posição para outra no mapa.
-        Fonte: https://www.geeksforgeeks.org/check-possible-path-2d-matrix/
         """
         if self.obstaculo(pos_f):
             return False
@@ -146,6 +163,25 @@ class RaceP:
 
         return True
 
+    def __possiblePath(self, pos_i: tuple, pos_f: tuple, visitados = set()):
+        if self.obstaculo(pos_f):
+            return False
+        # adjacentes de pos_i que não são paredes e que não foram visitados
+        calc = lambda p: list(filter(lambda p: (p not in visitados) and (0 <= p[0] < self.linhas) and (0 <= p[1] < self.colunas) and (not self.obstaculo(p)),
+                                     [(p[0]-1,p[1]-1),(p[0]-1,p[1]),(p[0]-1,p[1]+1),(p[0],p[1]-1),(p[0],p[1]+1),(p[0]+1,p[1]-1),(p[0]+1,p[1]),(p[0]+1,p[1]+1)]))
+        visitados.add(pos_i)
+        adjs = calc(pos_i)
+        if pos_f in adjs:
+            return True
+        else:
+            for adj in adjs:
+                if self.__possiblePath(adj,pos_f,visitados):
+                    return True
+        
+            return False
+
+    def possiblePath2(self, pos_i: tuple, pos_f: tuple):
+        return self.__possiblePath(pos_i,pos_f,set())
 
     def possiblePathBAD(self, pos_i: tuple, pos_f: tuple) :
         """
@@ -210,7 +246,7 @@ class RaceP:
 
 # Testing
 rp = RaceP("race.txt")
-rp.cria_grafo()
+rp.cria_grafo2()
 
 
 '''
@@ -223,6 +259,7 @@ rp.print_matrix(lista_posicoes)
 '''
 
 caminho = rp.procura_DFS()
-print(caminho)
+for n in caminho:
+    print(n)
 
 print("Done")
