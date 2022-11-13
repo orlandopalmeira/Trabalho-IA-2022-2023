@@ -161,10 +161,10 @@ class RaceP:
             return True
 
         # Para calcular a possibilidade de caminho nos casos em que as posicoes iniciais e finais não estao na mesma linha ou coluna.
-        return self.possiblePathBAD(pos_i, pos_f)
+        return self.__possiblePathAUX(pos_i, pos_f)
 
 
-    def possiblePathBAD(self, pos_i: tuple, pos_f: tuple) :
+    def __possiblePathAUX(self, pos_i: tuple, pos_f: tuple) :
         """
         Esta funcção verifica se é possível ir de uma posição para outra no mapa.
         Fonte: https://www.geeksforgeeks.org/check-possible-path-2d-matrix/
