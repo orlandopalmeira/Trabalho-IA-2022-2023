@@ -76,32 +76,13 @@ class RaceP:
             expansao = self.expande(estado)
             for e in expansao:
                 if e not in visitados:
-                    #if not self.possiblePath(estado.position,e.position): # verifica se é possível avancar, ou seja, não tem paredes pelo meio
-                    if self.obstaculo(e.position):
+                    if not self.possiblePath(estado.position,e.position): # verifica se é possível avancar, ou seja, não tem paredes pelo meio
                         if estado.getVelocity() != (0,0):
                             self.addAresta(estado,Node(estado.position,(0,0)),25)
                             estados.append(e)
                     else:
                         self.addAresta(estado,e,1)
                         estados.append(e)
-
-    def cria_grafo2(self):
-        estados = [Node(self.pos_inicial, (0, 0))] 
-        visitados = set()
-
-        while estados:
-            estado = estados.pop()
-            visitados.add(estado)
-            expansao = self.expande(estado)
-            for e in expansao:
-                if e not in visitados:
-                    if self.possiblePath2(estado.position,e.position):
-                        self.addAresta(estado,e,1)
-                        estados.append(e)
-                    else:
-                        if estado.velocity != (0,0):
-                            self.addAresta(estado,Node(estado.position,(0,0)),25)
-                            estados.append(e)
 
 
     def get_matrix(self):
@@ -230,7 +211,7 @@ rp = RaceP("race.txt")
 rp.cria_grafo()
 
 pos_i = (3,1)
-pos_f = (3,5)
+pos_f = (1,2)
 booleano1 = rp.possiblePath(pos_i, pos_f)
 print(f"Booleano1: {booleano1}")
 
