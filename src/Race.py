@@ -40,8 +40,8 @@ class RaceP:
         if self.pos_inicial is None:
             print("Não foi definida uma posição inicial!")
             return
-        self.linhas = len(self.matrix[0])
-        self.colunas = len(self.matrix)
+        self.linhas = len(self.matrix)
+        self.colunas = len(self.matrix[0])
 
 
     def expande(self, estado: Node):
@@ -124,10 +124,10 @@ class RaceP:
 
         # directions
         Dir = [[0, 1], [0, -1], [1, 0], [-1, 0]]
-        # queue
-        q = []
-        # insert the initial position
-        q.append((pos_i[0], pos_i[1]))
+
+        # queue, insert the initial position
+        q = [pos_i]
+
         # until queue is empty
         while len(q) > 0 :
             p = q.pop(0)
