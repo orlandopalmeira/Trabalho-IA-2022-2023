@@ -144,6 +144,8 @@ class RaceP:
                     return False
             return True
 
+        return True
+
 
     def possiblePathBAD(self, pos_i: tuple, pos_f: tuple) :
         """
