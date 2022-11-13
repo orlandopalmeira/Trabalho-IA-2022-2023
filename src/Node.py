@@ -42,6 +42,6 @@ class Node:
         return str(self)
 
     def __hash__(self):
-        tup = (self.position,self.velocity)
+        tup = str((self.position,self.velocity))
         return hash(tup)
 

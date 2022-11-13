@@ -71,7 +71,7 @@ class RaceP:
         visitados = set()
 
         while estados:
-            estado = estados.pop()
+            estado = estados.pop(0)
             visitados.add(estado)
             expansao = self.expande(estado)
             for e in expansao:
@@ -79,13 +79,14 @@ class RaceP:
                     if not self.possiblePath(estado.position,e.position): # verifica se é possível avancar, ou seja, não tem paredes pelo meio
                         if estado.getVelocity() != (0,0):
                             stopped_e = Node(estado.position, (0, 0))
-                            self.addAresta(estado, stopped_e, 25)
-                            estados.append(stopped_e)
-                            #visitados.add(stopped_e)
+                            if stopped_e not in visitados:
+                                self.addAresta(estado, stopped_e, 25)
+                                estados.append(stopped_e)
+                                visitados.add(stopped_e)
                     else:
                         self.addAresta(estado,e,1)
                         estados.append(e)
-                        #visitados.add(e)
+                        visitados.add(e)
 
 
     def get_matrix(self):
@@ -218,11 +219,11 @@ pos_f = (1,2)
 booleano1 = rp.possiblePath(pos_i, pos_f)
 print(f"Booleano1: {booleano1}")
 
-'''
+
 caminho = rp.procura_DFS()
 for n in caminho:
     print(n)
-'''
+
 
 print("Done")
 
