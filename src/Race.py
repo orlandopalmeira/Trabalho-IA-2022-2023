@@ -117,8 +117,35 @@ class RaceP:
         """
         b = self.matrix[coords[0]][coords[1]] == 'X'
         return b
-    
-    def possiblePath(self, pos_i: tuple, pos_f: tuple) :
+
+    def possiblePath(self, pos_i: tuple, pos_f: tuple):
+        """
+        Esta funcção verifica se é possível ir de uma posição para outra no mapa.
+        Fonte: https://www.geeksforgeeks.org/check-possible-path-2d-matrix/
+        """
+        if self.obstaculo(pos_f):
+            return False
+
+        if pos_i[0] == pos_f[0]:
+            l = pos_i[0]
+            menor = min(pos_i, pos_f, key=lambda x: x[1])
+            maior = max(pos_i, pos_f, key=lambda x: x[1])
+            for c in range(menor[1] + 1, maior[1]):
+                if self.obstaculo((l, c)):
+                    return False
+            return True
+
+        elif pos_i[1] == pos_f[1]:
+            l = pos_i[1]
+            menor = min(pos_i, pos_f, key=lambda x: x[0])
+            maior = max(pos_i, pos_f, key=lambda x: x[0])
+            for c in range(menor[0] + 1, maior[0]):
+                if self.obstaculo((l, c)):
+                    return False
+            return True
+
+
+    def possiblePathBAD(self, pos_i: tuple, pos_f: tuple) :
         """
         Esta funcção verifica se é possível ir de uma posição para outra no mapa.
         Fonte: https://www.geeksforgeeks.org/check-possible-path-2d-matrix/
