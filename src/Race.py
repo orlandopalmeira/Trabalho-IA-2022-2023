@@ -78,11 +78,14 @@ class RaceP:
                 if e not in visitados:
                     if not self.possiblePath(estado.position,e.position): # verifica se é possível avancar, ou seja, não tem paredes pelo meio
                         if estado.getVelocity() != (0,0):
-                            self.addAresta(estado,Node(estado.position,(0,0)),25)
-                            estados.append(e)
+                            stopped_e = Node(estado.position, (0, 0))
+                            self.addAresta(estado, stopped_e, 25)
+                            estados.append(stopped_e)
+                            #visitados.add(stopped_e)
                     else:
                         self.addAresta(estado,e,1)
                         estados.append(e)
+                        #visitados.add(e)
 
 
     def get_matrix(self):
@@ -133,10 +136,10 @@ class RaceP:
             return True
 
         elif pos_i[1] == pos_f[1]:
-            l = pos_i[1]
+            c = pos_i[1]
             menor = min(pos_i, pos_f, key=lambda x: x[0])
             maior = max(pos_i, pos_f, key=lambda x: x[0])
-            for c in range(menor[0] + 1, maior[0]):
+            for l in range(menor[0] + 1, maior[0]):
                 if self.obstaculo((l, c)):
                     return False
             return True
