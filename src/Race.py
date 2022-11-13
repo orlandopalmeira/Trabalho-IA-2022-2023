@@ -150,6 +150,24 @@ class RaceP:
                     q.append((a, b))
         return False
 
+    def __procura_DFS(self,start: Node, end: list, path=[], visited=set()):
+        path.append(start)
+        visited.add(start)
+        if start.position in end:
+            return path
+
+        for (_, adj) in self.g[start]:
+            if adj not in visited and adj in self.g:
+                resultado = self.__procura_DFS(adj, end, path, visited)
+                if resultado is not None:
+                    return resultado
+
+        path.pop()  # se nao encontra remover o que está no caminho......
+        return None
+    
+    def procura_DFS(self):
+        return self.__procura_DFS(Node(self.pos_inicial,(0,0)),self.goals)
+
 
 # Testing
 rp = RaceP("race.txt")
@@ -165,4 +183,7 @@ print (lista_posicoes)
 rp.print_matrix(lista_posicoes)
 '''
 
-t = 0
+caminho = rp.procura_DFS()
+print(caminho)
+
+print("Done")
