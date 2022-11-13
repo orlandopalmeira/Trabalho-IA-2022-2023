@@ -76,11 +76,14 @@ class RaceP:
             expansao = self.expande(estado)
             for e in expansao:
                 if e not in visitados:
-                    if self.possiblePath(estado.position,e.position): # verifica se é possível avancar, ou seja, não tem paredes pelo meio
-                        self.addAresta(estado,Node(estado.position,(0,0)),25)
+                    if not self.possiblePath(estado.position,e.position): # verifica se é possível avancar, ou seja, não tem paredes pelo meio
+                        if estado.getVelocity() != (0,0):
+                            self.addAresta(estado,Node(estado.position,(0,0)),25)
+                            estados.append(e)
                     else:
                         self.addAresta(estado,e,1)
-                    estados.append(e)
+                        estados.append(e)
+
 
 
     def get_matrix(self):
@@ -111,13 +114,17 @@ class RaceP:
         """
         Indica se uma certa posição da matriz é um obstaculo ou não.
         """
-        return self.matrix[coords[0]][coords[1]] == 'X'
+        b = self.matrix[coords[0]][coords[1]] == 'X'
+        return b
     
     def possiblePath(self, pos_i: tuple, pos_f: tuple) :
         """
         Esta funcção verifica se é possível ir de uma posição para outra no mapa.
         Fonte: https://www.geeksforgeeks.org/check-possible-path-2d-matrix/
         """
+        if self.obstaculo(pos_f):
+            return False
+
         arr = []
         for i in range(len(self.matrix)):
             arr.append(self.matrix[i].copy())
@@ -150,6 +157,7 @@ class RaceP:
                     q.append((a, b))
         return False
 
+
     def __procura_DFS(self,start: Node, end: list, path=[], visited=set()):
         path.append(start)
         visited.add(start)
@@ -164,7 +172,8 @@ class RaceP:
 
         path.pop()  # se nao encontra remover o que está no caminho......
         return None
-    
+
+
     def procura_DFS(self):
         return self.__procura_DFS(Node(self.pos_inicial,(0,0)),self.goals)
 
