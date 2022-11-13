@@ -13,10 +13,10 @@ class RaceP:
     def __init__(self, file_path):
         self.g = {}
         self.matrix = {}
-        self.start = None # tuplo da posição onde o jogador se encontra
+        self.pos_inicial = None # tuplo da posição onde o jogador se encontra
         self.goals = []
-        self.l = 0
-        self.c = 0
+        self.linhas = 0
+        self.colunas = 0
 
         fp = open(file_path, "r")
 
@@ -29,7 +29,7 @@ class RaceP:
             for ch in line:
                 if ch != "\n":
                     if ch == "P":
-                        self.start = (l,c)
+                        self.pos_inicial = (l, c)
                     if ch == "F":
                         self.goals.append((l,c))
                     buf.append(ch)
@@ -37,8 +37,11 @@ class RaceP:
             self.matrix[l] = buf
             l += 1
 
-        self.l = len(self.matrix[0])
-        self.c = len(self.matrix)
+        if self.pos_inicial is None:
+            print("Não foi definida uma posição inicial!")
+            return
+        self.linhas = len(self.matrix[0])
+        self.colunas = len(self.matrix)
 
 
     def expande(self, estado: Node):
@@ -52,7 +55,7 @@ class RaceP:
             new = estado.clone()
             new.sumVelocity(ac)
             new.sumPosition(new.velocity)
-            if new != estado and (0 <= new.position[0] < self.l) and (0 <= new.position[1] < self.c):
+            if new != estado and (0 <= new.position[0] < self.linhas) and (0 <= new.position[1] < self.colunas):
                 estados.append(new)
 
         return estados
@@ -64,9 +67,7 @@ class RaceP:
             self.g[from_node].append((custo,to_node))
 
     def cria_grafo(self):
-        estados = []
-        if self.start is not None:
-            estados.append(Node(self.start,(0,0)))
+        estados = [Node(self.pos_inicial, (0, 0))]
         visitados = set()
 
         while estados:
@@ -86,7 +87,7 @@ class RaceP:
         return self.matrix
 
     def get_start(self):
-        return self.start
+        return self.pos_inicial
 
     def get_goals(self):
         return self.goals
@@ -97,7 +98,8 @@ class RaceP:
         for p in posicoes:
             l = p[0]
             c = p[1]
-            new_matrix[l][c] = "H"
+            if self.colunas > l and self.linhas > c:
+                new_matrix[l][c] = "H"
 
         fp = open(file, "w")
         for line_n in new_matrix:
@@ -151,12 +153,16 @@ class RaceP:
 
 # Testing
 rp = RaceP("race.txt")
-matrix = rp.get_matrix()
+rp.cria_grafo()
 
-n = Node((3,1), (0,0))  # posicao, velocidade
+
+'''
+matrix = rp.get_matrix()
+n = Node((3,1), (0,2))  # posicao, velocidade
 lista_nodos = rp.expande(n)
 lista_posicoes = get_positions_from_nodes(lista_nodos)
 print (lista_posicoes)
 rp.print_matrix(lista_posicoes)
+'''
 
 t = 0

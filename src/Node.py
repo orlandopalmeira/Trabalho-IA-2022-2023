@@ -38,3 +38,7 @@ class Node:
     def __str__(self) -> str:
         return f"[pos=({self.position[0]},{self.position[1]}),vel=({self.velocity[0]},{self.velocity[1]})]"
 
+    def __hash__(self):
+        tup = (self.position,self.velocity)
+        return hash(tup)
+
