@@ -1,5 +1,5 @@
 XXXXXXXXXX
-XX---XX--X
+X----XX--X
 X-X------F
 XPX-XXX--F
 X-X------F

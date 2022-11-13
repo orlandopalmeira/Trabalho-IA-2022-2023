@@ -104,7 +104,6 @@ class RaceP:
                             estados.append(e)
 
 
-
     def get_matrix(self):
         return self.matrix
 
@@ -161,27 +160,9 @@ class RaceP:
                     return False
             return True
 
-        return True
+        # Para calcular a possibilidade de caminho nos casos em que as posicoes iniciais e finais não estao na mesma linha ou coluna.
+        return self.possiblePathBAD(pos_i, pos_f)
 
-    def __possiblePath(self, pos_i: tuple, pos_f: tuple, visitados = set()):
-        if self.obstaculo(pos_f):
-            return False
-        # adjacentes de pos_i que não são paredes e que não foram visitados
-        calc = lambda p: list(filter(lambda p: (p not in visitados) and (0 <= p[0] < self.linhas) and (0 <= p[1] < self.colunas) and (not self.obstaculo(p)),
-                                     [(p[0]-1,p[1]),(p[0]+1,p[1]),(p[0],p[1]-1),(p[0],p[1]+1)]))
-        visitados.add(pos_i)
-        adjs = calc(pos_i)
-        if pos_f in adjs:
-            return True
-        else:
-            for adj in adjs:
-                if self.__possiblePath(adj,pos_f,visitados):
-                    return True
-        
-            return False
-
-    def possiblePath2(self, pos_i: tuple, pos_f: tuple):
-        return self.__possiblePath(pos_i,pos_f,set())
 
     def possiblePathBAD(self, pos_i: tuple, pos_f: tuple) :
         """
@@ -248,11 +229,10 @@ class RaceP:
 rp = RaceP("race.txt")
 rp.cria_grafo()
 
-
 pos_i = (3,1)
-pos_f = (3,3)
-booleano = rp.possiblePath2(pos_i, pos_f)
-print(f"Booleano: {booleano}")
+pos_f = (3,5)
+booleano1 = rp.possiblePath(pos_i, pos_f)
+print(f"Booleano1: {booleano1}")
 
 '''
 caminho = rp.procura_DFS()
@@ -269,4 +249,27 @@ lista_nodos = rp.expande(n)
 lista_posicoes = get_positions_from_nodes(lista_nodos)
 print (lista_posicoes)
 rp.print_matrix(lista_posicoes)
+'''
+
+
+'''
+    def __possiblePath(self, pos_i: tuple, pos_f: tuple, visitados = set()):
+        if self.obstaculo(pos_f):
+            return False
+        # adjacentes de pos_i que não são paredes e que não foram visitados
+        calc = lambda p: list(filter(lambda p: (p not in visitados) and (0 <= p[0] < self.linhas) and (0 <= p[1] < self.colunas) and (not self.obstaculo(p)),
+                                     [(p[0]-1,p[1]),(p[0]+1,p[1]),(p[0],p[1]-1),(p[0],p[1]+1)]))
+        visitados.add(pos_i)
+        adjs = calc(pos_i)
+        if pos_f in adjs:
+            return True
+        else:
+            for adj in adjs:
+                if self.__possiblePath(adj,pos_f,visitados):
+                    return True
+        
+            return False
+
+    def possiblePath2(self, pos_i: tuple, pos_f: tuple):
+        return self.__possiblePath(pos_i,pos_f,set())
 '''
