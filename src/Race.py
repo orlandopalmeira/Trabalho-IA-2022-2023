@@ -76,7 +76,8 @@ class RaceP:
             expansao = self.expande(estado)
             for e in expansao:
                 if e not in visitados:
-                    if not self.possiblePath(estado.position,e.position): # verifica se é possível avancar, ou seja, não tem paredes pelo meio
+                    #if not self.possiblePath(estado.position,e.position): # verifica se é possível avancar, ou seja, não tem paredes pelo meio
+                    if self.obstaculo(e.position):
                         if estado.getVelocity() != (0,0):
                             self.addAresta(estado,Node(estado.position,(0,0)),25)
                             estados.append(e)
