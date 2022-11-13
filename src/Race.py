@@ -168,7 +168,7 @@ class RaceP:
             return False
         # adjacentes de pos_i que não são paredes e que não foram visitados
         calc = lambda p: list(filter(lambda p: (p not in visitados) and (0 <= p[0] < self.linhas) and (0 <= p[1] < self.colunas) and (not self.obstaculo(p)),
-                                     [(p[0]-1,p[1]-1),(p[0]-1,p[1]),(p[0]-1,p[1]+1),(p[0],p[1]-1),(p[0],p[1]+1),(p[0]+1,p[1]-1),(p[0]+1,p[1]),(p[0]+1,p[1]+1)]))
+                                     [(p[0]-1,p[1]),(p[0]+1,p[1]),(p[0],p[1]-1),(p[0],p[1]+1)]))
         visitados.add(pos_i)
         adjs = calc(pos_i)
         if pos_f in adjs:
