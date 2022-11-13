@@ -1,5 +1,12 @@
 from Node import Node
 
+def get_positions_from_nodes(nodos):
+    lista = []
+    for nodo in nodos:
+        lista.append(nodo.getPosition())
+    return lista
+
+
 class RaceP:
 
     # Argumento "file_path" é o caminho para o ficheiro que contém o circuito.
@@ -34,54 +41,17 @@ class RaceP:
         self.c = len(self.matrix)
 
 
-    def criaGrafo(self):
-        start = self.start
-        states = {} # posição: (vel, custo)
-        visited = []
-        estados = [(start, (0, 0), 0)] # posicao,
-
-        while estados:
-            p = estados.pop()
-            visited.append(p)
-            expansao = self.expand(p, vel, acc)
-
-        pass
-
-
-    def expand(self, pos, vel): # pos e vel do carro num determinado momento.
-
-        accs = [(0,0), (1,0), (1,1), (0,1), (0,-1), (-1,0), (-1,-1), (1,-1), (-1,1)] # acelerações possíveis
-        posicoes = []
-        vels = []
-        for ac in accs:
-            # Calculo das novas velocidades dos eixos.
-            new_vel_l = vel[0] + ac[0]
-            new_vel_c = vel[1] + ac[1]
-
-            # Calculo das novas posicoes dos eixos.
-            new_pos_l = pos[0] + new_vel_l
-            new_pos_c = pos[1] + new_vel_c
-
-            # Formação da nova posiçao.
-            new_pos = (new_pos_l, new_pos_c)
-            new_vel = (new_vel_l, new_vel_c)
-            if new_pos != pos and (0 <= new_pos[0] < self.l) and (0 <= new_pos[1] < self.c):
-                posicoes.append(new_pos)
-                vels.append(new_vel)
-
-        return posicoes
-        #return {"posicoes": posicoes, "velocidades": vels}
-
     def expande(self, estado: Node):
         """
-        Esta função calcula os próximos estados possíveis dado um estado actual.
+        Esta função calcula os próximos estados possíveis dado um estado atual.
         """
         accs = [(0,0), (1,0), (1,1), (0,1), (0,-1), (-1,0), (-1,-1), (1,-1), (-1,1)] # acelerações possíveis
         estados = []
 
         for ac in accs:
             new = estado.clone()
-            new.sumAll(new.velocity,ac)
+            new.sumVelocity(ac)
+            new.sumPosition(new.velocity)
             if new != estado and (0 <= new.position[0] < self.l) and (0 <= new.position[1] < self.c):
                 estados.append(new)
 
@@ -157,15 +127,14 @@ class RaceP:
         # insert the initial position
         q.append((pos_i[0], pos_i[1]))
         # until queue is empty
-        while(len(q) > 0) :
-            p = q[0]
-            q.pop(0)
+        while len(q) > 0 :
+            p = q.pop(0)
             
             # mark as visited
             arr[p[0]][p[1]] = 'X'
             
             # destination is reached.
-            if(p == (pos_f[0],pos_f[1])) :
+            if p == (pos_f[0],pos_f[1]) :
                 return True
                 
             # check all four directions
@@ -175,7 +144,7 @@ class RaceP:
                 b = p[1] + Dir[i][1]
                 
                 # not blocked and valid
-                if(a >= pos_i[0] and b >= pos_i[1] and a <= pos_f[0] and b <= pos_f[1] and arr[a][b] != 'X') :           
+                if pos_i[0] <= a <= pos_f[0] and pos_i[1] <= b <= pos_f[1] and arr[a][b] != 'X':
                     q.append((a, b))
         return False
 
@@ -184,8 +153,10 @@ class RaceP:
 rp = RaceP("race.txt")
 matrix = rp.get_matrix()
 
-list = rp.expand((3,1), (0,0))
-print (list)
-rp.print_matrix(list)
+n = Node((3,1), (0,0))  # posicao, velocidade
+lista_nodos = rp.expande(n)
+lista_posicoes = get_positions_from_nodes(lista_nodos)
+print (lista_posicoes)
+rp.print_matrix(lista_posicoes)
 
 t = 0

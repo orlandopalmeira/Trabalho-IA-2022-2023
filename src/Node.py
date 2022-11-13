@@ -10,19 +10,21 @@ class Node:
     def setVelocity(self, velocity: tuple):
         self.velocity = velocity
 
+    def getPosition(self):
+        return self.position
+
+    def getVelocity(self):
+        return self.velocity
+
     def setAll(self, position: tuple, velocity: tuple):
         self.setPosition(position)
         self.setVelocity(velocity)
 
     def sumPosition(self, toAdd: tuple):
-        self.position = (self.position[0 ] +toAdd[0] ,self.position[1 ] +toAdd[1])
+        self.position = (self.position[0] + toAdd[0], self.position[1] + toAdd[1])
 
     def sumVelocity(self, toAdd: tuple):
-        self.velocity = (self.velocity[0 ] +toAdd[0] ,self.velocity[1 ] +toAdd[1])
-
-    def sumAll(self, pos: tuple, vel: tuple):
-        self.sumPosition(pos)
-        self.sumVelocity(vel)
+        self.velocity = (self.velocity[0] + toAdd[0], self.velocity[1] + toAdd[1])
 
     def clone(self):
         return Node(self.position ,self.velocity)
