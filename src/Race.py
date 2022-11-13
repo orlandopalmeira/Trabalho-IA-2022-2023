@@ -219,7 +219,7 @@ class RaceP:
                 b = p[1] + Dir[i][1]
                 
                 # not blocked and valid
-                if pos_i[0] <= a <= pos_f[0] and pos_i[1] <= b <= pos_f[1] and arr[a][b] != 'X':
+                if 0 <= a < self.linhas and 0 <= b < self.colunas and arr[a][b] != "X":
                     q.append((a, b))
         return False
 
@@ -246,8 +246,21 @@ class RaceP:
 
 # Testing
 rp = RaceP("race.txt")
-rp.cria_grafo2()
+rp.cria_grafo()
 
+
+pos_i = (3,1)
+pos_f = (3,3)
+booleano = rp.possiblePath2(pos_i, pos_f)
+print(f"Booleano: {booleano}")
+
+'''
+caminho = rp.procura_DFS()
+for n in caminho:
+    print(n)
+'''
+
+print("Done")
 
 '''
 matrix = rp.get_matrix()
@@ -257,9 +270,3 @@ lista_posicoes = get_positions_from_nodes(lista_nodos)
 print (lista_posicoes)
 rp.print_matrix(lista_posicoes)
 '''
-
-caminho = rp.procura_DFS()
-for n in caminho:
-    print(n)
-
-print("Done")
