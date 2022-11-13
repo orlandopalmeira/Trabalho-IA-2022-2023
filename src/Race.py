@@ -224,6 +224,10 @@ caminho = rp.procura_DFS()
 for n in caminho:
     print(n)
 
+# Faz o ficheiro result.txt
+caminho = get_positions_from_nodes(caminho)
+rp.print_matrix(caminho)
+
 
 print("Done")
 
