@@ -53,6 +53,12 @@ class RaceP:
     def get_goals(self):
         return self.goals
 
+    def get_value_in_graph(self, key_node):
+        if self.g.get(key_node) is None:
+            return []
+        v = self.g.get(key_node)
+        return v
+
     def expande(self, estado: Node):
         """
         Esta função calcula os próximos estados possíveis dado um estado atual.
@@ -88,7 +94,7 @@ class RaceP:
                 if e not in visitados:
                     if not self.possiblePath(estado.position,e.position): # verifica se é possível avancar, ou seja, não tem paredes pelo meio
                         stopped_e = Node(estado.position, (0, 0))
-                        if stopped_e not in visitados:
+                        if stopped_e not in visitados and ((25,stopped_e) not in self.get_value_in_graph(estado)):
                             self.addAresta(estado, stopped_e, 25)
                             if stopped_e not in estados:
                                 estados.append(stopped_e)
