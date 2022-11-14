@@ -102,6 +102,10 @@ class RaceP:
 
     # Printa uma matriz com "*" nas posicoes dos nodos indicados.
     def print_matrix(self, caminho_de_nodos, file="result.txt"):
+        if not caminho_de_nodos:
+            print("Não foi criado nenhum ficheiro, uma vez que o caminho está vazio!")
+            return
+
         new_matrix = []
         for i in range(len(self.matrix)):
             new_matrix.append(self.matrix[i].copy())
@@ -163,12 +167,12 @@ class RaceP:
             inc1 = vel[1] // abs(vel[1])
 
             while True:
-                l += inc0
-                c += inc1
                 if (l,c) == pos_f:
                     return True
-                elif self.obstaculo((l,c)):
+                elif self.obstaculo((l,c)) or (self.obstaculo((l+inc0,c)) and self.obstaculo((l, c+inc1))):
                     return False
+                l += inc0
+                c += inc1
 
         # Para calcular a possibilidade de caminho nos casos em que as posicoes iniciais e finais não estao na mesma linha ou coluna.
         return self.__possiblePathAUX(pos_i, pos_f)
@@ -246,8 +250,9 @@ print(f"Booleano1: {booleano1}")
 
 
 caminho = rp.procura_DFS()
-for n in caminho:
-    print(n)
+if caminho:
+    for n in caminho:
+        print(n)
 
 # Printa as posições em que passa no caminho no ficheiro result.txt
 rp.print_matrix(caminho)
