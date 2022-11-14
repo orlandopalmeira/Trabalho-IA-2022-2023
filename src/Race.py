@@ -44,6 +44,15 @@ class RaceP:
         self.colunas = len(self.matrix[0])
 
 
+    def get_matrix(self):
+        return self.matrix
+
+    def get_start(self):
+        return self.pos_inicial
+
+    def get_goals(self):
+        return self.goals
+
     def expande(self, estado: Node):
         """
         Esta função calcula os próximos estados possíveis dado um estado atual.
@@ -60,16 +69,17 @@ class RaceP:
 
         return estados
 
+
     def addAresta(self, from_node: Node, to_node: Node, custo: int):
         if from_node not in self.g:
             self.g[from_node] = [(custo,to_node)]
         else:
             self.g[from_node].append((custo,to_node))
 
+
     def cria_grafo(self):
         estados = [Node(self.pos_inicial, (0, 0))]
         visitados = set()
-
         while estados:
             estado = estados.pop(0)
             visitados.add(estado)
@@ -77,40 +87,38 @@ class RaceP:
             for e in expansao:
                 if e not in visitados:
                     if not self.possiblePath(estado.position,e.position): # verifica se é possível avancar, ou seja, não tem paredes pelo meio
-                        if estado.getVelocity() != (0,0):
-                            stopped_e = Node(estado.position, (0, 0))
-                            if stopped_e not in visitados:
-                                self.addAresta(estado, stopped_e, 25)
+                        stopped_e = Node(estado.position, (0, 0))
+                        if stopped_e not in visitados:
+                            self.addAresta(estado, stopped_e, 25)
+                            if stopped_e not in estados:
                                 estados.append(stopped_e)
-                                visitados.add(stopped_e)
+                                #visitados.add(stopped_e)
                     else:
                         self.addAresta(estado,e,1)
-                        estados.append(e)
-                        visitados.add(e)
+                        if e not in estados:
+                            estados.append(e)
+                        #visitados.add(e)
 
 
-    def get_matrix(self):
-        return self.matrix
+    # Printa uma matriz com "*" nas posicoes dos nodos indicados.
+    def print_matrix(self, caminho_de_nodos, file="result.txt"):
+        new_matrix = []
+        for i in range(len(self.matrix)):
+            new_matrix.append(self.matrix[i].copy())
 
-    def get_start(self):
-        return self.pos_inicial
+        path = get_positions_from_nodes(caminho_de_nodos) # retorna apenas os tuplos de posicao dos nodos.
 
-    def get_goals(self):
-        return self.goals
-
-    # Printa uma matriz com "H" nas posicoes indicadas.
-    def print_matrix(self, posicoes, file="result.txt"):
-        new_matrix = self.matrix
-        for p in posicoes:
+        for p in path:
             l = p[0]
             c = p[1]
-            if self.colunas > l and self.linhas > c:
-                new_matrix[l][c] = "H"
+            #if self.colunas > c and self.linhas > l:
+            new_matrix[l][c] = "*"
 
         fp = open(file, "w")
         for line_n in new_matrix:
-            linha = "".join(new_matrix[line_n])
+            linha = "".join(line_n)
             fp.write(linha + "\n")
+            #print(linha)
         fp.close()
 
     def obstaculo(self, coords: tuple) -> bool:
@@ -124,6 +132,8 @@ class RaceP:
         """
         Esta funcção verifica se é possível ir de uma posição para outra no mapa.
         """
+        vel = (pos_f[0] - pos_i[0], pos_f[1] - pos_i[1])
+
         if self.obstaculo(pos_f):
             return False
 
@@ -144,6 +154,21 @@ class RaceP:
                 if self.obstaculo((l, c)):
                     return False
             return True
+
+        elif vel != (0,0) and abs(vel[0]) == abs(vel[1]):
+            l=pos_i[0]
+            c=pos_i[1]
+
+            inc0 = vel[0] // abs(vel[0])
+            inc1 = vel[1] // abs(vel[1])
+
+            while True:
+                l += inc0
+                c += inc1
+                if (l,c) == pos_f:
+                    return True
+                elif self.obstaculo((l,c)):
+                    return False
 
         # Para calcular a possibilidade de caminho nos casos em que as posicoes iniciais e finais não estao na mesma linha ou coluna.
         return self.__possiblePathAUX(pos_i, pos_f)
@@ -170,7 +195,7 @@ class RaceP:
         # until queue is empty
         while len(q) > 0 :
             p = q.pop(0)
-            
+
             # mark as visited
             arr[p[0]][p[1]] = 'X'
             
@@ -215,7 +240,7 @@ rp = RaceP("race.txt")
 rp.cria_grafo()
 
 pos_i = (3,1)
-pos_f = (1,2)
+pos_f = (1,3)
 booleano1 = rp.possiblePath(pos_i, pos_f)
 print(f"Booleano1: {booleano1}")
 
@@ -224,8 +249,7 @@ caminho = rp.procura_DFS()
 for n in caminho:
     print(n)
 
-# Faz o ficheiro result.txt
-caminho = get_positions_from_nodes(caminho)
+# Printa as posições em que passa no caminho no ficheiro result.txt
 rp.print_matrix(caminho)
 
 
