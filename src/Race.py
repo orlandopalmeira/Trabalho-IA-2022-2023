@@ -276,10 +276,10 @@ print(f"Booleano1: {booleano1}")
 
 caminho = rp.procura_DFS()
 custo = rp.calcula_custo(caminho)
-print(custo)
 if caminho:
     for n in caminho:
         print(n)
+print(f"Custo do caminho: {custo}")
 
 # Printa as posições em que passa no caminho no ficheiro result.txt
 rp.print_matrix(caminho)
