@@ -59,6 +59,15 @@ class RaceP:
         v = self.g.get(key_node)
         return v
 
+    def get_cost_in_aresta(self, origin, dest):
+        peso = 100000 ###
+        for v in self.get_value_in_graph(origin):
+            if v[1] == dest and v[0] < peso:
+                peso = v[0]
+        if peso == 100000:
+            print("PROBLEMA SECALHAR!!")
+        return peso
+
     def expande(self, estado: Node):
         """
         Esta função calcula os próximos estados possíveis dado um estado atual.
@@ -224,6 +233,16 @@ class RaceP:
                     q.append((a, b))
         return False
 
+    def calcula_custo(self, path):
+        custo = 0
+        if not path:
+            return 0
+        ant = path[0]
+        for p in path[1:]:
+            custo += self.get_cost_in_aresta(ant, p)
+            ant = p
+        return custo
+
 
     def __procura_DFS(self,start: Node, end: list, path=[], visited=set()):
         path.append(start)
@@ -256,6 +275,8 @@ print(f"Booleano1: {booleano1}")
 
 
 caminho = rp.procura_DFS()
+custo = rp.calcula_custo(caminho)
+print(custo)
 if caminho:
     for n in caminho:
         print(n)
