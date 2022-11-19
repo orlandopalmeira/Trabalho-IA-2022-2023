@@ -170,6 +170,7 @@ class RaceP:
             #print(linha)
         fp.close()
 
+
     def obstaculo(self, coords: tuple) -> bool:
         """
         Indica se uma certa posição da matriz é um obstaculo ou não.
