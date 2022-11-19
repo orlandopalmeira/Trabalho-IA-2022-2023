@@ -1,3 +1,4 @@
+from queue import Queue
 from Node import Node
 
 def get_positions_from_nodes(nodos):
@@ -290,6 +291,52 @@ class RaceP:
         return self.__procura_DFS(Node(self.start), self.goals)
 
 
+    def __procura_BFS(self, start, end):
+        # definir nodos visitados para evitar ciclos
+        visited = set()
+        fila = Queue()
+
+        # adicionar o nodo inicial à fila e aos visitados
+        fila.put(start)
+        visited.add(start)
+
+        # garantir que o start node nao tem pais...
+        parent = dict()
+        parent[start] = None
+
+        path_found = False
+        while not fila.empty() and path_found == False:
+            nodo_atual = fila.get()
+            if nodo_atual in end:
+                path_found = True
+            else:
+                for (_, adjacente) in self.g[nodo_atual]:
+                    if adjacente not in visited:
+                        fila.put(adjacente)
+                        parent[adjacente] = nodo_atual
+                        visited.add(adjacente)
+
+        # Reconstruir o caminho
+
+        path = []
+        end = nodo_atual
+        if path_found:
+            path.append(end)
+            while parent[end] is not None:
+                path.append(parent[end])
+                end = parent[end]
+            path.reverse()
+            # funçao calcula custo caminho
+            
+        return path
+
+    def procura_BFS(self):
+        s = Node(self.start)
+        e = set([Node(x) for x in self.goals])
+        return self.__procura_BFS(s,e)
+
+
+
 # Testing
 rp = RaceP("race.txt")
 rp.cria_grafo()
@@ -300,7 +347,7 @@ booleano1 = rp.possiblePath(pos_i, pos_f)
 print(f"Booleano1: {booleano1}")
 
 
-caminho = rp.procura_DFS()
+caminho = rp.procura_BFS()
 custo = rp.calcula_custo(caminho)
 if caminho:
     for n in caminho:
