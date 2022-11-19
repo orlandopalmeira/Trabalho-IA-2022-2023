@@ -12,7 +12,7 @@ class RaceP:
     # Argumento "file_path" é o caminho para o ficheiro que contém o circuito.
     def __init__(self, file_path):
         self.g = {}
-        self.g_directed = True
+        self.g_directed = False
         self.g_h = {}  # eventuais heuristicas.
         self.matrix = {}
         self.start = None # tuplo da posição onde o jogador se encontra
