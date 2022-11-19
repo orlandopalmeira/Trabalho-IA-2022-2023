@@ -82,6 +82,7 @@ class RaceP:
                 ret.append(Node(position))
         return ret
 
+    '''
     def expandeold(self, estado: Node):
         """
         Esta função calcula os próximos estados possíveis dado um estado atual.
@@ -97,7 +98,7 @@ class RaceP:
                 estados.append(new)
 
         return estados
-
+    '''
 
     def addAresta(self, from_node: Node, to_node: Node, custo = 1):
         if from_node not in self.g:
@@ -178,6 +179,8 @@ class RaceP:
         b = self.matrix[coords[0]][coords[1]] == 'X'
         return b
 
+
+    # INUTIL COM A MUDANCA MAS TALVEZ A AUXILIAR DESTA SEJA UTIL.
     def possiblePath(self, pos_i: tuple, pos_f: tuple):
         """
         Esta funcção verifica se é possível ir de uma posição para outra no mapa.
@@ -325,27 +328,4 @@ lista_nodos = rp.expande(n)
 lista_posicoes = get_positions_from_nodes(lista_nodos)
 print (lista_posicoes)
 rp.print_matrix(lista_posicoes)
-'''
-
-
-'''
-    def __possiblePath(self, pos_i: tuple, pos_f: tuple, visitados = set()):
-        if self.obstaculo(pos_f):
-            return False
-        # adjacentes de pos_i que não são paredes e que não foram visitados
-        calc = lambda p: list(filter(lambda p: (p not in visitados) and (0 <= p[0] < self.linhas) and (0 <= p[1] < self.colunas) and (not self.obstaculo(p)),
-                                     [(p[0]-1,p[1]),(p[0]+1,p[1]),(p[0],p[1]-1),(p[0],p[1]+1)]))
-        visitados.add(pos_i)
-        adjs = calc(pos_i)
-        if pos_f in adjs:
-            return True
-        else:
-            for adj in adjs:
-                if self.__possiblePath(adj,pos_f,visitados):
-                    return True
-        
-            return False
-
-    def possiblePath2(self, pos_i: tuple, pos_f: tuple):
-        return self.__possiblePath(pos_i,pos_f,set())
 '''

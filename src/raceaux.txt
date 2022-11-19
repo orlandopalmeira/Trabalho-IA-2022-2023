@@ -1,0 +1,8 @@
+X---XX--X
+--------F
+P--XXX--F
+X-------F
+XXX----XX
+XXXXXXXXX
+
+#caguem nisto
