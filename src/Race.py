@@ -12,24 +12,25 @@ class RaceP:
     # Argumento "file_path" é o caminho para o ficheiro que contém o circuito.
     def __init__(self, file_path):
         self.g = {}
+        self.g_directed = True
+        self.g_h = {}  # eventuais heuristicas.
         self.matrix = {}
-        self.pos_inicial = None # tuplo da posição onde o jogador se encontra
+        self.start = None # tuplo da posição onde o jogador se encontra
         self.goals = []
         self.linhas = 0
         self.colunas = 0
 
-        fp = open(file_path, "r")
-
         l = 0
         c = 0
 
+        fp = open(file_path, "r")
         for line in fp:
             buf = []
             c = 0
             for ch in line:
                 if ch != "\n":
                     if ch == "P":
-                        self.pos_inicial = (l, c)
+                        self.start = (l, c)
                     if ch == "F":
                         self.goals.append((l,c))
                     buf.append(ch)
@@ -37,7 +38,7 @@ class RaceP:
             self.matrix[l] = buf
             l += 1
 
-        if self.pos_inicial is None:
+        if self.start is None:
             print("Não foi definida uma posição inicial!")
             return
         self.linhas = len(self.matrix)
@@ -48,7 +49,7 @@ class RaceP:
         return self.matrix
 
     def get_start(self):
-        return self.pos_inicial
+        return self.start
 
     def get_goals(self):
         return self.goals
@@ -69,6 +70,32 @@ class RaceP:
         return peso
 
 
+
+    def addAresta(self, from_node: Node, to_node: Node, custo = 1):
+        if from_node not in self.g:
+            self.g[from_node] = list()
+        if to_node not in self.g:
+            self.g[to_node] = list()
+
+        self.g[from_node].append((custo,to_node))
+
+        if not self.g_directed:
+            self.g[to_node].append((custo, from_node))
+
+
+    def cria_grafo(self):
+        estados = [Node(self.start)]
+        visitados = set()
+        while estados:
+            estado = estados.pop(0)
+            visitados.add(estado)
+            expansao = self.expande(estado)
+            for e in expansao:
+                if e not in visitados:
+                    self.addAresta(estado, e, 1)
+                    estados.append(e)
+
+
     def expande(self, estado: Node):
         x = estado.position[0]
         y = estado.position[1]
@@ -81,45 +108,6 @@ class RaceP:
             if not self.obstaculo(position):
                 ret.append(Node(position))
         return ret
-
-    '''
-    def expandeold(self, estado: Node):
-        """
-        Esta função calcula os próximos estados possíveis dado um estado atual.
-        """
-        accs = [(0,0), (1,0), (1,1), (0,1), (0,-1), (-1,0), (-1,-1), (1,-1), (-1,1)] # acelerações possíveis
-        estados = []
-
-        for ac in accs:
-            new = estado.clone()
-            new.sumVelocity(ac)
-            new.sumPosition(new.velocity)
-            if new != estado and (0 <= new.position[0] < self.linhas) and (0 <= new.position[1] < self.colunas):
-                estados.append(new)
-
-        return estados
-    '''
-
-    def addAresta(self, from_node: Node, to_node: Node, custo = 1):
-        if from_node not in self.g:
-            self.g[from_node] = [(custo,to_node)]
-        else:
-            self.g[from_node].append((custo,to_node))
-
-
-    def cria_grafo(self):
-        estados = [Node(self.pos_inicial)]
-        visitados = set()
-        while estados:
-            estado = estados.pop(0)
-            visitados.add(estado)
-            expansao = self.expande(estado)
-            for e in expansao:
-                if e not in visitados:
-                    self.addAresta(estado, e, 1)
-                    if e not in estados:
-                        estados.append(e)
-
 
     '''
     def cria_grafo(self):
@@ -296,7 +284,7 @@ class RaceP:
 
 
     def procura_DFS(self):
-        return self.__procura_DFS(Node(self.pos_inicial,(0,0)),self.goals)
+        return self.__procura_DFS(Node(self.start), self.goals)
 
 
 # Testing
@@ -329,4 +317,23 @@ lista_nodos = rp.expande(n)
 lista_posicoes = get_positions_from_nodes(lista_nodos)
 print (lista_posicoes)
 rp.print_matrix(lista_posicoes)
+'''
+
+'''
+    def addAresta(self, from_node: Node, to_node: Node, custo = 1):
+        if from_node not in self.g:
+            self.g[from_node] = list()
+        if to_node not in self.g:
+            self.g[to_node] = list()
+
+        if from_node not in self.g:
+            self.g[from_node] = [(custo,to_node)]
+        else:
+            self.g[from_node].append((custo,to_node))
+
+        if not self.g_directed:
+            if to_node not in self.g:
+                self.g[to_node] = [(custo, from_node)]
+            else:
+                self.g[to_node].append((custo, from_node))
 '''
