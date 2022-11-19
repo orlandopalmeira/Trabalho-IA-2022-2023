@@ -1,7 +1,7 @@
 XXXXXXXXXX
 XX---XX--X
-X-X------F
+X--------F
 XP--XXX--F
-XXX------F
+XX-------F
 XXXX----XX
 XXXXXXXXXX

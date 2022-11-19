@@ -1,6 +1,6 @@
 
 class Node:
-    def __init__(self ,position: tuple, velocity: tuple):
+    def __init__(self ,position: tuple, velocity = (0,0)):
         self.position = position
         self.velocity = velocity
 

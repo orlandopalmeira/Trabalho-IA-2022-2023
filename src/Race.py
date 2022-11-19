@@ -68,7 +68,21 @@ class RaceP:
             print("PROBLEMA SECALHAR!!")
         return peso
 
+
     def expande(self, estado: Node):
+        x = estado.position[0]
+        y = estado.position[1]
+        poss = [(0,1), (1,0), (0,-1), (-1,0)]
+        ret = []
+        for tup in poss:
+            nx = x+tup[0]
+            ny = y+tup[1]
+            position = (nx, ny)
+            if not self.obstaculo(position):
+                ret.append(Node(position))
+        return ret
+
+    def expandeold(self, estado: Node):
         """
         Esta função calcula os próximos estados possíveis dado um estado atual.
         """
@@ -85,13 +99,28 @@ class RaceP:
         return estados
 
 
-    def addAresta(self, from_node: Node, to_node: Node, custo: int):
+    def addAresta(self, from_node: Node, to_node: Node, custo = 1):
         if from_node not in self.g:
             self.g[from_node] = [(custo,to_node)]
         else:
             self.g[from_node].append((custo,to_node))
 
 
+    def cria_grafo(self):
+        estados = [Node(self.pos_inicial)]
+        visitados = set()
+        while estados:
+            estado = estados.pop(0)
+            visitados.add(estado)
+            expansao = self.expande(estado)
+            for e in expansao:
+                if e not in visitados:
+                    self.addAresta(estado, e, 1)
+                    if e not in estados:
+                        estados.append(e)
+
+
+    '''
     def cria_grafo(self):
         estados = [Node(self.pos_inicial, (0, 0))]
         visitados = set()
@@ -113,7 +142,7 @@ class RaceP:
                         if e not in estados:
                             estados.append(e)
                         #visitados.add(e)
-
+    '''
 
     # Printa uma matriz com "*" nas posicoes dos nodos indicados.
     def print_matrix(self, caminho_de_nodos, file="result.txt"):
@@ -144,6 +173,8 @@ class RaceP:
         """
         Indica se uma certa posição da matriz é um obstaculo ou não.
         """
+        if self.linhas <= coords[0] or self.colunas <= coords[1]:
+            return True
         b = self.matrix[coords[0]][coords[1]] == 'X'
         return b
 
