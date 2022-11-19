@@ -93,7 +93,8 @@ class RaceP:
             for e in expansao:
                 if e not in visitados:
                     self.addAresta(estado, e, 1)
-                    estados.append(e)
+                    if e not in estados:
+                        estados.append(e)
 
 
     def expande(self, estado: Node):
