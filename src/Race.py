@@ -146,11 +146,13 @@ class RaceP:
 
         path = get_positions_from_nodes(caminho_de_nodos) # retorna apenas os tuplos de posicao dos nodos.
 
+        it = 'a'
         for p in path:
             l = p[0]
             c = p[1]
             #if self.colunas > c and self.linhas > l:
-            new_matrix[l][c] = "*"
+            new_matrix[l][c] = f"{it}"
+            it = chr(ord(it) + 1)
 
         fp = open(file, "w")
         for line_n in new_matrix:
