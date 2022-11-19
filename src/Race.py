@@ -72,7 +72,7 @@ class RaceP:
     def expande(self, estado: Node):
         x = estado.position[0]
         y = estado.position[1]
-        poss = [(0,1), (1,0), (0,-1), (-1,0)]
+        poss = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
         ret = []
         for tup in poss:
             nx = x+tup[0]
