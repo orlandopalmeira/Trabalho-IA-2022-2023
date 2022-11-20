@@ -4,6 +4,9 @@ class Node:
         self.position = position
         #self.velocity = velocity
 
+    def getName(self):
+        return str(self.position)
+
     def setPosition(self, position: tuple):
         self.position = position
 

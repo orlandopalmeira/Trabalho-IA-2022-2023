@@ -1,6 +1,9 @@
 from queue import Queue
 from Node import Node
 
+import networkx as nx  # biblioteca de tratamento de grafos necessária para desnhar graficamente o grafo
+import matplotlib.pyplot as plt  # idem
+
 def get_positions_from_nodes(nodos):
     lista = []
     for nodo in nodos:
@@ -271,6 +274,28 @@ class RaceP:
         return custo
 
 
+    def desenha(self):
+        ##criar lista de vertices
+        lista_v = self.g.keys()
+        lista_a = []
+        g = nx.Graph()
+        for nodo in lista_v:
+            n = nodo.getName()
+            g.add_node(n)
+            for (peso, adjacente) in self.g[nodo]:
+                lista = (n, adjacente)
+                # lista_a.append(lista)
+                g.add_edge(n, adjacente, weight=peso)
+
+        pos = nx.spring_layout(g)
+        nx.draw_networkx(g, pos, with_labels=True, font_weight='bold')
+        labels = nx.get_edge_attributes(g, 'weight')
+        nx.draw_networkx_edge_labels(g, pos, edge_labels=labels)
+
+        plt.draw()
+        plt.show()
+
+
     def __procura_DFS(self,start: Node, end: list, path=[], visited=set()):
         path.append(start)
         visited.add(start)
@@ -341,12 +366,7 @@ class RaceP:
 rp = RaceP("race.txt")
 rp.cria_grafo()
 
-pos_i = (3,1)
-pos_f = (1,3)
-booleano1 = rp.possiblePath(pos_i, pos_f)
-print(f"Booleano1: {booleano1}")
-
-
+# Printa o caminho e o custo para o stdout.
 caminho = rp.procura_BFS()
 custo = rp.calcula_custo(caminho)
 if caminho:
@@ -357,8 +377,15 @@ print(f"Custo do caminho: {custo}")
 # Printa as posições em que passa no caminho no ficheiro result.txt
 rp.print_matrix(caminho)
 
+# Desenha o grafo n vezes.
+# for i in range(10): rp.desenha()
 
 print("Done")
+
+
+
+
+
 
 '''
 matrix = rp.get_matrix()
