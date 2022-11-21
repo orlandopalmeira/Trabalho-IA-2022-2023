@@ -4,6 +4,7 @@ from Node import Node
 import networkx as nx  # biblioteca de tratamento de grafos necessária para desnhar graficamente o grafo
 import matplotlib.pyplot as plt  # idem
 
+
 def get_positions_from_nodes(nodos):
     lista = []
     for nodo in nodos:
@@ -74,7 +75,6 @@ class RaceP:
         return peso
 
 
-
     def addAresta(self, from_node: Node, to_node: Node, custo = 1):
         if from_node not in self.g:
             self.g[from_node] = list()
@@ -110,33 +110,10 @@ class RaceP:
             nx = x+tup[0]
             ny = y+tup[1]
             position = (nx, ny)
-            if not self.obstaculo(position):
+            if not self.obstaculo(position) and self.canDiagPath(estado.position, position):
                 ret.append(Node(position))
         return ret
 
-    '''
-    def cria_grafo(self):
-        estados = [Node(self.pos_inicial, (0, 0))]
-        visitados = set()
-        while estados:
-            estado = estados.pop(0)
-            visitados.add(estado)
-            expansao = self.expande(estado)
-            for e in expansao:
-                if e not in visitados:
-                    if not self.possiblePath(estado.position,e.position): # verifica se é possível avancar, ou seja, não tem paredes pelo meio
-                        stopped_e = Node(estado.position, (0, 0))
-                        if stopped_e not in visitados and ((25,stopped_e) not in self.get_value_in_graph(estado)):
-                            self.addAresta(estado, stopped_e, 25)
-                            if stopped_e not in estados:
-                                estados.append(stopped_e)
-                                #visitados.add(stopped_e)
-                    else:
-                        self.addAresta(estado,e,1)
-                        if e not in estados:
-                            estados.append(e)
-                        #visitados.add(e)
-    '''
 
     # Printa uma matriz com "*" nas posicoes dos nodos indicados.
     def print_matrix(self, caminho_de_nodos, file="result.txt"):
@@ -175,6 +152,26 @@ class RaceP:
         b = self.matrix[coords[0]][coords[1]] == 'X'
         return b
 
+
+    # Verifica a possibilidade de caminho na diagonal
+    def canDiagPath(self, pos_i: tuple, pos_f: tuple):
+        vel = (pos_f[0] - pos_i[0], pos_f[1] - pos_i[1])
+        if vel != (0, 0) and abs(vel[0]) == abs(vel[1]):
+            l = pos_i[0]
+            c = pos_i[1]
+
+            inc0 = vel[0] // abs(vel[0])
+            inc1 = vel[1] // abs(vel[1])
+
+            while True:
+                if (l, c) == pos_f:
+                    return True
+                elif self.obstaculo((l, c)) or (self.obstaculo((l + inc0, c)) and self.obstaculo((l, c + inc1))):
+                    return False
+                l += inc0
+                c += inc1
+
+        return True
 
     # INUTIL COM A MUDANCA MAS TALVEZ A AUXILIAR DESTA SEJA UTIL.
     def possiblePath(self, pos_i: tuple, pos_f: tuple):
@@ -355,6 +352,7 @@ class RaceP:
             
         return path
 
+
     def procura_BFS(self):
         s = Node(self.start)
         e = set([Node(x) for x in self.goals])
@@ -362,6 +360,7 @@ class RaceP:
 
 
 
+'''
 # Testing
 rp = RaceP("race.txt")
 rp.cria_grafo()
@@ -382,35 +381,4 @@ rp.print_matrix(caminho)
 
 print("Done")
 
-
-
-
-
-
-'''
-matrix = rp.get_matrix()
-n = Node((3,1), (0,2))  # posicao, velocidade
-lista_nodos = rp.expande(n)
-lista_posicoes = get_positions_from_nodes(lista_nodos)
-print (lista_posicoes)
-rp.print_matrix(lista_posicoes)
-'''
-
-'''
-    def addAresta(self, from_node: Node, to_node: Node, custo = 1):
-        if from_node not in self.g:
-            self.g[from_node] = list()
-        if to_node not in self.g:
-            self.g[to_node] = list()
-
-        if from_node not in self.g:
-            self.g[from_node] = [(custo,to_node)]
-        else:
-            self.g[from_node].append((custo,to_node))
-
-        if not self.g_directed:
-            if to_node not in self.g:
-                self.g[to_node] = [(custo, from_node)]
-            else:
-                self.g[to_node].append((custo, from_node))
 '''

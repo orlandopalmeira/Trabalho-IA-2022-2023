@@ -1,8 +1,8 @@
 XXXXXXXXXX
 XX---XX--X
-X-----X--F
+X--------F
 XP--XXX--F
-XX-------F
+XX-X-----F
 XXXX----XX
 XXXXXXXXXX
 
