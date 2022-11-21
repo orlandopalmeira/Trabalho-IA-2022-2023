@@ -36,9 +36,9 @@ def main():
         print("5-DFS")
         print("6-BFS")
         print("7 -Outra solução ")
-        print("0-Saír")
+        print("0-Sair")
 
-        saida = int(input("introduza a sua opcao-> "))
+        saida = int(input("Introduza a sua opcão-> "))
         if saida == 0:
             print("saindo.......")
         elif saida == 1:
@@ -55,24 +55,26 @@ def main():
             print(rp.g.imprime_aresta())
             l = input("Prima enter para continuar.")
         elif saida == 5:
-            inicio=input("Nodo inicial->")
-            fim = input("Nodo final->")
-            caminho=rp.solucaoDFS(inicio, fim)
-            print(caminho)
-            if caminho != None:
-               a = caminho[0]
-               lista=rp.imprimeA(a)
-               print(lista)
+            path = rp.procura_DFS()
+            cost = rp.calcula_custo(path)
+            if path:
+                for p in path:
+                    print(p)
+                print(f"Com o custo: {cost}")
+            # Printa as posições em que passa no caminho no ficheiro result.txt e no stdout.
+            print("\nFez o seguinte caminho:")
+            rp.print_matrix(path)
             l = input("Prima enter para continuar.")
         elif saida == 6:
-            inicio = input("Nodo inicial->")
-            fim = input("Nodo final->")
-            caminho=rp.solucaoBFS(inicio, fim)
-            print(caminho)
-            if caminho != None:
-                a = caminho[0]
-                lista = rp.imprimeA(a)
-                print(lista)
+            path = rp.procura_BFS()
+            cost = rp.calcula_custo(path)
+            if path:
+                for p in path:
+                    print(p)
+                print(f"Com o custo: {cost}")
+            # Printa as posições em que passa no caminho no ficheiro result.txt e no stdout.
+            print("\nFez o seguinte caminho:")
+            rp.print_matrix(path)
             l = input("Prima enter para continuar.")
         elif saida == 7:
             inicio = input("Nodo inicial->")

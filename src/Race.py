@@ -30,6 +30,8 @@ class RaceP:
 
         fp = open(file_path, "r")
         for line in fp:
+            if not line.strip():
+                continue  # ignora linhas em branco do ficheiro.
             buf = []
             c = 0
             for ch in line:
@@ -121,17 +123,18 @@ class RaceP:
             print("Não foi criado nenhum ficheiro, uma vez que o caminho está vazio!")
             return
 
+        # Faz clone da matriz.
         new_matrix = []
         for i in range(len(self.matrix)):
             new_matrix.append(self.matrix[i].copy())
 
-        path = get_positions_from_nodes(caminho_de_nodos) # retorna apenas os tuplos de posicao dos nodos.
+        # retorna apenas os tuplos de posicao dos nodos.
+        path = get_positions_from_nodes(caminho_de_nodos)
 
         it = 'a'
         for p in path:
             l = p[0]
             c = p[1]
-            #if self.colunas > c and self.linhas > l:
             new_matrix[l][c] = f"{it}"
             it = chr(ord(it) + 1)
 
@@ -139,7 +142,7 @@ class RaceP:
         for line_n in new_matrix:
             linha = "".join(line_n)
             fp.write(linha + "\n")
-            #print(linha)
+            print(linha)
         fp.close()
 
 
