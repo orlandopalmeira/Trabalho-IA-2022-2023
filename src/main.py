@@ -31,8 +31,8 @@ def main():
     while saida != 0:
         print("1-Imprimir grafo ")
         print("2-Desenhar Grafo")
-        print("3-Imprimir  nodos de Grafo")
-        print("4-Imprimir arestas de Grafo")
+        print("3-Imprimir nodos de Grafo")
+        #print("4-Imprimir arestas de Grafo")
         print("5-DFS")
         print("6-BFS")
         print("7 -Outra solução ")
@@ -48,7 +48,8 @@ def main():
         elif saida == 2:
             rp.g.desenha()
         elif saida == 3:
-            print(rp.g.m_graph.keys())
+            for k in rp.g.keys():
+                print(k)
             l = input("Prima enter para continuar.")
         elif saida == 4:
             print(rp.g.imprime_aresta())
