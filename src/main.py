@@ -1,5 +1,6 @@
 from Race import RaceP
 
+'''
 # Testing
 rp = RaceP("race.txt")
 rp.cria_grafo()
@@ -19,6 +20,7 @@ rp.print_matrix(caminho)
 # for i in range(10): rp.desenha()
 
 print("Done")
+'''
 
 
 
@@ -46,7 +48,7 @@ def main():
                 print(f"{it} -> {rp.g[it]}")
             l=input("Prima enter para continuar.")
         elif saida == 2:
-            rp.g.desenha()
+            rp.desenha()
         elif saida == 3:
             for k in rp.g.keys():
                 print(k)
