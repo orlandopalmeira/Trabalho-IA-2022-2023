@@ -73,7 +73,7 @@ class RaceP:
             if v[1] == dest and v[0] < peso:
                 peso = v[0]
         if peso == 100000:
-            print("PROBLEMA SECALHAR!!")
+            print("PROBLEMÁTICO!!")
         return peso
 
 
@@ -363,25 +363,48 @@ class RaceP:
 
 
 
-'''
-# Testing
-rp = RaceP("race.txt")
-rp.cria_grafo()
-
-# Printa o caminho e o custo para o stdout.
-caminho = rp.procura_BFS()
-custo = rp.calcula_custo(caminho)
-if caminho:
-    for n in caminho:
-        print(n)
-print(f"Custo do caminho: {custo}")
-
-# Printa as posições em que passa no caminho no ficheiro result.txt
-rp.print_matrix(caminho)
-
-# Desenha o grafo n vezes.
-# for i in range(10): rp.desenha()
-
-print("Done")
 
 '''
+    # Funcão expande antiga com a capacidade de calcular as possibilidades de velocidade tendo em conta as aceleraçôes impostas.
+    def expande(self, estado: Node):
+        """
+        Esta função calcula os próximos estados possíveis dado um estado atual.
+        """
+        accs = [(0,0), (1,0), (1,1), (0,1), (0,-1), (-1,0), (-1,-1), (1,-1), (-1,1)] # acelerações possíveis
+        estados = []
+
+        for ac in accs:
+            new = estado.clone()
+            new.sumVelocity(ac)
+            new.sumPosition(new.velocity)
+            if new != estado and (0 <= new.position[0] < self.linhas) and (0 <= new.position[1] < self.colunas):
+                estados.append(new)
+
+        return estados
+    
+    
+    # Funcão cria_grafo antiga que tinha em conta as possibilidades diferentes de posição & velocidade.   
+    def cria_grafo(self):
+        estados = [Node(self.pos_inicial, (0, 0))]
+        visitados = set()
+        while estados:
+            estado = estados.pop(0)
+            visitados.add(estado)
+            expansao = self.expande(estado)
+            for e in expansao:
+                if e not in visitados:
+                    if not self.possiblePath(estado.position,e.position): # verifica se é possível avancar, ou seja, não tem paredes pelo meio
+                        stopped_e = Node(estado.position, (0, 0))
+                        if stopped_e not in visitados and ((25,stopped_e) not in self.get_value_in_graph(estado)):
+                            self.addAresta(estado, stopped_e, 25)
+                            if stopped_e not in estados:
+                                estados.append(stopped_e)
+                                #visitados.add(stopped_e)
+                    else:
+                        self.addAresta(estado,e,1)
+                        if e not in estados:
+                            estados.append(e)
+                        #visitados.add(e)
+
+'''
+

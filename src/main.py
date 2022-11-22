@@ -31,16 +31,21 @@ def main():
     saida = -1
 
     while saida != 0:
-        print("1-Imprimir grafo ")
+        print("1-Imprimir Grafo ")
         print("2-Desenhar Grafo")
-        print("3-Imprimir nodos de Grafo")
-        #print("4-Imprimir arestas de Grafo")
+        print("3-Indicar posições inicial e finais do circuito")
+        print("4-Imprimir nodos do Grafo")
         print("5-DFS")
         print("6-BFS")
-        print("7 -Outra solução ")
+        #print("7 -Outra solução ")
         print("0-Sair")
 
-        saida = int(input("Introduza a sua opcão-> "))
+        try:
+            saida = int(input("Introduza a sua opcão-> "))
+        except ValueError:
+            print("Wrong input!")
+            l = input("Prima enter para continuar.")
+            continue
         if saida == 0:
             print("saindo.......")
         elif saida == 1:
@@ -50,11 +55,12 @@ def main():
         elif saida == 2:
             rp.desenha()
         elif saida == 3:
-            for k in rp.g.keys():
-                print(k)
+            print(f"Posição Inicial -> {rp.get_start()}")
+            print(f"Posições Finais/Metas -> {rp.get_goals()}")
             l = input("Prima enter para continuar.")
         elif saida == 4:
-            print(rp.g.imprime_aresta())
+            for k in rp.g.keys():
+                print(k)
             l = input("Prima enter para continuar.")
         elif saida == 5:
             path = rp.procura_DFS()
