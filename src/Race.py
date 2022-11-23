@@ -11,6 +11,23 @@ def get_positions_from_nodes(nodos):
         lista.append(nodo.getPosition())
     return lista
 
+def colorize(string, color):
+    color_dict = {
+        "red": "\033[1;91m",
+        "green": "\033[1;92m",
+        "yellow": "\033[1;93m",
+        "purple": "\033[1;95m",
+        "blue": "\033[1;96m",
+        "white": "\033[1;97m",
+    }
+    endc = '\033[0m'
+    color = color.lower()
+    code = color_dict.get(color)
+    if code is None:
+        code = color_dict.get("white")
+    res = code + string + endc
+    return res
+
 
 class RaceP:
 
@@ -135,15 +152,23 @@ class RaceP:
         for p in path:
             l = p[0]
             c = p[1]
-            new_matrix[l][c] = f"{it}"
+            char = new_matrix[l][c]
+            res = f"{it}"
+            if char == "P":
+                res = colorize(res, "red")
+            elif char == "F":
+                res = colorize(res, "blue")
+            else:
+                res = colorize(res, "green")
+            new_matrix[l][c] = res
             it = chr(ord(it) + 1)
 
-        fp = open(file, "w")
+        #fp = open(file, "w")
         for line_n in new_matrix:
             linha = "".join(line_n)
-            fp.write(linha + "\n")
+            #fp.write(linha + "\n")
             print(linha)
-        fp.close()
+        #fp.close()
 
 
     def obstaculo(self, coords: tuple) -> bool:
