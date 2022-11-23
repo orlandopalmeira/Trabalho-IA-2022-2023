@@ -1,7 +1,0 @@
-XXXXXXXXXX
-XXX[1;92mc[0m[1;92md[0m[1;92me[0m[1;92mf[0m[1;92mg[0mXX
-X[1;91ma[0m[1;92mb[0m-----[1;92mh[0m[1;96mi[0m
-X---XX---F
-X--------X
-XXX--X-XXX
-XXXXXXXXXX
