@@ -137,7 +137,7 @@ class RaceP:
     # Printa uma matriz com "*" nas posicoes dos nodos indicados.
     def print_matrix(self, caminho_de_nodos, file="result.txt"):
         if not caminho_de_nodos:
-            print("Não foi criado nenhum ficheiro, uma vez que o caminho está vazio!")
+            print("Não foi encontrado nenhum caminho!")
             return
 
         # Faz clone da matriz.
@@ -338,7 +338,7 @@ class RaceP:
 
 
     def procura_DFS(self):
-        return self.__procura_DFS(Node(self.start), self.goals)
+        return self.__procura_DFS(Node(self.start), self.goals, path = [], visited=set())
 
 
     def __procura_BFS(self, start, end):
