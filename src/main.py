@@ -44,7 +44,6 @@ def main():
         print("4-Imprimir nodos do Grafo")
         print("5-DFS")
         print("6-BFS")
-        #print("7 -Outra solução ")
         print("0-Sair")
 
         try:
@@ -90,16 +89,6 @@ def main():
             # Printa as posições em que passa no caminho no ficheiro result.txt e no stdout.
             print("\nFez o seguinte caminho:")
             rp.print_matrix(path)
-            l = input("Prima enter para continuar.")
-        elif saida == 7:
-            inicio = input("Nodo inicial->")
-            fim = input("Nodo final->")
-            caminho = rp.encontraDFS(inicio, fim)
-            print(caminho)
-            if caminho != None:
-                a = caminho[0]
-                lista = rp.imprimeA(a)
-                print(lista)
             l = input("Prima enter para continuar.")
         else:
             print("Wrong input!")
