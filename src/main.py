@@ -1,29 +1,5 @@
 import sys
-
 from Race import RaceP
-
-'''
-# Testing
-rp = RaceP("race.txt")
-rp.cria_grafo()
-
-# Printa o caminho e o custo para o stdout.
-caminho = rp.procura_BFS()
-custo = rp.calcula_custo(caminho)
-if caminho:
-    for n in caminho:
-        print(n)
-print(f"Custo do caminho: {custo}")
-
-# Printa as posições em que passa no caminho no ficheiro result.txt
-rp.print_matrix(caminho)
-
-# Desenha o grafo n vezes.
-# for i in range(10): rp.desenha()
-
-print("Done")
-'''
-
 
 
 def main():
@@ -98,3 +74,26 @@ def main():
 if __name__ == "__main__":
     main()
     pass
+
+
+'''
+# Testing
+rp = RaceP("race.txt")
+rp.cria_grafo()
+
+# Printa o caminho e o custo para o stdout.
+caminho = rp.procura_BFS()
+custo = rp.calcula_custo(caminho)
+if caminho:
+    for n in caminho:
+        print(n)
+print(f"Custo do caminho: {custo}")
+
+# Printa as posições em que passa no caminho no ficheiro result.txt
+rp.print_matrix(caminho)
+
+# Desenha o grafo n vezes.
+# for i in range(10): rp.desenha()
+
+print("Done")
+'''
