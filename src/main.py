@@ -1,3 +1,5 @@
+import sys
+
 from Race import RaceP
 
 '''
@@ -26,7 +28,12 @@ print("Done")
 
 def main():
 
-    rp = RaceP("race.txt")
+    circuit = input("Indique a path do circuito-> ")
+    try:
+        rp = RaceP(circuit)
+    except FileNotFoundError:
+        print("File not found!")
+        sys.exit(0)
     rp.cria_grafo()
     saida = -1
 
