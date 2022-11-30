@@ -5,20 +5,9 @@ from Race import RaceP
 def main():
 
     circuit = input("Indique a path do ficheiro do circuito-> ")
-    color = input('Pretende visualizar o caminho destacado com cor? "S/N" (Pode não ser suportado em janelas de terminais menos sofisticados).\nOpção: ')
-    while True:
-        if color.lower() == "s":
-            color = True
-            break
-        elif color.lower() == "n":
-            color = False
-            break
-        else:
-            print("Opção inválida. Indique novamente a opção: ")
-
 
     try:
-        rp = RaceP(circuit, color)
+        rp = RaceP(circuit)
     except FileNotFoundError:
         print("File not found!")
         sys.exit(0)

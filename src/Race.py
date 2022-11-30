@@ -32,7 +32,7 @@ def colorize(string, color):
 class RaceP:
 
     # Argumento "file_path" é o caminho para o ficheiro que contém o circuito.
-    def __init__(self, file_path, color = False):
+    def __init__(self, file_path):
         self.g = {}
         self.g_directed = False
         self.g_h = {}  # eventuais heuristicas.
@@ -41,7 +41,6 @@ class RaceP:
         self.goals = []
         self.linhas = 0
         self.colunas = 0
-        self.color = color
 
         l = 0
         c = 0
@@ -155,11 +154,11 @@ class RaceP:
             c = p[1]
             char = new_matrix[l][c]
             res = f"{it}"
-            if self.color and char == "P":
+            if char == "P":
                 res = colorize(res, "red")
-            elif self.color and char == "F":
+            elif char == "F":
                 res = colorize(res, "blue")
-            elif self.color:
+            else:
                 res = colorize(res, "green")
             new_matrix[l][c] = res
             it = chr(ord(it) + 1)
