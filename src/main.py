@@ -4,8 +4,8 @@ from Race import RaceP
 
 def main():
 
-    circuit = input("Indique a path do circuito-> ")
-    color = input('Pretende visualizar o caminho destacado com cor? "S/N" (Não recomendado para terminais menos sofisticados).\nOpção: ')
+    circuit = input("Indique a path do ficheiro do circuito-> ")
+    color = input('Pretende visualizar o caminho destacado com cor? "S/N" (Pode não ser suportado em janelas de terminais menos sofisticados).\nOpção: ')
     while True:
         if color.lower() == "s":
             color = True
