@@ -5,8 +5,20 @@ from Race import RaceP
 def main():
 
     circuit = input("Indique a path do circuito-> ")
+    color = input('Pretende visualizar o caminho destacado com cor? "S/N" (Não recomendado para terminais menos sofisticados).\nOpção: ')
+    while True:
+        if color.lower() == "s":
+            color = True
+            break
+        elif color.lower() == "n":
+            color = False
+            break
+        else:
+            print("Opção inválida. Indique novamente a opção: ")
+
+
     try:
-        rp = RaceP(circuit)
+        rp = RaceP(circuit, color)
     except FileNotFoundError:
         print("File not found!")
         sys.exit(0)
@@ -29,7 +41,7 @@ def main():
             l = input("Prima enter para continuar.")
             continue
         if saida == 0:
-            print("saindo.......")
+            print("A sair...")
         elif saida == 1:
             for it in rp.g:
                 print(f"{it} -> {rp.g[it]}")

@@ -32,7 +32,7 @@ def colorize(string, color):
 class RaceP:
 
     # Argumento "file_path" é o caminho para o ficheiro que contém o circuito.
-    def __init__(self, file_path):
+    def __init__(self, file_path, color = False):
         self.g = {}
         self.g_directed = False
         self.g_h = {}  # eventuais heuristicas.
@@ -41,6 +41,7 @@ class RaceP:
         self.goals = []
         self.linhas = 0
         self.colunas = 0
+        self.color = color
 
         l = 0
         c = 0
@@ -135,7 +136,7 @@ class RaceP:
 
 
     # Printa uma matriz com "*" nas posicoes dos nodos indicados.
-    def print_matrix(self, caminho_de_nodos, file="result.txt"):
+    def print_matrix(self, caminho_de_nodos):
         if not caminho_de_nodos:
             print("Não foi encontrado nenhum caminho!")
             return
@@ -154,21 +155,18 @@ class RaceP:
             c = p[1]
             char = new_matrix[l][c]
             res = f"{it}"
-            if char == "P":
+            if self.color and char == "P":
                 res = colorize(res, "red")
-            elif char == "F":
+            elif self.color and char == "F":
                 res = colorize(res, "blue")
-            else:
+            elif self.color:
                 res = colorize(res, "green")
             new_matrix[l][c] = res
             it = chr(ord(it) + 1)
 
-        #fp = open(file, "w")
         for line_n in new_matrix:
             linha = "".join(line_n)
-            #fp.write(linha + "\n")
             print(linha)
-        #fp.close()
 
 
     def obstaculo(self, coords: tuple) -> bool:
@@ -251,7 +249,6 @@ class RaceP:
     def __possiblePathAUX(self, pos_i: tuple, pos_f: tuple) :
         """
         Esta funcção verifica se é possível ir de uma posição para outra no mapa.
-        Fonte: https://www.geeksforgeeks.org/check-possible-path-2d-matrix/
         """
         if self.obstaculo(pos_f):
             return False
