@@ -201,7 +201,7 @@ class RaceP:
     # INUTIL COM A MUDANCA MAS TALVEZ A AUXILIAR DESTA SEJA UTIL.
     def possiblePath(self, pos_i: tuple, pos_f: tuple):
         """
-        Esta funcção verifica se é possível ir de uma posição para outra no mapa.
+        Esta função verifica se é possível ir de uma posição para outra no mapa.
         """
         vel = (pos_f[0] - pos_i[0], pos_f[1] - pos_i[1])
 
@@ -247,7 +247,7 @@ class RaceP:
 
     def __possiblePathAUX(self, pos_i: tuple, pos_f: tuple) :
         """
-        Esta funcção verifica se é possível ir de uma posição para outra no mapa.
+        Esta função verifica se é possível ir de uma posição para outra no mapa.
         """
         if self.obstaculo(pos_f):
             return False
@@ -363,7 +363,6 @@ class RaceP:
                         visited.add(adjacente)
 
         # Reconstruir o caminho
-
         path = []
         end = nodo_atual
         if path_found:
@@ -372,8 +371,6 @@ class RaceP:
                 path.append(parent[end])
                 end = parent[end]
             path.reverse()
-            # funçao calcula custo caminho
-
         return path
 
 

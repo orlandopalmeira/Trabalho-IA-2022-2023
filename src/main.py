@@ -17,6 +17,7 @@ def main():
 
     saida = -1
     while saida != 0:
+        print("\n****Menu****")
         print("1-Imprimir Grafo ")
         print("2-Desenhar Grafo")
         print("3-Indicar posições inicial e finais do circuito")
