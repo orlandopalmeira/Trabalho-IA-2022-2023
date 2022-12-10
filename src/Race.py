@@ -268,17 +268,17 @@ class RaceP:
 
             # mark as visited
             arr[p[0]][p[1]] = 'X'
-            
+
             # destination is reached.
             if p == (pos_f[0],pos_f[1]) :
                 return True
-                
+
             # check all four directions
             for i in range(4) :
                 # using the direction array
                 a = p[0] + Dir[i][0]
                 b = p[1] + Dir[i][1]
-                
+
                 # not blocked and valid
                 if 0 <= a < self.linhas and 0 <= b < self.colunas and arr[a][b] != "X":
                     q.append((a, b))
@@ -373,7 +373,7 @@ class RaceP:
                 end = parent[end]
             path.reverse()
             # funçao calcula custo caminho
-            
+
         return path
 
 
@@ -381,6 +381,184 @@ class RaceP:
         s = Node(self.start)
         e = set([Node(x) for x in self.goals])
         return self.__procura_BFS(s,e)
+
+    def add_heuristica(self, n, estima):
+        n1 = Node(n)
+        if n1 in self.g.keys():
+            self.g_h[n] = estima
+
+    # Define a heuristica a 1 para todos apenas para testes de pesquisa informada
+    def heuristica(self):
+        nodos = self.g.keys()
+        for n in nodos:
+            self.g_h[n] = 1
+        return True
+
+    def calcula_est(self, estima):
+        l = list(estima.keys())
+        min_estima = estima[l[0]]
+        node = l[0]
+        for k, v in estima.items():
+            if v < min_estima:
+                min_estima = v
+                node = k
+        return node
+
+    def getH(self, nodo):
+        if nodo not in self.g_h.keys():
+            return 1000
+        else:
+            return self.g_h[nodo]
+
+    def getNeighbours(self, nodo):
+        lista = []
+        for (custo, adjacente) in self.g[nodo]:
+            lista.append((custo, adjacente))
+        return lista
+
+    def __greedy(self, start, end):
+        # open_list é uma lista de nodos visitados, mas com vizinhos
+        # que ainda não foram todos visitados, começa com o  start
+        # closed_list é uma lista de nodos visitados
+        # e todos os seus vizinhos também já o foram
+        open_list = set([start])
+        closed_list = set([])
+
+        # parents é um dicionário que mantém o antecessor de um nodo
+        # começa com start
+        parents = {start: start}
+
+        while len(open_list) > 0:
+            n = None
+
+            # encontraf nodo com a menor heuristica
+            for v in open_list:
+                if n is None or self.g_h[v] < self.g_h[n]:
+                    n = v
+
+            if n == None:
+                print('Path does not exist!')
+                return None
+
+            # se o nodo corrente é o destino
+            # reconstruir o caminho a partir desse nodo até ao start
+            # seguindo o antecessor
+            if n in end:
+                reconst_path = []
+
+                while parents[n] != n:
+                    reconst_path.append(n)
+                    n = parents[n]
+
+                reconst_path.append(start)
+
+                reconst_path.reverse()
+
+                return reconst_path
+
+            # para todos os vizinhos  do nodo corrente
+            for (_, adjacente) in self.getNeighbours(n):
+                # Se o nodo corrente nao esta na open nem na closed list
+                # adiciona-lo à open_list e marcar o antecessor
+                if adjacente not in open_list and adjacente not in closed_list:
+                    open_list.add(adjacente)
+                    parents[adjacente] = n
+
+            # remover n da open_list e adiciona-lo à closed_list
+            # porque todos os seus vizinhos foram inspecionados
+            open_list.remove(n)
+            closed_list.add(n)
+
+        print('Path does not exist!')
+        return None
+
+    def greedy(self):
+        s = Node(self.start)
+        e = set([Node(x) for x in self.goals])
+        return self.__greedy(s, e)
+
+
+    def __procura_aStar(self, start, end):
+        # open_list is a list of nodes which have been visited, but who's neighbors
+        # haven't all been inspected, starts off with the start node
+        # closed_list is a list of nodes which have been visited
+        # and who's neighbors have been inspected
+        open_list = {start}
+        closed_list = set([])
+
+        # g contains current distances from start_node to all other nodes
+        # the default value (if it's not found in the map) is +infinity
+        g = {start: 0}
+
+        # parents contains an adjacency map of all nodes
+        parents = {start: start}
+        n = None
+        while len(open_list) > 0:
+            # find a node with the lowest value of f() - evaluation function
+            calc_heurist = {}
+            flag = 0
+            for v in open_list:
+                if n is None:
+                    n = v
+                else:
+                    flag = 1
+                    calc_heurist[v] = g[v] + self.getH(v)
+            if flag == 1:
+                min_estima = self.calcula_est(calc_heurist)
+                n = min_estima
+            if n is None:
+                print('Path does not exist!')
+                return None
+
+            # if the current node is the stop_node
+            # then we begin reconstructin the path from it to the start_node
+            if n in end:
+                reconst_path = []
+
+                while parents[n] != n:
+                    reconst_path.append(n)
+                    n = parents[n]
+
+                reconst_path.append(start)
+
+                reconst_path.reverse()
+
+                # print('Path found: {}'.format(reconst_path))
+                return reconst_path
+
+            # for all neighbors of the current node do
+            for (custo, adjacente) in self.getNeighbours(n):  # definir função getneighbours  tem de ter um par nodo peso
+                # if the current node isn't in both open_list and closed_list
+                # add it to open_list and note n as it's parent
+                if adjacente not in open_list and adjacente not in closed_list:
+                    open_list.add(adjacente)
+                    parents[adjacente] = n
+                    g[adjacente] = g[n] + custo
+
+                # otherwise, check if it's quicker to first visit n, then m
+                # and if it is, update parent data and g data
+                # and if the node was in the closed_list, move it to open_list
+                else:
+                    if g[adjacente] > g[n] + custo:
+                        g[adjacente] = g[n] + custo
+                        parents[adjacente] = n
+
+                        if adjacente in closed_list:
+                            closed_list.remove(adjacente)
+                            open_list.add(adjacente)
+
+            # remove n from the open_list, and add it to closed_list
+            # because all of his neighbors were inspected
+            open_list.remove(n)
+            closed_list.add(n)
+
+        print('Path does not exist!')
+        return None
+
+    def procura_aStar(self):
+        s = Node(self.start)
+        e = set([Node(x) for x in self.goals])
+        return self.__procura_aStar(s, e)
 
 
 

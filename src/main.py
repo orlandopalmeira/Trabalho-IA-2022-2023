@@ -12,6 +12,7 @@ def main():
         print("File not found!")
         sys.exit(0)
     rp.cria_grafo()
+    rp.heuristica()
     saida = -1
 
     while saida != 0:
@@ -21,6 +22,8 @@ def main():
         print("4-Imprimir nodos do Grafo")
         print("5-DFS")
         print("6-BFS")
+        print("7-Greedy")
+        print("8-A*")
         print("0-Sair")
 
         try:
@@ -58,6 +61,28 @@ def main():
             l = input("Prima enter para continuar.")
         elif saida == 6:
             path = rp.procura_BFS()
+            cost = rp.calcula_custo(path)
+            if path:
+                for p in path:
+                    print(p)
+                print(f"Com o custo: {cost}")
+            # Printa as posições em que passa no caminho no ficheiro result.txt e no stdout.
+            print("\nFez o seguinte caminho:")
+            rp.print_matrix(path)
+            l = input("Prima enter para continuar.")
+        elif saida == 7:
+            path = rp.greedy()
+            cost = rp.calcula_custo(path)
+            if path:
+                for p in path:
+                    print(p)
+                print(f"Com o custo: {cost}")
+            # Printa as posições em que passa no caminho no ficheiro result.txt e no stdout.
+            print("\nFez o seguinte caminho:")
+            rp.print_matrix(path)
+            l = input("Prima enter para continuar.")
+        elif saida == 8:
+            path = rp.procura_aStar()
             cost = rp.calcula_custo(path)
             if path:
                 for p in path:
