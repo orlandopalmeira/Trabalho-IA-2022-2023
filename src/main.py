@@ -4,17 +4,18 @@ from Race import RaceP
 
 def main():
 
-    circuit = input("Indique a path do ficheiro do circuito-> ")
-
+    #circuit = input("Indique a path do ficheiro do circuito-> ")
+    circuit = "race.txt" # FIXME Maneira mais rápida para testar. Alterar no final.
     try:
         rp = RaceP(circuit)
     except FileNotFoundError:
         print("File not found!")
         sys.exit(0)
+
     rp.cria_grafo()
     rp.heuristica()
-    saida = -1
 
+    saida = -1
     while saida != 0:
         print("1-Imprimir Grafo ")
         print("2-Desenhar Grafo")
@@ -32,6 +33,7 @@ def main():
             print("Wrong input!")
             l = input("Prima enter para continuar.")
             continue
+
         if saida == 0:
             print("A sair...")
         elif saida == 1:
