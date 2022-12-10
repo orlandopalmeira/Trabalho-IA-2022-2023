@@ -1,4 +1,6 @@
 import sys
+import time
+
 from Race import RaceP
 
 
@@ -62,12 +64,15 @@ def main():
 
         # DFS
         elif saida == 5:
+            start = time.time()
             path = rp.procura_DFS()
+            end = time.time()
+            duracao = (end-start) * 1000
             cost = rp.calcula_custo(path)
             if path:
                 for p in path:
                     print(p)
-                print(f"Com o custo: {cost}")
+                print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
             # Printa as posições em que passa no caminho no ficheiro result.txt e no stdout.
             print("\nFez o seguinte caminho:")
             rp.print_matrix(path)
@@ -75,12 +80,15 @@ def main():
 
         # BFS
         elif saida == 6:
+            start = time.time()
             path = rp.procura_BFS()
+            end = time.time()
+            duracao = (end-start) * 1000
             cost = rp.calcula_custo(path)
             if path:
                 for p in path:
                     print(p)
-                print(f"Com o custo: {cost}")
+                print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
             # Printa as posições em que passa no caminho no ficheiro result.txt e no stdout.
             print("\nFez o seguinte caminho:")
             rp.print_matrix(path)
@@ -88,12 +96,15 @@ def main():
 
         # Greedy
         elif saida == 7:
+            start = time.time()
             path = rp.greedy()
+            end = time.time()
+            duracao = (end-start) * 1000
             cost = rp.calcula_custo(path)
             if path:
                 for p in path:
                     print(p)
-                print(f"Com o custo: {cost}")
+                print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
             # Printa as posições em que passa no caminho no ficheiro result.txt e no stdout.
             print("\nFez o seguinte caminho:")
             rp.print_matrix(path)
@@ -101,12 +112,15 @@ def main():
 
         # A*
         elif saida == 8:
+            start = time.time()
             path = rp.procura_aStar()
+            end = time.time()
+            duracao = (end-start) * 1000
             cost = rp.calcula_custo(path)
             if path:
                 for p in path:
                     print(p)
-                print(f"Com o custo: {cost}")
+                print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
             # Printa as posições em que passa no caminho no ficheiro result.txt e no stdout.
             print("\nFez o seguinte caminho:")
             rp.print_matrix(path)
