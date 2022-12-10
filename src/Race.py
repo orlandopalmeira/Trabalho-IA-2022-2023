@@ -161,7 +161,7 @@ class RaceP:
             else:
                 res = colorize(res, "green")
             new_matrix[l][c] = res
-            step = chr(ord(step) + 1)
+            step = chr(ord(step) + 1) if step != "z" else "a"
 
         for line_n in new_matrix:
             linha = "".join(line_n)
