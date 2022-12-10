@@ -383,7 +383,7 @@ class RaceP:
         return self.__procura_BFS(s,e)
 
 
-    def add_heuristica(self, n, valor):
+    def add_heuristica(self, n:tuple, valor:int):
         """
         Adiciona ao nodo, com aquela posição, a heuristica "valor".
         :param n: posicao (tuplo)
