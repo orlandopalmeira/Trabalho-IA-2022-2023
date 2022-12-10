@@ -93,7 +93,7 @@ def main():
             # Printa as posições em que passa no caminho no ficheiro result.txt e no stdout.
             print("\nFez o seguinte caminho:")
             rp.print_matrix(path)
-            l = input("Prima enter para continuar.")
+            l = input("Prima enter para continuar.\n")
         else:
             print("Wrong input!")
             l = input("Prima enter para continuar.")

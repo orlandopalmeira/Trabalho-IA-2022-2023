@@ -35,8 +35,8 @@ class RaceP:
     def __init__(self, file_path):
         self.g = {}
         self.g_directed = False
-        self.g_h = {}  # eventuais heuristicas.
         self.matrix = {}
+        self.g_h = {}  # heuristicas.
         self.start = None # tuplo da posição onde o jogador se encontra
         self.goals = []
         self.linhas = 0
@@ -382,16 +382,38 @@ class RaceP:
         e = set([Node(x) for x in self.goals])
         return self.__procura_BFS(s,e)
 
-    def add_heuristica(self, n, estima):
+
+    def add_heuristica(self, n, valor):
+        """
+        Adiciona ao nodo, com aquela posição, a heuristica "valor".
+        :param n: posicao (tuplo)
+        :param valor: valor da heuristica
+        :return: void
+        """
         n1 = Node(n)
         if n1 in self.g.keys():
-            self.g_h[n] = estima
+            self.g_h[n] = valor
 
-    # Define a heuristica a 1 para todos apenas para testes de pesquisa informada
+
+    def manhatan_distance(self, pos):
+        res = 1000000
+        x = pos[0]
+        y = pos[1]
+        for g in self.goals:
+            gx = g[0]
+            gy = g[1]
+            new = abs(gx-x)+abs(gy-y)
+            if new < res: res = new
+        return res
+
     def heuristica(self):
+        """
+        Define a heuristica a 1 para todos apenas para testes de pesquisa informada
+        :return: void
+        """
         nodos = self.g.keys()
         for n in nodos:
-            self.g_h[n] = 1
+            self.g_h[n] = self.manhatan_distance(n.getPosition())
         return True
 
     def calcula_est(self, estima):
@@ -436,7 +458,7 @@ class RaceP:
                 if n is None or self.g_h[v] < self.g_h[n]:
                     n = v
 
-            if n == None:
+            if n is None:
                 print('Path does not exist!')
                 return None
 
