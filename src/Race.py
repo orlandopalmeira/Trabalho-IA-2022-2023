@@ -148,8 +148,7 @@ class RaceP:
         # retorna apenas os tuplos de posicao dos nodos.
         path = get_positions_from_nodes(caminho_de_nodos)
 
-        #step = 'a'
-        step = 0
+        step = 'a'
         for p in path:
             l = p[0]
             c = p[1]
@@ -162,11 +161,7 @@ class RaceP:
             else:
                 res = colorize(res, "green")
             new_matrix[l][c] = res
-            #step = chr(ord(step) + 1)
-            if step == 9:
-                step = 0
-            else:
-                step += 1            
+            step = chr(ord(step) + 1)
 
         for line_n in new_matrix:
             linha = "".join(line_n)
