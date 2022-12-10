@@ -36,20 +36,30 @@ def main():
 
         if saida == 0:
             print("A sair...")
+
+        # Imprimir Grafo
         elif saida == 1:
             for it in rp.g:
                 print(f"{it} -> {rp.g[it]}")
             l=input("Prima enter para continuar.")
+
+        # Desenhar Grafo
         elif saida == 2:
             rp.desenha()
+
+        # Indicar posições inicial e finais do circuito
         elif saida == 3:
             print(f"Posição Inicial -> {rp.get_start()}")
             print(f"Posições Finais/Metas -> {rp.get_goals()}")
             l = input("Prima enter para continuar.")
+
+        # Imprimir nodos do Grafo
         elif saida == 4:
             for k in rp.g.keys():
                 print(k)
             l = input("Prima enter para continuar.")
+
+        # DFS
         elif saida == 5:
             path = rp.procura_DFS()
             cost = rp.calcula_custo(path)
@@ -61,6 +71,8 @@ def main():
             print("\nFez o seguinte caminho:")
             rp.print_matrix(path)
             l = input("Prima enter para continuar.")
+
+        # BFS
         elif saida == 6:
             path = rp.procura_BFS()
             cost = rp.calcula_custo(path)
@@ -72,6 +84,8 @@ def main():
             print("\nFez o seguinte caminho:")
             rp.print_matrix(path)
             l = input("Prima enter para continuar.")
+
+        # Greedy
         elif saida == 7:
             path = rp.greedy()
             cost = rp.calcula_custo(path)
@@ -83,6 +97,8 @@ def main():
             print("\nFez o seguinte caminho:")
             rp.print_matrix(path)
             l = input("Prima enter para continuar.")
+
+        # A*
         elif saida == 8:
             path = rp.procura_aStar()
             cost = rp.calcula_custo(path)
