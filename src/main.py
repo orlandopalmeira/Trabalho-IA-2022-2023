@@ -13,7 +13,7 @@ def main():
         sys.exit(0)
 
     rp.cria_grafo()
-    rp.heuristica()
+    rp.heuristicaManhDistance()
 
     saida = -1
     while saida != 0:

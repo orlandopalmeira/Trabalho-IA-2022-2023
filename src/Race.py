@@ -395,8 +395,9 @@ class RaceP:
             self.g_h[n] = valor
 
 
-    def manhatan_distance(self, pos):
+    def manhatan_distance(self, nodo):
         res = 1000000
+        pos = nodo.getPosition()
         x = pos[0]
         y = pos[1]
         for g in self.goals:
@@ -406,14 +407,14 @@ class RaceP:
             if new < res: res = new
         return res
 
-    def heuristica(self):
+    def heuristicaManhDistance(self):
         """
-        Define a heuristica a 1 para todos apenas para testes de pesquisa informada
+        Define a heuristica dos nodos através da sua distância de Manhattan ao destino mais perto.
         :return: void
         """
         nodos = self.g.keys()
         for n in nodos:
-            self.g_h[n] = self.manhatan_distance(n.getPosition())
+            self.g_h[n] = self.manhatan_distance(n)
         return True
 
     def calcula_est(self, estima):
