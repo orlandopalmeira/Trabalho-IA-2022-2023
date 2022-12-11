@@ -90,7 +90,7 @@ class RaceP:
             if v[1] == dest and v[0] < peso:
                 peso = v[0]
         if peso == 100000:
-            print("PROBLEMÁTICO!!")
+            print("PROBLEMÁTICO!!") # Debug
         return peso
 
 
@@ -114,8 +114,15 @@ class RaceP:
             visitados.add(estado)
             expansao = self.expande(estado)
             for e in expansao:
+                pos_i = estado.position
+                pos_f = e.position
                 if e not in visitados:
-                    self.addAresta(estado, e, 1)
+                    vetor = (pos_f[0] - pos_i[0], pos_f[1] - pos_i[1]) # FIXME distancia na horizontal.
+                    if vetor != (0, 0) and abs(vetor[0]) == abs(vetor[1]):
+                        self.addAresta(estado, e, 1.5)
+                    else:
+                        self.addAresta(estado, e, 1)
+
                     if e not in estados:
                         estados.append(e)
 
