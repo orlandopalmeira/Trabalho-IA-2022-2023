@@ -37,7 +37,8 @@ class RaceP:
         self.g_directed = False
         self.matrix = {}
         self.g_h = {}  # heuristicas.
-        self.start = None # tuplo da posição onde o jogador se encontra
+        #self.start = None # tuplo da posição onde o jogador se encontra
+        self.start = []
         self.goals = []
         self.linhas = 0
         self.colunas = 0
@@ -54,7 +55,7 @@ class RaceP:
             for ch in line:
                 if ch != "\n":
                     if ch == "P":
-                        self.start = (l, c)
+                        self.start.append((l,c))
                     if ch == "F":
                         self.goals.append((l,c))
                     buf.append(ch)
@@ -62,9 +63,8 @@ class RaceP:
             self.matrix[l] = buf
             l += 1
 
-        if self.start is None:
-            print("Não foi definida uma posição inicial!")
-            return
+        if len(self.start) == 0:
+            raise AssertionError("Não foi definida uma posição inicial!")
         self.linhas = len(self.matrix)
         self.colunas = len(self.matrix[0])
 
@@ -107,7 +107,7 @@ class RaceP:
 
 
     def cria_grafo(self):
-        estados = [Node(self.start)]
+        estados = [Node(self.start[0])]
         visitados = set()
         while estados:
             estado = estados.pop(0)
@@ -170,6 +170,44 @@ class RaceP:
                 res = colorize(res, "green")
             new_matrix[l][c] = res
             step = chr(ord(step) + 1) if step != "z" else "a"
+
+        for line_n in new_matrix:
+            linha = "".join(line_n)
+            print(linha)
+
+    # Printa uma matriz com "*" nas posicoes dos nodos indicados.
+    def print_caminhos(self, caminhos):
+
+        # Faz clone da matriz.
+        new_matrix = []
+        for i in range(len(self.matrix)):
+            new_matrix.append(self.matrix[i].copy())
+
+        i = 0
+        colors = ["green", "yellow", "purple", "blue", "red", "white"]
+        for caminho_de_nodos in caminhos:
+            if not caminho_de_nodos:
+                print("Não foi encontrado nenhum caminho!")
+                continue
+            color = colors[i]
+            i += 1
+            # retorna apenas os tuplos de posicao dos nodos.
+            path = get_positions_from_nodes(caminho_de_nodos)
+
+            step = 'a'
+            for p in path:
+                l = p[0]
+                c = p[1]
+                char = new_matrix[l][c]
+                res = f"{step}"
+                if char == "P":
+                    res = colorize(res, "red")
+                elif char == "F":
+                    res = colorize(res, "blue")
+                else:
+                    res = colorize(res, color)
+                new_matrix[l][c] = res
+                step = chr(ord(step) + 1) if step != "z" else "a"
 
         for line_n in new_matrix:
             linha = "".join(line_n)
@@ -453,7 +491,7 @@ class RaceP:
 
         parents = {start: start}
 
-        print("Inicio debug") # FIXME MOSTRAR O TODO O CAMINHO PERCORRIDO PELO ALGORITMO
+        #print("Inicio debug") # FIXME MOSTRAR O TODO O CAMINHO PERCORRIDO PELO ALGORITMO
         while len(open_list) > 0:
             # encontra nodo com a menor heuristica
             n = None
@@ -461,7 +499,7 @@ class RaceP:
                 if n is None or self.g_h[v] < self.g_h[n]:
                     n = v
 
-            print(n) # FIXME MOSTRAR O TODO O CAMINHO PERCORRIDO PELO ALGORITMO
+            #print(n) # FIXME MOSTRAR O TODO O CAMINHO PERCORRIDO PELO ALGORITMO
 
             if n is None:
                 print('Path does not exist!')
@@ -477,7 +515,7 @@ class RaceP:
                     n = parents[n]
                 reconst_path.append(start)
                 reconst_path.reverse()
-                print("Fim debug") # FIXME MOSTRAR O TODO O CAMINHO PERCORRIDO PELO ALGORITMO
+                #print("Fim debug") # FIXME MOSTRAR O TODO O CAMINHO PERCORRIDO PELO ALGORITMO
                 return reconst_path
 
             # para todos os vizinhos do nodo corrente
@@ -497,9 +535,12 @@ class RaceP:
         return None
 
     def greedy(self):
-        s = Node(self.start)
+        res = list()
         e = set([Node(x) for x in self.goals])
-        return self.__greedy(s, e)
+        for i in range(len(self.start)):
+            s = Node(self.start[i])
+            res.append(self.__greedy(s, e))
+        return res
 
 
     def __procura_aStar(self, start, end):

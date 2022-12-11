@@ -14,6 +14,10 @@ def main():
     except FileNotFoundError:
         print("Circuit file not found!")
         sys.exit(0)
+    except AssertionError as exc:
+        print(exc)
+        sys.exit(0)
+
 
     rp.cria_grafo()
     rp.heuristicaManhDistance()
@@ -98,17 +102,18 @@ def main():
         # Greedy
         elif saida == 7:
             start = time.time()
-            path = rp.greedy()
+            paths = rp.greedy()
             end = time.time()
             duracao = (end-start) * 1000
-            cost = rp.calcula_custo(path)
-            if path:
-                for p in path:
-                    print(p)
-                print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
+            for path in paths:
+                cost = rp.calcula_custo(path)
+                if path:
+                    for p in path:
+                        print(p)
+                    print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
 
             print("\nFez o seguinte caminho:")
-            rp.print_matrix(path)
+            rp.print_caminhos(paths)
             enter = input("Prima enter para continuar.")
 
         # A*
