@@ -181,13 +181,13 @@ class RaceP:
 
     # Verifica a possibilidade de caminho na diagonal
     def canDiagPath(self, pos_i: tuple, pos_f: tuple):
-        vel = (pos_f[0] - pos_i[0], pos_f[1] - pos_i[1])
-        if vel != (0, 0) and abs(vel[0]) == abs(vel[1]):
+        vetor = (pos_f[0] - pos_i[0], pos_f[1] - pos_i[1])
+        if vetor != (0, 0) and abs(vetor[0]) == abs(vetor[1]):
             l = pos_i[0]
             c = pos_i[1]
 
-            inc0 = vel[0] // abs(vel[0])
-            inc1 = vel[1] // abs(vel[1])
+            inc0 = vetor[0] // abs(vetor[0])
+            inc1 = vetor[1] // abs(vetor[1])
 
             while True:
                 if (l, c) == pos_f:
