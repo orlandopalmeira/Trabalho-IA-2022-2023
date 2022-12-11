@@ -445,13 +445,15 @@ class RaceP:
 
         parents = {start: start}
 
+        print("Inicio debug") # FIXME MOSTRAR O TODO O CAMINHO PERCORRIDO PELO ALGORITMO
         while len(open_list) > 0:
-            n = None
-
             # encontra nodo com a menor heuristica
+            n = None
             for v in open_list:
                 if n is None or self.g_h[v] < self.g_h[n]:
                     n = v
+
+            print(n) # FIXME MOSTRAR O TODO O CAMINHO PERCORRIDO PELO ALGORITMO
 
             if n is None:
                 print('Path does not exist!')
@@ -467,6 +469,7 @@ class RaceP:
                     n = parents[n]
                 reconst_path.append(start)
                 reconst_path.reverse()
+                print("Fim debug") # FIXME MOSTRAR O TODO O CAMINHO PERCORRIDO PELO ALGORITMO
                 return reconst_path
 
             # para todos os vizinhos do nodo corrente
