@@ -124,11 +124,12 @@ class RaceP:
         x = estado.position[0]
         y = estado.position[1]
         poss = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
+        #poss = [(-1,0),(0,-1),(0,1),(1,0)]
         ret = []
-        for tup in poss:
-            nx = x+tup[0]
-            ny = y+tup[1]
-            position = (nx, ny)
+        for p in poss:
+            newx = x + p[0]
+            newy = y + p[1]
+            position = (newx, newy)
             if not self.obstaculo(position) and self.canDiagPath(estado.position, position):
                 ret.append(Node(position))
         return ret
