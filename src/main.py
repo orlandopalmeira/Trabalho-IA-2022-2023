@@ -6,13 +6,13 @@ from Race import RaceP
 
 def main():
 
-    #circuit = input("Indique a path do ficheiro do circuito-> ")
+    #circuit = input("Indique a path do ficheiro do circuito: ")
     circuit = "race.txt" # FIXME Maneira mais rápida para testar. Alterar no final.
-    circuit = "raceold.txt"
+    #circuit = "raceold.txt"
     try:
         rp = RaceP(circuit)
     except FileNotFoundError:
-        print("File not found!")
+        print("Circuit file not found!")
         sys.exit(0)
 
     rp.cria_grafo()
@@ -32,20 +32,20 @@ def main():
         print("0-Sair")
 
         try:
-            saida = int(input("Introduza a sua opcão-> "))
+            saida = int(input("Introduza a sua opcão: "))
         except ValueError:
             print("Wrong input!")
-            l = input("Prima enter para continuar.")
+            enter = input("Prima enter para continuar.")
             continue
 
         if saida == 0:
-            print("A sair...")
+            print("\nA sair...")
 
         # Imprimir Grafo
         elif saida == 1:
             for it in rp.g:
                 print(f"{it} -> {rp.g[it]}")
-            l=input("Prima enter para continuar.")
+            enter=input("Prima enter para continuar.")
 
         # Desenhar Grafo
         elif saida == 2:
@@ -55,13 +55,13 @@ def main():
         elif saida == 3:
             print(f"Posição Inicial -> {rp.get_start()}")
             print(f"Posições Finais/Metas -> {rp.get_goals()}")
-            l = input("Prima enter para continuar.")
+            enter = input("Prima enter para continuar.")
 
         # Imprimir nodos do Grafo
         elif saida == 4:
             for k in rp.g.keys():
                 print(k)
-            l = input("Prima enter para continuar.")
+            enter = input("Prima enter para continuar.")
 
         # DFS
         elif saida == 5:
@@ -74,10 +74,10 @@ def main():
                 for p in path:
                     print(p)
                 print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
-            # Printa as posições em que passa no caminho no ficheiro result.txt e no stdout.
+
             print("\nFez o seguinte caminho:")
             rp.print_matrix(path)
-            l = input("Prima enter para continuar.")
+            enter = input("Prima enter para continuar.")
 
         # BFS
         elif saida == 6:
@@ -90,10 +90,10 @@ def main():
                 for p in path:
                     print(p)
                 print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
-            # Printa as posições em que passa no caminho no ficheiro result.txt e no stdout.
+
             print("\nFez o seguinte caminho:")
             rp.print_matrix(path)
-            l = input("Prima enter para continuar.")
+            enter = input("Prima enter para continuar.")
 
         # Greedy
         elif saida == 7:
@@ -106,10 +106,10 @@ def main():
                 for p in path:
                     print(p)
                 print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
-            # Printa as posições em que passa no caminho no ficheiro result.txt e no stdout.
+
             print("\nFez o seguinte caminho:")
             rp.print_matrix(path)
-            l = input("Prima enter para continuar.")
+            enter = input("Prima enter para continuar.")
 
         # A*
         elif saida == 8:
@@ -122,13 +122,13 @@ def main():
                 for p in path:
                     print(p)
                 print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
-            # Printa as posições em que passa no caminho no ficheiro result.txt e no stdout.
+
             print("\nFez o seguinte caminho:")
             rp.print_matrix(path)
-            l = input("Prima enter para continuar.\n")
+            enter = input("Prima enter para continuar.\n")
         else:
             print("Wrong input!")
-            l = input("Prima enter para continuar.")
+            enter = input("Prima enter para continuar.")
 
 
 if __name__ == "__main__":
