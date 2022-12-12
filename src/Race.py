@@ -1,5 +1,7 @@
 from queue import Queue
 from Node import Node
+from InfoCaminho import InfoCaminho
+import numpy
 
 import networkx as nx  # biblioteca de tratamento de grafos necessária para desnhar graficamente o grafo
 import matplotlib.pyplot as plt  # idem
@@ -117,12 +119,7 @@ class RaceP:
                 pos_i = estado.position
                 pos_f = e.position
                 if e not in visitados:
-                    vetor = (pos_f[0] - pos_i[0], pos_f[1] - pos_i[1]) # FIXME distancia na horizontal.
-                    if vetor != (0, 0) and abs(vetor[0]) == abs(vetor[1]):
-                        self.addAresta(estado, e, 1.5)
-                    else:
-                        self.addAresta(estado, e, 1)
-
+                    self.addAresta(estado, e, 1)
                     if e not in estados:
                         estados.append(e)
 
@@ -131,7 +128,6 @@ class RaceP:
         x = estado.position[0]
         y = estado.position[1]
         poss = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
-        #poss = [(-1,0),(0,-1),(0,1),(1,0)]
         ret = []
         for p in poss:
             newx = x + p[0]
@@ -184,13 +180,13 @@ class RaceP:
             new_matrix.append(self.matrix[i].copy())
 
         i = 0
-        colors = ["green", "yellow", "purple", "blue", "red", "white"]
+        colors = ["green", "yellow", "purple", "blue", "red"]
         for caminho_de_nodos in caminhos:
             if not caminho_de_nodos:
                 print("Não foi encontrado nenhum caminho!")
                 continue
             color = colors[i]
-            i += 1
+            i = i + 1 if i != 4 else 0
             # retorna apenas os tuplos de posicao dos nodos.
             path = get_positions_from_nodes(caminho_de_nodos)
 
@@ -224,8 +220,13 @@ class RaceP:
         return b
 
 
-    # Verifica a possibilidade de caminho na diagonal
     def canDiagPath(self, pos_i: tuple, pos_f: tuple):
+        """
+        Verifica a possibilidade de caminho na diagonal.
+        :param pos_i: posição inicial
+        :param pos_f: posição final
+        :return: void
+        """
         vetor = (pos_f[0] - pos_i[0], pos_f[1] - pos_i[1])
         if vetor != (0, 0) and abs(vetor[0]) == abs(vetor[1]):
             l = pos_i[0]
@@ -461,6 +462,11 @@ class RaceP:
         return True
 
     def calcula_est(self, estima):
+        """
+        Escolhe o nodo com menor heuristica.
+        :param estima: Dicionário dos valores vizinhos que tem como valor a sua heuristica. (tuple: int)
+        :return: Nodo com menor heuristica.
+        """
         l = list(estima.keys())
         min_estima = estima[l[0]]
         node = l[0]
@@ -483,15 +489,30 @@ class RaceP:
         return lista
 
     def __greedy(self, start, end):
+        """
+        Algoritmo greedy
+        :param start: Nodo inicial
+        :param end: Nodos finais
+        :return: Lista ordenada dos nodos que representam o caminho descoberto pelo algoritmo.
+        """
         # open_list é uma lista de nodos visitados, mas com vizinhos que ainda não foram todos visitados, começa com o start
         # closed_list é uma lista de nodos visitados
         # e todos os seus vizinhos também já o foram
-        open_list = set([start])
+        open_list = {start}
         closed_list = set([])
 
+        # Lista onde vão ser armazenados os nodos que o algoritmo percorre.
+        caminho_do_algoritmo = []
+
+        # TODO definir se faz match com o caminho_do_algoritmo ou com o caminho_final.
+        # Lista de tuplo que faz match com o caminho do algoritmo, e indica as velocidades do carro, na determinada posição.
+        historico_de_velocidades = []
+
+        # Dicionário que guarda informação dos pais dos nodos.
         parents = {start: start}
 
-        #print("Inicio debug") # FIXME MOSTRAR O TODO O CAMINHO PERCORRIDO PELO ALGORITMO
+        velocidade = (0,0)
+        posicaoAnterior = start.position
         while len(open_list) > 0:
             # encontra nodo com a menor heuristica
             n = None
@@ -499,24 +520,29 @@ class RaceP:
                 if n is None or self.g_h[v] < self.g_h[n]:
                     n = v
 
-            #print(n) # FIXME MOSTRAR O TODO O CAMINHO PERCORRIDO PELO ALGORITMO
+            caminho_do_algoritmo.append(n)
+            acc = tuple(numpy.subtract(n.position, posicaoAnterior))
+            posicaoAnterior = n.position
+            velocidade = tuple(numpy.add(velocidade, acc))
+            historico_de_velocidades.append(velocidade)
+
 
             if n is None:
-                print('Path does not exist!')
+                #print('Path does not exist!')
                 return None
 
             # se o nodo corrente é o destino
             # reconstruir o caminho a partir desse nodo até ao start
             # seguindo o antecessor
             if n in end:
-                reconst_path = []
+                caminho_final = []
                 while parents[n] != n:
-                    reconst_path.append(n)
+                    caminho_final.append(n)
                     n = parents[n]
-                reconst_path.append(start)
-                reconst_path.reverse()
-                #print("Fim debug") # FIXME MOSTRAR O TODO O CAMINHO PERCORRIDO PELO ALGORITMO
-                return reconst_path
+                caminho_final.append(start)
+                caminho_final.reverse()
+                #return InfoCaminho(caminho_final, caminho_do_algoritmo) # TODO talvez passar a usar isto.
+                return caminho_final
 
             # para todos os vizinhos do nodo corrente
             for (_, adjacente) in self.getNeighbours(n):
@@ -531,7 +557,7 @@ class RaceP:
             open_list.remove(n)
             closed_list.add(n)
 
-        print('Path does not exist!')
+        #print('Path does not exist!')
         return None
 
     def greedy(self):
@@ -617,7 +643,7 @@ class RaceP:
         return None
 
     def procura_aStar(self):
-        s = Node(self.start)
+        s = Node(self.start[0])
         e = set([Node(x) for x in self.goals])
         return self.__procura_aStar(s, e)
 
