@@ -24,3 +24,8 @@ class InfoCaminho:
 
     def getCaminhoDoAlgoritmo(self):
         return self.caminhoDoAlgoritmo
+
+    def existeCaminho(self):
+        if len(self.caminhoFinal) == 0:
+            return False
+        else: return True

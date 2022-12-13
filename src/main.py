@@ -73,7 +73,7 @@ def main():
             n_player = 0
             player_algoritms = []
             for player in rp.start:
-                print(f"****Algoritmos para o jogador {n_player + 1}****")
+                print(f"****Algoritmos para o jogador {n_player}****")
                 print("1-DFS")
                 print("2-BFS")
                 print("3-Greedy")
@@ -97,43 +97,61 @@ def main():
                     player_algoritms.append(rp.procura_aStar)
                 n_player += 1
 
-            n_player = 0
+            n_player: int = 0
             info_caminhos = []
             for alg in player_algoritms: # "alg" é o algoritmo que se vai correr para um determinado jogador.
                 info_caminhos.append(alg(n_player)) # exemplo -> rp.greedy(0). In which "alg" = rp.greedy, "n_player" = 0.
                 n_player += 1
+            for caminho in info_caminhos:
+
+                # TODO verificação de colisoes.
+                #
+
+                cost = rp.calcula_custo(caminho.getCaminhoFinal())
+                if caminho.existeCaminho():
+                    print("Caminho do algoritmo:")
+                    for p in caminho.getCaminhoDoAlgoritmo():
+                        print(p)
+                    print(f"Com o custo: {cost}")
+                    #print(f"Com o tempo: {duracao}ms")
+                else:
+                    print("Caminho não foi encontrado!")
+
+            print("\nForam feitos os seguintes caminhos:")
+            rp.print_caminhos(info_caminhos)
+            enter = input("Prima enter para continuar.")
 
 
         # DFS
         elif saida == 5:
             start = time.time()
-            path = rp.procura_DFS(0)
+            caminho = rp.procura_DFS(0)
             end = time.time()
             duracao = (end-start) * 1000
-            cost = rp.calcula_custo(path)
-            if path:
-                for p in path:
+            cost = rp.calcula_custo(caminho)
+            if caminho:
+                for p in caminho:
                     print(p)
                 print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
 
             print("\nFez o seguinte caminho:")
-            rp.print_matrix(path)
+            rp.print_matrix(caminho)
             enter = input("Prima enter para continuar.")
 
         # BFS
         elif saida == 6:
             start = time.time()
-            path = rp.procura_BFS(0)
+            caminho = rp.procura_BFS(0)
             end = time.time()
             duracao = (end-start) * 1000
-            cost = rp.calcula_custo(path)
-            if path:
-                for p in path:
+            cost = rp.calcula_custo(caminho)
+            if caminho:
+                for p in caminho:
                     print(p)
                 print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
 
             print("\nFez o seguinte caminho:")
-            rp.print_matrix(path)
+            rp.print_matrix(caminho)
             enter = input("Prima enter para continuar.")
 
         # Greedy
@@ -142,10 +160,10 @@ def main():
             paths = rp.greedy(0)
             end = time.time()
             duracao = (end-start) * 1000
-            for path in paths:
-                cost = rp.calcula_custo(path)
-                if path:
-                    for p in path:
+            for caminho in paths:
+                cost = rp.calcula_custo(caminho)
+                if caminho:
+                    for p in caminho:
                         print(p)
                     print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
 
@@ -156,17 +174,17 @@ def main():
         # A*
         elif saida == 8:
             start = time.time()
-            path = rp.procura_aStar(0)
+            caminho = rp.procura_aStar(0)
             end = time.time()
             duracao = (end-start) * 1000
-            cost = rp.calcula_custo(path)
-            if path:
-                for p in path:
+            cost = rp.calcula_custo(caminho)
+            if caminho:
+                for p in caminho:
                     print(p)
                 print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
 
             print("\nFez o seguinte caminho:")
-            rp.print_matrix(path)
+            rp.print_matrix(caminho)
             enter = input("Prima enter para continuar.\n")
         else:
             print("Wrong input!")

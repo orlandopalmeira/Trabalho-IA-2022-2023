@@ -172,7 +172,12 @@ class RaceP:
             print(linha)
 
     # Printa uma matriz com "*" nas posicoes dos nodos indicados.
-    def print_caminhos(self, caminhos):
+    def print_caminhos(self, infocaminhos):
+        """
+        Printa os caminhos finais de todos os infoCaminhos.
+        :param infocaminhos: Lista de infoCaminho
+        :return: void
+        """
 
         # Faz clone da matriz.
         new_matrix = []
@@ -181,14 +186,16 @@ class RaceP:
 
         i = 0
         colors = ["green", "yellow", "purple", "blue", "red"]
-        for caminho_de_nodos in caminhos:
-            if not caminho_de_nodos:
+        n_player = 0
+        for infoCam in infocaminhos:
+            if infoCam.existeCaminho():
                 print("Não foi encontrado nenhum caminho!")
                 continue
             color = colors[i]
-            i = i + 1 if i != 4 else 0
+            i = i + 1 if i != 4 else 0 # Para rodar o indice que percorre o array das diferentes cores disponiveis.
+
             # retorna apenas os tuplos de posicao dos nodos.
-            path = get_positions_from_nodes(caminho_de_nodos)
+            path = get_positions_from_nodes(infoCam.getCaminhoFinal())
 
             step = 'a'
             for p in path:
@@ -205,6 +212,7 @@ class RaceP:
                 new_matrix[l][c] = res
                 step = chr(ord(step) + 1) if step != "z" else "a"
 
+        # Printa a matriz final com os caminhos de todos desenhados.
         for line_n in new_matrix:
             linha = "".join(line_n)
             print(linha)
@@ -496,7 +504,7 @@ class RaceP:
         return lista
 
 
-    def greedy(self, n_player):
+    def greedy(self, n_player: int):
         """
         Aplica o Algoritmo Greedy ao jogador indicado pelo indice(n_player).
         :param n_player: Indice(1º, 2º, ...) do carro ao qual se pretende aplicar o algoritmo.
@@ -544,10 +552,9 @@ class RaceP:
             velocidade = tuple(numpy.add(velocidade, acc))
             historico_de_velocidades.append(velocidade)
 
-
             if n is None:
                 #print('Path does not exist!')
-                return None
+                return InfoCaminho([], caminho_do_algoritmo)
 
             # se o nodo corrente é o destino
             # reconstruir o caminho a partir desse nodo até ao start
@@ -560,8 +567,7 @@ class RaceP:
                 caminho_final.append(start)
                 caminho_final.reverse()
                 #caminho = InfoCaminho(caminho_final, caminho_do_algoritmo)
-                return InfoCaminho(caminho_final, caminho_do_algoritmo) # TODO talvez passar a usar isto.
-                #return caminho_final
+                return InfoCaminho(caminho_final, caminho_do_algoritmo)
 
             # para todos os vizinhos do nodo corrente
             for (_, adjacente) in self.getNeighbours(n):
@@ -577,7 +583,7 @@ class RaceP:
             closed_list.add(n)
 
         #print('Path does not exist!')
-        return None
+        return InfoCaminho([], caminho_do_algoritmo)
 
 
     def procura_aStar(self, n_player):
