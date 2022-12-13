@@ -29,6 +29,7 @@ def main():
         print("2-Desenhar Grafo")
         print("3-Indicar posições inicial e finais do circuito")
         print("4-Imprimir nodos do Grafo")
+        print("10-Aplicar algoritmos aos carros")
         print("5-DFS")
         print("6-BFS")
         print("7-Greedy")
@@ -69,8 +70,10 @@ def main():
 
         # Utilizar algoritmos
         elif saida == 10:
+            n_player = 0
             player_algoritms = []
             for player in rp.start:
+                print(f"****Algoritmos para o jogador {n_player + 1}****")
                 print("1-DFS")
                 print("2-BFS")
                 print("3-Greedy")
@@ -85,19 +88,26 @@ def main():
                         enter = input("Prima enter para continuar.")
                         continue
                 if saida == 1:
-                    player_algoritms.append(rp.procura_DFS())
-                if saida == 2:
-                    player_algoritms.append(rp.procura_BFS())
-                if saida == 3:
-                    player_algoritms.append(rp.greedy())
-                if saida == 4:
-                    player_algoritms.append(rp.procura_aStar())
+                    player_algoritms.append(rp.procura_DFS)
+                elif saida == 2:
+                    player_algoritms.append(rp.procura_BFS)
+                elif saida == 3:
+                    player_algoritms.append(rp.greedy)
+                elif saida == 4:
+                    player_algoritms.append(rp.procura_aStar)
+                n_player += 1
+
+            n_player = 0
+            info_caminhos = []
+            for alg in player_algoritms: # "alg" é o algoritmo que se vai correr para um determinado jogador.
+                info_caminhos.append(alg(n_player)) # exemplo -> rp.greedy(0). In which "alg" = rp.greedy, "n_player" = 0.
+                n_player += 1
 
 
         # DFS
         elif saida == 5:
             start = time.time()
-            path = rp.procura_DFS()
+            path = rp.procura_DFS(0)
             end = time.time()
             duracao = (end-start) * 1000
             cost = rp.calcula_custo(path)
@@ -113,7 +123,7 @@ def main():
         # BFS
         elif saida == 6:
             start = time.time()
-            path = rp.procura_BFS()
+            path = rp.procura_BFS(0)
             end = time.time()
             duracao = (end-start) * 1000
             cost = rp.calcula_custo(path)
@@ -129,7 +139,7 @@ def main():
         # Greedy
         elif saida == 7:
             start = time.time()
-            paths = rp.greedy()
+            paths = rp.greedy(0)
             end = time.time()
             duracao = (end-start) * 1000
             for path in paths:
@@ -146,7 +156,7 @@ def main():
         # A*
         elif saida == 8:
             start = time.time()
-            path = rp.procura_aStar()
+            path = rp.procura_aStar(0)
             end = time.time()
             duracao = (end-start) * 1000
             cost = rp.calcula_custo(path)

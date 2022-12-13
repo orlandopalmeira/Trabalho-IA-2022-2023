@@ -363,6 +363,13 @@ class RaceP:
         plt.draw()
         plt.show()
 
+    def procura_DFS(self, n_player):
+        """
+        Algoritmo DFS.
+        :param n_player: Indice(1º, 2º, ...) do carro ao qual se pretende aplicar o algoritmo.
+        :return: void
+        """
+        return self.__procura_DFS(Node(self.start[n_player]), self.goals, path = [], visited=set())
 
     def __procura_DFS(self,start: Node, end: list, path=[], visited=set()):
         path.append(start)
@@ -380,9 +387,15 @@ class RaceP:
         return None
 
 
-    def procura_DFS(self):
-        return self.__procura_DFS(Node(self.start), self.goals, path = [], visited=set())
-
+    def procura_BFS(self, n_player):
+        """
+        Aplica o Algoritmo BFS ao jogador indicado pelo indice(n_player).
+        :param n_player: Indice(1º, 2º, ...) do carro ao qual se pretende aplicar o algoritmo.
+        :return: void
+        """
+        s = Node(self.start[n_player])
+        e = set([Node(x) for x in self.goals])
+        return self.__procura_BFS(s,e)
 
     def __procura_BFS(self, start, end):
         # definir nodos visitados para evitar ciclos
@@ -419,12 +432,6 @@ class RaceP:
                 end = parent[end]
             path.reverse()
         return path
-
-
-    def procura_BFS(self):
-        s = Node(self.start)
-        e = set([Node(x) for x in self.goals])
-        return self.__procura_BFS(s,e)
 
 
     def add_heuristica(self, n:tuple, valor:int):
@@ -487,6 +494,17 @@ class RaceP:
         for (custo, adjacente) in self.g[nodo]:
             lista.append((custo, adjacente))
         return lista
+
+
+    def greedy(self, n_player):
+        """
+        Aplica o Algoritmo Greedy ao jogador indicado pelo indice(n_player).
+        :param n_player: Indice(1º, 2º, ...) do carro ao qual se pretende aplicar o algoritmo.
+        :return: void
+        """
+        e = set([Node(x) for x in self.goals])
+        s = Node(self.start[n_player])
+        return self.__greedy(s, e)
 
     def __greedy(self, start, end):
         """
@@ -561,18 +579,16 @@ class RaceP:
         #print('Path does not exist!')
         return None
 
-    def greedy(self):
-        e = set([Node(x) for x in self.goals])
-        s = Node(self.start[0])
-        self.__greedy(s, e)
-        """
-        res = list()
-        for i in range(len(self.start)):
-            s = Node(self.start[i])
-            res.append(self.__greedy(s, e))
-        return res
-        """
 
+    def procura_aStar(self, n_player):
+        """
+        Aplica o Algoritmo AStar ao jogador indicado pelo indice(n_player).
+        :param n_player: Indice(1º, 2º, ...) do carro ao qual se pretende aplicar o algoritmo.
+        :return: void
+        """
+        s = Node(self.start[n_player])
+        e = set([Node(x) for x in self.goals])
+        return self.__procura_aStar(s, e)
 
     def __procura_aStar(self, start, end):
         open_list = {start}
@@ -610,11 +626,8 @@ class RaceP:
                 while parents[n] != n:
                     reconst_path.append(n)
                     n = parents[n]
-
                 reconst_path.append(start)
-
                 reconst_path.reverse()
-
                 # print('Path found: {}'.format(reconst_path))
                 return reconst_path
 
@@ -647,10 +660,7 @@ class RaceP:
         print('Path does not exist!')
         return None
 
-    def procura_aStar(self):
-        s = Node(self.start[0])
-        e = set([Node(x) for x in self.goals])
-        return self.__procura_aStar(s, e)
+
 
 
 
