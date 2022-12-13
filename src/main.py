@@ -67,6 +67,33 @@ def main():
                 print(k)
             enter = input("Prima enter para continuar.")
 
+        # Utilizar algoritmos
+        elif saida == 10:
+            player_algoritms = []
+            for player in rp.start:
+                print("1-DFS")
+                print("2-BFS")
+                print("3-Greedy")
+                print("4-A*")
+                print("0-Sair")
+                saida = 99
+                while saida == 99:
+                    try:
+                        saida = int(input("Introduza a sua opcão: "))
+                    except ValueError:
+                        print("Wrong input!")
+                        enter = input("Prima enter para continuar.")
+                        continue
+                if saida == 1:
+                    player_algoritms.append(rp.procura_DFS())
+                if saida == 2:
+                    player_algoritms.append(rp.procura_BFS())
+                if saida == 3:
+                    player_algoritms.append(rp.greedy())
+                if saida == 4:
+                    player_algoritms.append(rp.procura_aStar())
+
+
         # DFS
         elif saida == 5:
             start = time.time()

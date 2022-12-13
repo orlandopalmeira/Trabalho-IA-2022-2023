@@ -541,8 +541,9 @@ class RaceP:
                     n = parents[n]
                 caminho_final.append(start)
                 caminho_final.reverse()
-                #return InfoCaminho(caminho_final, caminho_do_algoritmo) # TODO talvez passar a usar isto.
-                return caminho_final
+                #caminho = InfoCaminho(caminho_final, caminho_do_algoritmo)
+                return InfoCaminho(caminho_final, caminho_do_algoritmo) # TODO talvez passar a usar isto.
+                #return caminho_final
 
             # para todos os vizinhos do nodo corrente
             for (_, adjacente) in self.getNeighbours(n):
@@ -561,12 +562,16 @@ class RaceP:
         return None
 
     def greedy(self):
-        res = list()
         e = set([Node(x) for x in self.goals])
+        s = Node(self.start[0])
+        self.__greedy(s, e)
+        """
+        res = list()
         for i in range(len(self.start)):
             s = Node(self.start[i])
             res.append(self.__greedy(s, e))
         return res
+        """
 
 
     def __procura_aStar(self, start, end):
