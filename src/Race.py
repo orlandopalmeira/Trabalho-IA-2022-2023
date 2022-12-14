@@ -138,7 +138,7 @@ class RaceP:
         return ret
 
 
-    # Printa uma matriz com "*" nas posicoes dos nodos indicados.
+    # Printa uma matriz com "*" nas posicoes dos nodos indicados. TALVEZ DESATUALIZADA.
     def print_matrix(self, caminho_de_nodos):
         if not caminho_de_nodos:
             print("Não foi encontrado nenhum caminho!")
@@ -175,7 +175,7 @@ class RaceP:
     def print_caminhos(self, infocaminhos):
         """
         Printa os caminhos finais de todos os infoCaminhos.
-        :param infocaminhos: Lista de infoCaminho
+        :param infocaminhos: Lista de objetos infoCaminho
         :return: void
         """
 
@@ -188,8 +188,8 @@ class RaceP:
         colors = ["green", "yellow", "purple", "blue", "red"]
         n_player = 0
         for infoCam in infocaminhos:
-            if infoCam.existeCaminho():
-                print("Não foi encontrado nenhum caminho!")
+            if not infoCam.existeCaminho():
+                #print("Não foi encontrado nenhum caminho!")
                 continue
             color = colors[i]
             i = i + 1 if i != 4 else 0 # Para rodar o indice que percorre o array das diferentes cores disponiveis.
@@ -375,7 +375,7 @@ class RaceP:
         """
         Algoritmo DFS.
         :param n_player: Indice(1º, 2º, ...) do carro ao qual se pretende aplicar o algoritmo.
-        :return: void
+        :return: Objeto InfoCaminho que contem informação sobre o caminho determinado pelo algoritmo
         """
         return self.__procura_DFS(Node(self.start[n_player]), self.goals, path = [], visited=set())
 
@@ -399,7 +399,7 @@ class RaceP:
         """
         Aplica o Algoritmo BFS ao jogador indicado pelo indice(n_player).
         :param n_player: Indice(1º, 2º, ...) do carro ao qual se pretende aplicar o algoritmo.
-        :return: void
+        :return: Objeto InfoCaminho que contem informação sobre o caminho determinado pelo algoritmo.
         """
         s = Node(self.start[n_player])
         e = set([Node(x) for x in self.goals])
@@ -508,7 +508,7 @@ class RaceP:
         """
         Aplica o Algoritmo Greedy ao jogador indicado pelo indice(n_player).
         :param n_player: Indice(1º, 2º, ...) do carro ao qual se pretende aplicar o algoritmo.
-        :return: void
+        :return: Objeto InfoCaminho que contem informação sobre o caminho determinado pelo algoritmo
         """
         e = set([Node(x) for x in self.goals])
         s = Node(self.start[n_player])
@@ -519,7 +519,7 @@ class RaceP:
         Algoritmo greedy
         :param start: Nodo inicial
         :param end: Nodos finais
-        :return: Lista ordenada dos nodos que representam o caminho descoberto pelo algoritmo.
+        :return: Objeto InfoCaminho que contem informação sobre o caminho determinado pelo algoritmo
         """
         # open_list é uma lista de nodos visitados, mas com vizinhos que ainda não foram todos visitados, começa com o start
         # closed_list é uma lista de nodos visitados
@@ -566,7 +566,7 @@ class RaceP:
                     n = parents[n]
                 caminho_final.append(start)
                 caminho_final.reverse()
-                #caminho = InfoCaminho(caminho_final, caminho_do_algoritmo)
+                caminho = InfoCaminho(caminho_final, caminho_do_algoritmo) # DEBUG
                 return InfoCaminho(caminho_final, caminho_do_algoritmo)
 
             # para todos os vizinhos do nodo corrente
@@ -590,7 +590,7 @@ class RaceP:
         """
         Aplica o Algoritmo AStar ao jogador indicado pelo indice(n_player).
         :param n_player: Indice(1º, 2º, ...) do carro ao qual se pretende aplicar o algoritmo.
-        :return: void
+        :return: Objeto InfoCaminho que contem informação sobre o caminho determinado pelo algoritmo
         """
         s = Node(self.start[n_player])
         e = set([Node(x) for x in self.goals])
@@ -603,6 +603,9 @@ class RaceP:
         # g contains current distances from start_node to all other nodes
         # the default value (if it's not found in the map) is +infinity
         g = {start: 0}
+
+        # Lista que guardará todos os nodos que o algoritmo percorre.
+        caminho_do_algoritmo = []
 
         # parents contains an adjacency map of all nodes
         parents = {start: start}
@@ -620,9 +623,9 @@ class RaceP:
             if flag == 1:
                 min_estima = self.calcula_est(calc_heurist)
                 n = min_estima
+            caminho_do_algoritmo.append(n)
             if n is None:
-                print('Path does not exist!')
-                return None
+                return InfoCaminho([], caminho_do_algoritmo)
 
             # if the current node is the stop_node
             # then we begin reconstructing the path from it to the start_node
@@ -634,8 +637,7 @@ class RaceP:
                     n = parents[n]
                 reconst_path.append(start)
                 reconst_path.reverse()
-                # print('Path found: {}'.format(reconst_path))
-                return reconst_path
+                return InfoCaminho(reconst_path, caminho_do_algoritmo)
 
             # for all neighbors of the current node do
             for (custo, adjacente) in self.getNeighbours(n):  # definir função getneighbours  tem de ter um par nodo peso
@@ -663,8 +665,8 @@ class RaceP:
             open_list.remove(n)
             closed_list.add(n)
 
-        print('Path does not exist!')
-        return None
+        return InfoCaminho([], caminho_do_algoritmo)
+
 
 
 

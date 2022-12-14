@@ -8,7 +8,7 @@ def main():
 
     #circuit = input("Indique a path do ficheiro do circuito: ")
     circuit = "race.txt" # FIXME Maneira mais rápida para testar. Alterar no final.
-    circuit = "raceold.txt"
+    #circuit = "raceold.txt"
     try:
         rp = RaceP(circuit)
     except FileNotFoundError:
@@ -24,7 +24,7 @@ def main():
 
     saida = -1
     while saida != 0:
-        print("\n****Menu****")
+        print("\n**** Menu ****")
         print("1-Imprimir Grafo ")
         print("2-Desenhar Grafo")
         print("3-Indicar posições inicial e finais do circuito")
@@ -73,7 +73,7 @@ def main():
             n_player = 0
             player_algoritms = []
             for player in rp.start:
-                print(f"****Algoritmos para o jogador {n_player}****")
+                print(f"**** Algoritmos para o jogador {n_player} ****")
                 print("1-DFS")
                 print("2-BFS")
                 print("3-Greedy")
@@ -99,23 +99,24 @@ def main():
 
             n_player: int = 0
             info_caminhos = []
-            for alg in player_algoritms: # "alg" é o algoritmo que se vai correr para um determinado jogador.
-                info_caminhos.append(alg(n_player)) # exemplo -> rp.greedy(0). In which "alg" = rp.greedy, "n_player" = 0.
+            for algoritmo in player_algoritms: # "alg" é o algoritmo que se vai correr para um determinado jogador.
+                returnedCaminho = algoritmo(n_player) # exemplo -> rp.greedy(2). In which "algoritmo" = rp.greedy, "n_player" = 2.
+                returnedCaminho.setnplayer(n_player) # Indica o número do jogador que fez o caminho.
+                info_caminhos.append(returnedCaminho)
                 n_player += 1
+
             for caminho in info_caminhos:
-
                 # TODO verificação de colisoes.
-                #
 
-                cost = rp.calcula_custo(caminho.getCaminhoFinal())
+                print(f"\nCaminho percorrido pelo algoritmo do jogador {caminho.getnplayer()}:")
+                for p in caminho.getCaminhoDoAlgoritmo():
+                    print(p)
                 if caminho.existeCaminho():
-                    print("Caminho do algoritmo:")
-                    for p in caminho.getCaminhoDoAlgoritmo():
-                        print(p)
-                    print(f"Com o custo: {cost}")
-                    #print(f"Com o tempo: {duracao}ms")
+                    cost = rp.calcula_custo(caminho.getCaminhoFinal())
+                    print(f"Custo do caminho final do jogador {caminho.getnplayer()}: {cost}")
                 else:
-                    print("Caminho não foi encontrado!")
+                    print(f"Caminho para o jogador {caminho.getnplayer()} não foi encontrado!")
+                #print(f"Com o tempo: {duracao}ms")
 
             print("\nForam feitos os seguintes caminhos:")
             rp.print_caminhos(info_caminhos)

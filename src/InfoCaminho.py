@@ -9,9 +9,16 @@ class InfoCaminho:
         :param caminho_final: caminho_final
         :param caminho_do_algoritmo: caminho_do_algoritmo
         """
+        self.n_player = None
         self.caminhoFinal = caminho_final
         self.caminhoDoAlgoritmo = caminho_do_algoritmo
 
+
+    def setnplayer(self, num: int):
+        self.n_player = num
+
+    def getnplayer(self):
+        return self.n_player
 
     def setCaminhoFinal(self, caminho_final):
         self.caminhoFinal = caminho_final
