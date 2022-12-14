@@ -78,15 +78,17 @@ def main():
                 print("2-BFS")
                 print("3-Greedy")
                 print("4-A*")
-                print("0-Sair")
-                saida = 99
-                while saida == 99:
+                #print("0-Sair")
+                while True:
                     try:
                         saida = int(input("Introduza a sua opcão: "))
+                        if saida not in [1,2,3,4]:
+                            raise ValueError
+                        break
                     except ValueError:
-                        print("Wrong input!")
-                        enter = input("Prima enter para continuar.")
-                        continue
+                        print("Input inválido!")
+                        #enter = input("Prima enter para continuar.")
+                        #continue
                 if saida == 1:
                     player_algoritms.append(rp.procura_DFS)
                 elif saida == 2:
@@ -95,6 +97,7 @@ def main():
                     player_algoritms.append(rp.greedy)
                 elif saida == 4:
                     player_algoritms.append(rp.procura_aStar)
+
                 n_player += 1
 
             n_player: int = 0
@@ -110,15 +113,18 @@ def main():
 
                 print(f"\nCaminho percorrido pelo algoritmo do jogador {caminho.getnplayer()}:")
                 for p in caminho.getCaminhoDoAlgoritmo():
-                    print(p)
+                    print(p, end=" ")
                 if caminho.existeCaminho():
+                    print(f"\nCaminho final do jogador {caminho.getnplayer()}:")
+                    for p in caminho.getCaminhoFinal():
+                        print(p, end=" ")
                     cost = rp.calcula_custo(caminho.getCaminhoFinal())
-                    print(f"Custo do caminho final do jogador {caminho.getnplayer()}: {cost}")
+                    print(f"\nCusto do caminho final do jogador {caminho.getnplayer()}: {cost}")
                 else:
-                    print(f"Caminho para o jogador {caminho.getnplayer()} não foi encontrado!")
+                    print(f"\nCaminho para o jogador {caminho.getnplayer()} não foi encontrado!")
                 #print(f"Com o tempo: {duracao}ms")
 
-            print("\nForam feitos os seguintes caminhos:")
+            print("\nImagem dos caminhos:")
             rp.print_caminhos(info_caminhos)
             enter = input("Prima enter para continuar.")
 
