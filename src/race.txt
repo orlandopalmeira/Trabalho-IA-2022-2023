@@ -2,14 +2,14 @@ XXXXXXXXXXXXXXXXXXXXXXXXXXX
 XXXXXX-----------X--------X
 XX---XX---------X---------X
 X-----XXXXXXXXXX-XX-------X
-X------------------X------X
-X-------P-----------X-----X
+X--------P---------X------X
+X-------------------X-----X
 X-------XXXXXXXX-----X----X
 X--------X-----X------X---X
 X---------X----X-------XXXX
 X-P--------XXXXX----------F
 X-------------------------F
 X-----XXXXX---------------F
-XX------------XXXXXXXXXXXXX
+XX---------P--XXXXXXXXXXXXX
 XXXX--X----XXX------------X
 XXXXXXXXXXXXXXXXXXXXXXXXXXX

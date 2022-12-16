@@ -72,6 +72,7 @@ def main():
         elif saida == 10:
             n_player = 0
             player_algoritms = []
+            name_algoritms = []
             for player in rp.start:
                 print(f"**** Algoritmos para o jogador {n_player} ****")
                 print("1-DFS")
@@ -91,25 +92,32 @@ def main():
                         #continue
                 if saida == 1:
                     player_algoritms.append(rp.procura_DFS)
+                    name_algoritms.append("DFS")
                 elif saida == 2:
                     player_algoritms.append(rp.procura_BFS)
+                    name_algoritms.append("BFS")
                 elif saida == 3:
                     player_algoritms.append(rp.greedy)
+                    name_algoritms.append("Greedy")
                 elif saida == 4:
                     player_algoritms.append(rp.procura_aStar)
+                    name_algoritms.append("A*")
 
                 n_player += 1
 
             n_player: int = 0
             info_caminhos = []
             for algoritmo in player_algoritms: # "alg" é o algoritmo que se vai correr para um determinado jogador.
-                returnedCaminho = algoritmo(n_player) # exemplo -> rp.greedy(2). In which "algoritmo" = rp.greedy, "n_player" = 2.
+                returnedCaminho = algoritmo(n_player) # exemplo -> rp.greedy(2). In which "algoritmo" = rp.greedy, "n_player" = 2(indice do carro ao qual se irá aplicar o determinado algoritmo).
                 returnedCaminho.setnplayer(n_player) # Indica o número do jogador que fez o caminho.
+                returnedCaminho.setNameofAlgoritm(name_algoritms[n_player])
                 info_caminhos.append(returnedCaminho)
                 n_player += 1
 
+            # TODO verificação de colisoes.
+
+            # Itera todos os caminhos finais dos carros.
             for caminho in info_caminhos:
-                # TODO verificação de colisoes.
 
                 print(f"\nCaminho percorrido pelo algoritmo do jogador {caminho.getnplayer()}:")
                 for p in caminho.getCaminhoDoAlgoritmo():

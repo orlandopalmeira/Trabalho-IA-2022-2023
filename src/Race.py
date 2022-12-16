@@ -138,7 +138,7 @@ class RaceP:
         return ret
 
 
-    # Printa uma matriz com "*" nas posicoes dos nodos indicados. TALVEZ DESATUALIZADA.
+    # Printa uma matriz com "*" nas posicoes dos nodos indicados.
     def print_matrix(self, caminho_de_nodos):
         if not caminho_de_nodos:
             print("Não foi encontrado nenhum caminho!")

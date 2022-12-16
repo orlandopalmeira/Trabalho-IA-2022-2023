@@ -10,6 +10,7 @@ class InfoCaminho:
         :param caminho_do_algoritmo: caminho_do_algoritmo
         """
         self.n_player = None
+        self.nameofalgoritm = None
         self.caminhoFinal = caminho_final
         self.caminhoDoAlgoritmo = caminho_do_algoritmo
 
@@ -19,6 +20,14 @@ class InfoCaminho:
 
     def getnplayer(self):
         return self.n_player
+
+
+    def setNameofAlgoritm(self, name):
+        """
+        :param name: String com o nome do algoritmo que foi utilizado.
+        :return:
+        """
+        self.nameofalgoritm = name
 
     def setCaminhoFinal(self, caminho_final):
         self.caminhoFinal = caminho_final
