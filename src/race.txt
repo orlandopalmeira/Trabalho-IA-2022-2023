@@ -10,6 +10,6 @@ X---------X----X-------XXXX
 X-P--------XXXXX----------F
 X-------------------------F
 X-----XXXXX---------------F
-XX---------P--XXXXXXXXXXXXX
+XX------------XXXXXXXXXXXXX
 XXXX--X----XXX------------X
 XXXXXXXXXXXXXXXXXXXXXXXXXXX

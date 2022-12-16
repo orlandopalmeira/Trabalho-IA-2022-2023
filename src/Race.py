@@ -138,8 +138,12 @@ class RaceP:
         return ret
 
 
-    # Printa uma matriz com "*" nas posicoes dos nodos indicados.
-    def print_matrix(self, caminho_de_nodos):
+    def print_caminho(self, caminho_de_nodos):
+        """
+        Desenha numa matriz, o caminho fornecido.
+        :param caminho_de_nodos: Lista de nodos que representam um caminho.
+        :return: void
+        """
         if not caminho_de_nodos:
             print("Não foi encontrado nenhum caminho!")
             return
@@ -171,7 +175,7 @@ class RaceP:
             linha = "".join(line_n)
             print(linha)
 
-    # Printa uma matriz com "*" nas posicoes dos nodos indicados.
+
     def print_caminhos(self, infocaminhos):
         """
         Printa os caminhos finais de todos os infoCaminhos.
@@ -351,6 +355,10 @@ class RaceP:
 
 
     def desenha(self):
+        """
+        Utiliza a biblioteca networkx para desenhar a estrutura do grafo utilizado no nosso problema.
+        :return:
+        """
         ##criar lista de vertices
         lista_v = self.g.keys()
         lista_a = []
@@ -371,13 +379,16 @@ class RaceP:
         plt.draw()
         plt.show()
 
-    def procura_DFS(self, n_player):
+
+    def procura_DFS(self, start: tuple, path = [], visited=set()):
         """
         Algoritmo DFS.
-        :param n_player: Indice(1º, 2º, ...) do carro ao qual se pretende aplicar o algoritmo.
-        :return: Objeto InfoCaminho que contem informação sobre o caminho determinado pelo algoritmo
+        :param path: Caminho feito
+        :param visited: Nodos visitados.
+        :param start: Tuplo que indica a posição onde começa o algoritmo.
+        :return: Objeto InfoCaminho que contem informação sobre o caminho determinado pelo algoritmo.
         """
-        return self.__procura_DFS(Node(self.start[n_player]), self.goals, path = [], visited=set())
+        return self.__procura_DFS(Node(start), self.goals, path = path, visited=visited)
 
     def __procura_DFS(self,start: Node, end: list, path=[], visited=set()):
         path.append(start)
@@ -395,13 +406,13 @@ class RaceP:
         return None
 
 
-    def procura_BFS(self, n_player):
+    def procura_BFS(self, start: tuple):
         """
         Aplica o Algoritmo BFS ao jogador indicado pelo indice(n_player).
-        :param n_player: Indice(1º, 2º, ...) do carro ao qual se pretende aplicar o algoritmo.
+        :param start: Tuplo que indica a posição onde começa o algoritmo.
         :return: Objeto InfoCaminho que contem informação sobre o caminho determinado pelo algoritmo.
         """
-        s = Node(self.start[n_player])
+        s = Node(start)
         e = set([Node(x) for x in self.goals])
         return self.__procura_BFS(s,e)
 
@@ -442,19 +453,12 @@ class RaceP:
         return path
 
 
-    def add_heuristica(self, n:tuple, valor:int):
-        """
-        Adiciona ao nodo, com aquela posição, a heuristica "valor".
-        :param n: posicao (tuplo)
-        :param valor: valor da heuristica
-        :return: void
-        """
-        n1 = Node(n)
-        if n1 in self.g.keys():
-            self.g_h[n] = valor
-
-
     def manhatan_distance(self, nodo):
+        """
+        Calcula a distância de manhatan do nodo fornecido no argumento ao destino final mais próximo.
+        :param nodo: Node
+        :return: inteiro
+        """
         res = 1000000
         pos = nodo.getPosition()
         x = pos[0]
@@ -474,7 +478,7 @@ class RaceP:
         nodos = self.g.keys()
         for n in nodos:
             self.g_h[n] = self.manhatan_distance(n)
-        return True
+
 
     def calcula_est(self, estima):
         """
@@ -493,7 +497,7 @@ class RaceP:
 
     def getH(self, nodo):
         if nodo not in self.g_h.keys():
-            return 1000
+            return 10000
         else:
             return self.g_h[nodo]
 
@@ -504,14 +508,14 @@ class RaceP:
         return lista
 
 
-    def greedy(self, n_player: int):
+    def greedy(self, start: tuple):
         """
         Aplica o Algoritmo Greedy ao jogador indicado pelo indice(n_player).
-        :param n_player: Indice(1º, 2º, ...) do carro ao qual se pretende aplicar o algoritmo.
+        :param start: Tuplo que indica a posição onde começa o algoritmo.
         :return: Objeto InfoCaminho que contem informação sobre o caminho determinado pelo algoritmo
         """
         e = set([Node(x) for x in self.goals])
-        s = Node(self.start[n_player])
+        s = Node(start)
         return self.__greedy(s, e)
 
     def __greedy(self, start, end):
@@ -586,13 +590,13 @@ class RaceP:
         return InfoCaminho([], caminho_do_algoritmo)
 
 
-    def procura_aStar(self, n_player):
+    def procura_aStar(self, start: tuple):
         """
         Aplica o Algoritmo AStar ao jogador indicado pelo indice(n_player).
-        :param n_player: Indice(1º, 2º, ...) do carro ao qual se pretende aplicar o algoritmo.
+        :param start: Tuplo que indica a posição onde começa o algoritmo.
         :return: Objeto InfoCaminho que contem informação sobre o caminho determinado pelo algoritmo
         """
-        s = Node(self.start[n_player])
+        s = Node(start)
         e = set([Node(x) for x in self.goals])
         return self.__procura_aStar(s, e)
 
