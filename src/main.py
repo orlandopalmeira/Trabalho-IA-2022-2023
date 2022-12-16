@@ -109,9 +109,11 @@ def main():
 
             n_player: int = 0
             info_caminhos = []
-            for algoritmo in player_algoritms: # "alg" é o algoritmo que se vai correr para um determinado jogador.
+
+            # Cria as informações dos caminhos requisitados. Objetos InfoCaminho na variavél info_caminhos.
+            for algoritmo in player_algoritms: # "algoritmo" é o algoritmo que se vai correr para um determinado jogador.
                 returnedCaminho = algoritmo(rp.start[n_player]) # exemplo -> rp.greedy((3,2)). In which "algoritmo" = rp.greedy.
-                returnedCaminho.setnplayer(n_player) # Indica o número do jogador que fez o caminho.
+                returnedCaminho.setnplayer(n_player)
                 returnedCaminho.setNameofAlgoritm(name_algoritms[n_player])
                 info_caminhos.append(returnedCaminho)
                 n_player += 1
