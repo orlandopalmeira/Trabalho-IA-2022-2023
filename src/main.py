@@ -3,6 +3,15 @@ import time
 
 from Race import RaceP
 
+def verify_same_element(list1, list2):
+	"""
+	Retorna None no caso de não haver correspondencias. Caso contrário retorna o primeiro indice onde os elementos são iguais.
+	:return:
+	"""
+	for i in range(len(list1)):
+		if list1[i] == list2[i]:
+			return i
+		return None
 
 def main():
 
@@ -31,10 +40,10 @@ def main():
         print("4-Imprimir nodos do Grafo")
         print("5-Aplicar algoritmos aos carros")
         """
-        print("5-DFS")
-        print("6-BFS")
-        print("7-Greedy")
-        print("8-A*")
+        print("6-DFS")
+        print("7-BFS")
+        print("8-Greedy")
+        print("9-A*")
         """
         print("0-Sair")
 
@@ -120,14 +129,15 @@ def main():
 
             # TODO verificação de colisoes.
 
+
             # Itera todos os caminhos finais dos carros.
             for caminho in info_caminhos:
 
-                print(f"\nCaminho percorrido pelo algoritmo do jogador {caminho.getnplayer()}:")
+                print(f"\nExpansão dos nós com o algoritmo {caminho.nameofalgoritm} do jogador {caminho.getnplayer()}:")
                 for p in caminho.getCaminhoDoAlgoritmo():
                     print(p, end=" ")
                 if caminho.existeCaminho():
-                    print(f"\nCaminho final do jogador {caminho.getnplayer()}:")
+                    print(f"\nCaminho final do jogador {caminho.getnplayer()} com o algoritmo {caminho.nameofalgoritm}:")
                     for p in caminho.getCaminhoFinal():
                         print(p, end=" ")
                     cost = rp.calcula_custo(caminho.getCaminhoFinal())
@@ -142,9 +152,9 @@ def main():
 
 
         # DFS
-        elif saida == 10:
+        elif saida == 6:
             start = time.time()
-            caminho = rp.procura_DFS(0)
+            caminho = rp.procura_DFS(rp.start[0])
             end = time.time()
             duracao = (end-start) * 1000
             cost = rp.calcula_custo(caminho)
@@ -158,9 +168,9 @@ def main():
             enter = input("Prima enter para continuar.")
 
         # BFS
-        elif saida == 6:
+        elif saida == 7:
             start = time.time()
-            caminho = rp.procura_BFS(0)
+            caminho = rp.procura_BFS(rp.start[0])
             end = time.time()
             duracao = (end-start) * 1000
             cost = rp.calcula_custo(caminho)
@@ -174,9 +184,9 @@ def main():
             enter = input("Prima enter para continuar.")
 
         # Greedy
-        elif saida == 7:
+        elif saida == 8:
             start = time.time()
-            paths = rp.greedy(0)
+            paths = rp.greedy(rp.start[0])
             end = time.time()
             duracao = (end-start) * 1000
             for caminho in paths:
@@ -191,9 +201,9 @@ def main():
             enter = input("Prima enter para continuar.")
 
         # A*
-        elif saida == 8:
+        elif saida == 9:
             start = time.time()
-            caminho = rp.procura_aStar(0)
+            caminho = rp.procura_aStar(rp.start[0])
             end = time.time()
             duracao = (end-start) * 1000
             cost = rp.calcula_custo(caminho)

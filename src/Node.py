@@ -27,7 +27,7 @@ class Node:
             return False
 
     def __str__(self) -> str:
-        return f"[pos=({self.position[0]},{self.position[1]})]"
+        return f"{{pos=({self.position[0]},{self.position[1]})}}"
 
     def __repr__(self) -> str:
         return str(self)

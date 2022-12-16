@@ -109,19 +109,20 @@ class RaceP:
 
 
     def cria_grafo(self):
-        estados = [Node(self.start[0])]
-        visitados = set()
-        while estados:
-            estado = estados.pop(0)
-            visitados.add(estado)
-            expansao = self.expande(estado)
-            for e in expansao:
-                pos_i = estado.position
-                pos_f = e.position
-                if e not in visitados:
-                    self.addAresta(estado, e, 1)
-                    if e not in estados:
-                        estados.append(e)
+        for pos in self.start: # Faz-se a expansão do grafo com começo em todas as start positions para o caso de alguma start position estiver numa ilha.
+            estados = [Node(pos)]
+            visitados = set()
+            while estados:
+                estado = estados.pop(0)
+                visitados.add(estado)
+                expansao = self.expande(estado)
+                for e in expansao:
+                    pos_i = estado.position
+                    pos_f = e.position
+                    if e not in visitados:
+                        self.addAresta(estado, e, 1)
+                        if e not in estados:
+                            estados.append(e)
 
 
     def expande(self, estado: Node):
@@ -425,6 +426,9 @@ class RaceP:
         fila.put(start)
         visited.add(start)
 
+        # Lista onde vão ser armazenados os nodos que o algoritmo percorre.
+        caminho_do_algoritmo = []
+
         # garantir que o start node nao tem pais...
         parent = dict()
         parent[start] = None
@@ -432,6 +436,7 @@ class RaceP:
         path_found = False
         while not fila.empty() and path_found == False:
             nodo_atual = fila.get()
+            caminho_do_algoritmo.append(nodo_atual)
             if nodo_atual in end:
                 path_found = True
             else:
@@ -450,7 +455,7 @@ class RaceP:
                 path.append(parent[end])
                 end = parent[end]
             path.reverse()
-        return path
+        return InfoCaminho(path, caminho_do_algoritmo)
 
 
     def manhatan_distance(self, nodo):
