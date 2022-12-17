@@ -531,11 +531,17 @@ class RaceP:
         :param vel: Velocidade da posição atual a ter em conta no calculo da heuristica.
         :return: Valor heuristico do nodo.
         """
-        distance = self.euclidian_distance(next_node)
+        distance = self.manhatan_distance(next_node)
         acc = tuple(numpy.subtract(next_node.position, current_node.position))
-        next_vel = tuple(numpy.add(vel, acc))
-        next_vel = math.sqrt(next_vel[0] ** 2 + next_vel[1] ** 2)
+        #next_vel = tuple(numpy.add(vel, acc))
+        #next_vel = math.sqrt(next_vel[0] ** 2 + next_vel[1] ** 2)
+        next_vel = math.sqrt(vel[0] ** 2 + vel[1] ** 2) #### new
+        next_vel += 1 #### new
         time_estimate = distance / next_vel
+        #print(next_node, end= " ") ##########
+        #print(f"Dist: {distance}", end= "; ") ##########
+        #print(f"Vel: {next_vel}", end= "; ")##########
+        #print(f"Tempo: {time_estimate}")##########
         return time_estimate
 
 
@@ -645,7 +651,7 @@ class RaceP:
         open_list = {start}
         closed_list = set([])
 
-        # g contains current distances from start_node to all other nodes
+        # g contains current distances from start_node to these nodes
         # the default value (if it's not found in the map) is +infinity
         g = {start: 0}
 
@@ -672,10 +678,12 @@ class RaceP:
                     flag = 1
                     #calc_heurist[v] = g[v] + self.getH(v)
                     calc_heurist[v] = g[v] + self.heurisitic_velocity(nodoAnterior, v, velocidade)
+
             if flag == 1:
                 min_estima = min(calc_heurist, key=calc_heurist.get) # retorna o nodo que tem menor heuristica.
                 #min_estima1 = self.calcula_est(calc_heurist)
                 n = min_estima
+                #print(f"Escolhido -> {n}", end= "\n\n")
 
             if n is None:
                 return InfoCaminho([], caminho_do_algoritmo)
@@ -708,7 +716,7 @@ class RaceP:
                     parents[adjacente] = n
                     g[adjacente] = g[n] + custo
 
-                # otherwise, check if it's quicker to first visit n, then m
+                # otherwise, check if it's quicker to first visit n, then "adjacente"
                 # and if it is, update parent data and g data
                 # and if the node was in the closed_list, move it to open_list
                 else:
