@@ -511,21 +511,6 @@ class RaceP:
             self.g_h[n] = self.manhatan_distance(n)
 
 
-    def calcula_est(self, estima):
-        """
-        Escolhe o nodo com menor heuristica.
-        :param estima: Dicionário dos valores vizinhos que tem como valor a sua heuristica. (tuple: int)
-        :return: Nodo com menor heuristica.
-        """
-        l = list(estima.keys())
-        min_estima = estima[l[0]]
-        node = l[0]
-        for k, v in estima.items():
-            if v < min_estima:
-                min_estima = v
-                node = k
-        return node
-
     def getH(self, nodo):
         if nodo not in self.g_h.keys():
             return 10000
@@ -597,10 +582,11 @@ class RaceP:
                 if n is None or self.heurisitic_velocity(nodoAnterior, v, velocidade) < self.heurisitic_velocity(nodoAnterior, n, velocidade):
                     n = v
 
-            caminho_do_algoritmo.append(n)
             acc = tuple(numpy.subtract(n.position, nodoAnterior.position))
             nodoAnterior = n
             velocidade = tuple(numpy.add(velocidade, acc))
+
+            caminho_do_algoritmo.append(n)
             historico_de_velocidades.append(velocidade)
 
             if n is None:
@@ -666,8 +652,14 @@ class RaceP:
         # Lista que guardará todos os nodos que o algoritmo percorre.
         caminho_do_algoritmo = []
 
+        # FIXME - inutilizado por enquanto.
+        historico_de_velocidades = []
+
         # parents contains an adjacency map of all nodes
         parents = {start: start}
+
+        velocidade = (0,0)
+        nodoAnterior = start
         n = None
         while len(open_list) > 0:
             # find a node with the lowest value of f() - evaluation function
@@ -678,14 +670,22 @@ class RaceP:
                     n = v
                 else:
                     flag = 1
-                    calc_heurist[v] = g[v] + self.getH(v)
-                    #calc_heurist[v] = g[v] + self.heurisitic_velocity()
+                    #calc_heurist[v] = g[v] + self.getH(v)
+                    calc_heurist[v] = g[v] + self.heurisitic_velocity(nodoAnterior, v, velocidade)
             if flag == 1:
-                min_estima = self.calcula_est(calc_heurist)
+                min_estima = min(calc_heurist, key=calc_heurist.get) # retorna o nodo que tem menor heuristica.
+                #min_estima1 = self.calcula_est(calc_heurist)
                 n = min_estima
-            caminho_do_algoritmo.append(n)
+
             if n is None:
                 return InfoCaminho([], caminho_do_algoritmo)
+
+            acc = tuple(numpy.subtract(n.position, nodoAnterior.position))
+            nodoAnterior = n
+            velocidade = tuple(numpy.add(velocidade, acc))
+
+            caminho_do_algoritmo.append(n)
+            historico_de_velocidades.append(velocidade)
 
             # if the current node is the stop_node
             # then we begin reconstructing the path from it to the start_node

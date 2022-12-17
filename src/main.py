@@ -133,19 +133,7 @@ def main():
 
             # Itera todos os caminhos finais dos carros.
             for caminho in info_caminhos:
-
-                print(f"\nExpansão dos nós com o algoritmo {caminho.nameofalgoritm} do jogador {caminho.getnplayer()}: (lenght = {len(caminho.getCaminhoDoAlgoritmo())})")
-                for p in caminho.getCaminhoDoAlgoritmo():
-                    print(p, end=" ")
-                if caminho.existeCaminho():
-                    print(f"\nCaminho final do jogador {caminho.getnplayer()} com o algoritmo {caminho.nameofalgoritm}: (lenght = {len(caminho.getCaminhoFinal())})")
-                    for p in caminho.getCaminhoFinal():
-                        print(p, end=" ")
-                    cost = rp.calcula_custo(caminho.getCaminhoFinal())
-                    print(f"\nCusto do caminho final do jogador {caminho.getnplayer()}: {cost}")
-                else:
-                    print(f"\nCaminho para o jogador {caminho.getnplayer()} não foi encontrado!")
-                #print(f"Com o tempo: {duracao}ms")
+                caminho.print(rp)
 
             print("\nImagem dos caminhos:")
             rp.print_caminhos(info_caminhos)

@@ -1,8 +1,8 @@
 XXXXXXXXXXXXXXXXXXXXXXXXXXX
 XXXXXX-----------X--------X
-XX---XX---------X---------X
-X-----XXXXXXXXXX-XX-------X
-X-----------P------X------F
+XX---XXXXXXXXXXXX---------X
+X----------------XX-------X
+X-----------P------X------X
 X-------------------X-----X
 X-------XXXXXXXX-----X----X
 X--------X-----X------X---X
@@ -11,5 +11,5 @@ X----------XXXXX----------F
 X-------------------------F
 X-----XXXXX---------------F
 XX------------XXXXXXXXXXXXX
-XXXX--X----XXX------------X
+XXXX--X----XXXXXXXXXXXXXXXX
 XXXXXXXXXXXXXXXXXXXXXXXXXXX
