@@ -18,7 +18,7 @@ def main():
 
     #circuit = input("Indique a path do ficheiro do circuito: ")
     circuit = "race.txt" # FIXME Maneira mais rápida para testar. Alterar no final.
-    circuit = "raceold.txt"
+    #circuit = "raceold.txt"
     try:
         rp = RaceP(circuit)
     except FileNotFoundError:
@@ -86,7 +86,7 @@ def main():
             player_algoritms = []
             name_algoritms = []
             for player in rp.start:
-                print(f"**** Algoritmos para o jogador {n_player} ****")
+                print(f"\n**** Algoritmo para o jogador {n_player} ****")
                 print("1-DFS")
                 print("2-BFS")
                 print("3-Greedy")
@@ -134,11 +134,11 @@ def main():
             # Itera todos os caminhos finais dos carros.
             for caminho in info_caminhos:
 
-                print(f"\nExpansão dos nós com o algoritmo {caminho.nameofalgoritm} do jogador {caminho.getnplayer()}:")
+                print(f"\nExpansão dos nós com o algoritmo {caminho.nameofalgoritm} do jogador {caminho.getnplayer()}: (lenght = {len(caminho.getCaminhoDoAlgoritmo())})")
                 for p in caminho.getCaminhoDoAlgoritmo():
                     print(p, end=" ")
                 if caminho.existeCaminho():
-                    print(f"\nCaminho final do jogador {caminho.getnplayer()} com o algoritmo {caminho.nameofalgoritm}:")
+                    print(f"\nCaminho final do jogador {caminho.getnplayer()} com o algoritmo {caminho.nameofalgoritm}: (lenght = {len(caminho.getCaminhoFinal())})")
                     for p in caminho.getCaminhoFinal():
                         print(p, end=" ")
                     cost = rp.calcula_custo(caminho.getCaminhoFinal())

@@ -129,7 +129,9 @@ class RaceP:
     def expande(self, estado: Node):
         x = estado.position[0]
         y = estado.position[1]
-        poss = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
+        #poss = [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
+        poss = [(1, 1), (1, 0), (1, -1), (0, 1), (0, -1), (-1, 1), (-1, 0), (-1, -1)]
+
         ret = []
         for p in poss:
             newx = x + p[0]
@@ -168,6 +170,8 @@ class RaceP:
                 res = colorize(res, "red")
             elif char == "F":
                 res = colorize(res, "blue")
+            #elif p == path[-1]: ##### FIXME DEBUG PARA MOSTRAR COM COR DIFERENTE O ULTIMO PASSO.
+            #    res = colorize(res, "purple")
             else:
                 res = colorize(res, "green")
             new_matrix[l][c] = res
@@ -395,17 +399,21 @@ class RaceP:
     def __procura_DFS(self,start: Node, end: list, path=[], visited=set()):
         path.append(start)
         visited.add(start)
+        #self.print_caminho(path) ### TO PRINT THE WAY STEP BY STEP.
+        #print(" ")
         if start.position in end:
-            return path
+            return InfoCaminho(path, list(visited))
+            #return path
 
         for (_, adj) in self.g[start]:
             if adj not in visited and adj in self.g:
                 resultado = self.__procura_DFS(adj, end, path, visited)
-                if resultado is not None:
+                if resultado.existeCaminho():
                     return resultado
 
         path.pop()  # se nao encontra remover o que está no caminho......
-        return None
+        #return None
+        return InfoCaminho([], list(visited))
 
 
     def procura_BFS(self, start: tuple):
@@ -671,6 +679,7 @@ class RaceP:
                 else:
                     flag = 1
                     calc_heurist[v] = g[v] + self.getH(v)
+                    #calc_heurist[v] = g[v] + self.heurisitic_velocity()
             if flag == 1:
                 min_estima = self.calcula_est(calc_heurist)
                 n = min_estima
