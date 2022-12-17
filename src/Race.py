@@ -2,6 +2,7 @@ from queue import Queue
 from Node import Node
 from InfoCaminho import InfoCaminho
 import numpy
+import math
 
 import networkx as nx  # biblioteca de tratamento de grafos necessária para desnhar graficamente o grafo
 import matplotlib.pyplot as plt  # idem
@@ -458,6 +459,23 @@ class RaceP:
         return InfoCaminho(path, caminho_do_algoritmo)
 
 
+    def euclidian_distance(self, nodo):
+        """
+        Calcula a distância euclidiana do nodo à meta mais próxima.
+        :param nodo: Node
+        :return: inteiro
+        """
+        res = 1000000
+        pos = nodo.getPosition()
+        x = pos[0]
+        y = pos[1]
+        for g in self.goals:
+            gx = g[0]
+            gy = g[1]
+            new = math.sqrt((x-gx) ** 2 + (y-gy) ** 2)
+            if new < res: res = new
+        return res
+
     def manhatan_distance(self, nodo):
         """
         Calcula a distância de manhatan do nodo fornecido no argumento ao destino final mais próximo.
@@ -512,6 +530,21 @@ class RaceP:
             lista.append((custo, adjacente))
         return lista
 
+    def heurisitic_velocity(self, current_node:Node, next_node:Node, vel: tuple):
+        """
+        Função que permite o cálculo dinâmico de heuristicas relativamente à velocidade.
+        :param current_node: Nodo atual, necessário para o calculo da nova velocidade.
+        :param next_node: Nodo cuja heuristica queremos verificar.
+        :param vel: Velocidade da posição atual a ter em conta no calculo da heuristica.
+        :return: Valor heuristico do nodo.
+        """
+        distance = self.euclidian_distance(next_node)
+        acc = tuple(numpy.subtract(next_node.position, current_node.position))
+        next_vel = tuple(numpy.add(vel, acc))
+        next_vel = math.sqrt(next_vel[0] ** 2 + next_vel[1] ** 2)
+        time_estimate = distance / next_vel
+        return time_estimate
+
 
     def greedy(self, start: tuple):
         """
@@ -539,7 +572,7 @@ class RaceP:
         # Lista onde vão ser armazenados os nodos que o algoritmo percorre.
         caminho_do_algoritmo = []
 
-        # TODO definir se faz match com o caminho_do_algoritmo ou com o caminho_final.
+        # TODO (REMINDER) historico de velocidades NAO UTILIZADO
         # Lista de tuplo que faz match com o caminho do algoritmo, e indica as velocidades do carro, na determinada posição.
         historico_de_velocidades = []
 
@@ -547,17 +580,18 @@ class RaceP:
         parents = {start: start}
 
         velocidade = (0,0)
-        posicaoAnterior = start.position
+        nodoAnterior = start
         while len(open_list) > 0:
             # encontra nodo com a menor heuristica
             n = None
             for v in open_list:
-                if n is None or self.g_h[v] < self.g_h[n]:
+                #if n is None or self.g_h[v] < self.g_h[n]:
+                if n is None or self.heurisitic_velocity(nodoAnterior, v, velocidade) < self.heurisitic_velocity(nodoAnterior, n, velocidade):
                     n = v
 
             caminho_do_algoritmo.append(n)
-            acc = tuple(numpy.subtract(n.position, posicaoAnterior))
-            posicaoAnterior = n.position
+            acc = tuple(numpy.subtract(n.position, nodoAnterior.position))
+            nodoAnterior = n
             velocidade = tuple(numpy.add(velocidade, acc))
             historico_de_velocidades.append(velocidade)
 
@@ -575,8 +609,16 @@ class RaceP:
                     n = parents[n]
                 caminho_final.append(start)
                 caminho_final.reverse()
-                caminho = InfoCaminho(caminho_final, caminho_do_algoritmo) # DEBUG
-                return InfoCaminho(caminho_final, caminho_do_algoritmo)
+                ### MATCHING DAS VELOCIDADES COM O CAMINHO FINAL ### # FIXME - por enquanto isto é inutil.
+                i = 0
+                new_hist_vel = []
+                for node,velocidade in zip(caminho_do_algoritmo, historico_de_velocidades):
+                    if caminho_final[i] == node:
+                        i += 1
+                        new_hist_vel.append(velocidade)
+                #################################################
+                caminho = InfoCaminho(caminho_final, caminho_do_algoritmo)
+                return caminho
 
             # para todos os vizinhos do nodo corrente
             for (_, adjacente) in self.getNeighbours(n):

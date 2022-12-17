@@ -6,8 +6,8 @@ class InfoCaminho:
     def __init__(self , caminho_final, caminho_do_algoritmo):
         """
         Construtor da classe InfoCaminho
-        :param caminho_final: caminho_final
-        :param caminho_do_algoritmo: caminho_do_algoritmo
+        :param caminho_final: Lista de nodos que representam o caminho final
+        :param caminho_do_algoritmo: Lista de nodos que representam o caminho do algoritmo
         """
         self.n_player = None
         self.nameofalgoritm = None

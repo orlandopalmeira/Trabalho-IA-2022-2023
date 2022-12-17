@@ -3,10 +3,11 @@ import time
 
 from Race import RaceP
 
+# At the moment not used.
 def verify_same_element(list1, list2):
 	"""
-	Retorna None no caso de não haver correspondencias. Caso contrário retorna o primeiro indice onde os elementos são iguais.
-	:return:
+	At the moment not used.
+	:return: None no caso de não haver correspondencias nos mesmos indices da lista. Caso contrário retorna o primeiro indice onde os elementos são iguais.
 	"""
 	for i in range(len(list1)):
 		if list1[i] == list2[i]:
@@ -17,7 +18,7 @@ def main():
 
     #circuit = input("Indique a path do ficheiro do circuito: ")
     circuit = "race.txt" # FIXME Maneira mais rápida para testar. Alterar no final.
-    #circuit = "raceold.txt"
+    circuit = "raceold.txt"
     try:
         rp = RaceP(circuit)
     except FileNotFoundError:
