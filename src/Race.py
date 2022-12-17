@@ -531,7 +531,7 @@ class RaceP:
         :param vel: Velocidade da posição atual a ter em conta no calculo da heuristica.
         :return: Valor heuristico do nodo.
         """
-        distance = self.manhatan_distance(next_node)
+        distance = self.euclidian_distance(next_node)
         acc = tuple(numpy.subtract(next_node.position, current_node.position))
         next_vel = tuple(numpy.add(vel, acc)) #### old
         next_vel = math.sqrt(next_vel[0] ** 2 + next_vel[1] ** 2) #### old
