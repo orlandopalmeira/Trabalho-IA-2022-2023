@@ -533,10 +533,10 @@ class RaceP:
         """
         distance = self.manhatan_distance(next_node)
         acc = tuple(numpy.subtract(next_node.position, current_node.position))
-        #next_vel = tuple(numpy.add(vel, acc)) #### old
-        #next_vel = math.sqrt(next_vel[0] ** 2 + next_vel[1] ** 2) #### old
-        next_vel = math.sqrt(vel[0] ** 2 + vel[1] ** 2) #### new
-        next_vel += 1 #### new
+        next_vel = tuple(numpy.add(vel, acc)) #### old
+        next_vel = math.sqrt(next_vel[0] ** 2 + next_vel[1] ** 2) #### old
+        #next_vel = math.sqrt(vel[0] ** 2 + vel[1] ** 2) #### new
+        #next_vel += 1 #### new
         time_estimate = distance / next_vel
         #print(next_node, end= " ") ##########
         #print(f"Dist: {distance}", end= "; ") ##########
