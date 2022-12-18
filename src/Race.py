@@ -1,12 +1,11 @@
 from queue import Queue
 from Node import Node
 from InfoCaminho import InfoCaminho
-import numpy
 import math
-
 import networkx as nx  # biblioteca de tratamento de grafos necessária para desnhar graficamente o grafo
 import matplotlib.pyplot as plt  # idem
-
+import numpy
+numpy.seterr(divide='ignore')
 
 def get_positions_from_nodes(nodos):
     lista = []
@@ -467,6 +466,27 @@ class RaceP:
         return InfoCaminho(path, caminho_do_algoritmo)
 
 
+    def in_tuple_distance(self, nodo):
+        """
+        Calcula a distância num tuplo do nodo à meta mais próxima.
+        :param nodo: Node
+        :return: tuple
+        """
+        res = 1000000
+        pos = nodo.getPosition()
+        x = pos[0]
+        y = pos[1]
+        candidates = []
+        for g in self.goals:
+            gx = g[0]
+            gy = g[1]
+            new = (gx-x, gy-y)
+            candidates.append(new)
+        #candidates = map(lambda v: self.euclidian_distance(Node(v)), candidates)
+        minim = min(candidates)
+        return minim
+
+
     def euclidian_distance(self, nodo):
         """
         Calcula a distância euclidiana do nodo à meta mais próxima.
@@ -531,17 +551,23 @@ class RaceP:
         :param vel: Velocidade da posição atual a ter em conta no calculo da heuristica.
         :return: Valor heuristico do nodo.
         """
-        distance = self.euclidian_distance(next_node)
+        #distance = self.euclidian_distance(next_node)
+        distance = self.in_tuple_distance(next_node)
         acc = tuple(numpy.subtract(next_node.position, current_node.position))
-        next_vel = tuple(numpy.add(vel, acc)) #### old
-        next_vel = math.sqrt(next_vel[0] ** 2 + next_vel[1] ** 2) #### old
-        #next_vel = math.sqrt(vel[0] ** 2 + vel[1] ** 2) #### new
-        #next_vel += 1 #### new
-        time_estimate = distance / next_vel
-        #print(next_node, end= " ") ##########
-        #print(f"Dist: {distance}", end= "; ") ##########
-        #print(f"Vel: {next_vel}", end= "; ")##########
-        #print(f"Tempo: {time_estimate}")##########
+        next_vel = tuple(numpy.add(vel, acc))
+        #next_vel = math.sqrt(next_vel[0] ** 2 + next_vel[1] ** 2)
+
+        #time_estimate = distance / next_vel
+        time_estimate = tuple(numpy.divide(distance, next_vel))
+        new_tx, new_ty = time_estimate
+        if new_tx < 0:
+            new_tx = numpy.Inf
+        if new_ty < 0:
+            new_ty = numpy.Inf
+
+        time_estimate = (new_tx, new_ty)
+        time_estimate = max(time_estimate)
+
         return time_estimate
 
 
@@ -677,7 +703,8 @@ class RaceP:
                 else:
                     flag = 1
                     #calc_heurist[v] = g[v] + self.getH(v)
-                    calc_heurist[v] = g[v] + self.heurisitic_velocity(nodoAnterior, v, velocidade)
+                    hv = self.heurisitic_velocity(nodoAnterior, v, velocidade)
+                    calc_heurist[v] = g[v] + hv
 
             if flag == 1:
                 min_estima = min(calc_heurist, key=calc_heurist.get) # retorna o nodo que tem menor heuristica.
