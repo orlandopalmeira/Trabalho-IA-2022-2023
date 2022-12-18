@@ -9,6 +9,8 @@ import numpy
 numpy.seterr(divide='ignore')
 numpy.seterr(invalid='ignore')
 
+INF = 100000
+
 def get_positions_from_nodes(nodos):
     lista = []
     for nodo in nodos:
@@ -564,11 +566,11 @@ class RaceP:
         time_estimate = tuple(numpy.divide(distance, next_vel))
         new_tx, new_ty = time_estimate
         if new_tx < 0:
-            new_tx = numpy.Inf
+            new_tx *= -INF
         elif math.isnan(new_tx):
             new_tx = 0
         if new_ty < 0:
-            new_ty = numpy.Inf
+            new_ty *= -INF
         elif math.isnan(new_ty):
             new_ty = 0
         time_estimate = (new_tx, new_ty)

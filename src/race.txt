@@ -8,7 +8,7 @@ X-------XXXXXXXX-----X----X
 X--------X-----X------X---X
 X---------X----X-------XXXX
 X----------XXXXX----------X
-XF-------------------P----X
+XF--------X----------P----X
 X-----XXXXX---------------X
 XX------------XXXXXXXXXXXXX
 XXXX--X----XXXXXXXXXXXXXXXX
