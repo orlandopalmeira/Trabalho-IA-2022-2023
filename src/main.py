@@ -51,7 +51,7 @@ def main():
         try:
             saida = int(input("Introduza a sua opcão: "))
         except ValueError:
-            print("Wrong input!")
+            print("\nWrong input!")
             enter = input("Prima enter para continuar.")
             continue
 
