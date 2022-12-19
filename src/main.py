@@ -3,16 +3,22 @@ import time
 
 from Race import RaceP
 from Node import Node
+from src.InfoCaminho import InfoCaminho
 
 
-def verify_same_element(list1, list2):
-	"""
-	:return: None no caso de não haver correspondencias nos mesmos indices da lista. Caso contrário retorna o primeiro indice onde os elementos são iguais.
-	"""
-	for i in range(len(list1)):
-		if list1[i] == list2[i]:
-			return i
-	return None
+def verify_same_element(cam1, cam2):
+    """
+    Retorna o indice em que os caminhos coincidem.
+    :param cam1: Objeto InfoCaminho 1
+    :param cam2: Objeto InfoCaminho 2
+    :return: None no caso de não haver correspondencias nos mesmos indices da lista. Caso contrário retorna o primeiro indice onde os caminhos coincidem.
+    """
+    list1 = cam1.caminhoFinal
+    list2 = cam2.caminhoFinal
+    for i in range(len(list1)):
+        if list1[i] == list2[i]:
+            return i
+    return None
 
 def insert_list_in_index(lista, index, list_to_insert):
     """
@@ -143,20 +149,23 @@ def main():
                 n_player += 1
 
             # TODO verificação de colisoes.
-            #colisao:int = verify_same_element(info_caminhos[0].caminhoFinal, info_caminhos[1].caminhoFinal)
             cam1 = [Node((4,4)), Node((4,5)), Node((4,6)), Node((4,7))]
+            cam1 = InfoCaminho(cam1, [])
             cam2 = [Node((3,4)), Node((4,5)), Node((3,6)), Node((3,7))]
-            colisao = 0
+            cam2 = InfoCaminho(cam2, [])
+            colisao: int = 0
             while colisao is not None:
-                colisao:int = verify_same_element(cam1, cam2)
+                #colisao = verify_same_element(info_caminhos[0], info_caminhos[1])
+                colisao = verify_same_element(cam1, cam2)
                 if colisao is not None:
+                    # TODO - critério de escolha de changing_caminho.
                     #changing_caminho = info_caminhos[1].caminhoFinal
-                    changing_caminho = cam1 ### debug
-                    desvio = rp.procura_BFS(changing_caminho[colisao - 1].position, changing_caminho[colisao + 1], changing_caminho[colisao])
-                    desvio = desvio.caminhoFinal
-                    print(desvio)
-                    desvio = desvio [1:-1]
-                    insert_list_in_index(changing_caminho, colisao, desvio)
+                    changing_caminho = cam1
+                    lista_de_nodos = changing_caminho.getCaminhoFinal() # Passa do objeto Infocaminho para uma lista de nodos.
+                    desvio = rp.procura_BFS(lista_de_nodos[colisao - 1].position, lista_de_nodos[colisao + 1], lista_de_nodos[colisao])
+                    desvio = desvio.getCaminhoFinal()[1:-1] # Caminho alternativo encontrado.
+                    insert_list_in_index(lista_de_nodos, colisao, desvio) # altera o path para o path com o desvio.
+                    changing_caminho.setCaminhoFinal(lista_de_nodos) # insere o novo caminho no InfoCaminho.
 
             # TODO verificação de colisoes. ((END))
 

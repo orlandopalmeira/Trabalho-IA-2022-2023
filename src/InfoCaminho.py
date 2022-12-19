@@ -67,3 +67,4 @@ class InfoCaminho:
             print(f"\nCusto do caminho final do jogador {self.getnplayer()}: {cost}")
         else:
             print(f"\nCaminho para o jogador {self.getnplayer()} não foi encontrado!")
+
