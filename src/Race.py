@@ -419,19 +419,27 @@ class RaceP:
         return InfoCaminho([], list(visited))
 
 
-    def procura_BFS(self, start: tuple):
+    def procura_BFS(self, start: tuple, end:Node = None, toAvoid:Node = None):
         """
         Aplica o Algoritmo BFS ao jogador indicado pelo indice(n_player).
         :param start: Tuplo que indica a posição onde começa o algoritmo.
+        :param end: Tuplo que indica o nodo destino. Se não tiver nada, os destinos finais são os indicados por "F" no ficheiro.
+        :param toAvoid: Nodo a evitar.
         :return: Objeto InfoCaminho que contem informação sobre o caminho determinado pelo algoritmo.
         """
         s = Node(start)
-        e = set([Node(x) for x in self.goals])
-        return self.__procura_BFS(s,e)
+        if end is None:
+            e = set([Node(x) for x in self.goals])
+        else:
+            e = [end]
 
-    def __procura_BFS(self, start, end):
+        return self.__procura_BFS(s,e, toAvoid)
+
+    def __procura_BFS(self, start, end, toAvoid:Node = None):
         # definir nodos visitados para evitar ciclos
-        visited = set()
+
+        visited = {toAvoid}
+        #visited = set([toAvoid])
         fila = Queue()
 
         # adicionar o nodo inicial à fila e aos visitados
@@ -585,8 +593,8 @@ class RaceP:
         :param start: Tuplo que indica a posição onde começa o algoritmo.
         :return: Objeto InfoCaminho que contem informação sobre o caminho determinado pelo algoritmo
         """
-        e = set([Node(x) for x in self.goals])
         s = Node(start)
+        e = set([Node(x) for x in self.goals])
         return self.__greedy(s, e)
 
     def __greedy(self, start, end):

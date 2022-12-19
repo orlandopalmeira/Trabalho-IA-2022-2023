@@ -2,17 +2,31 @@ import sys
 import time
 
 from Race import RaceP
+from Node import Node
 
-# At the moment not used.
+
 def verify_same_element(list1, list2):
 	"""
-	At the moment not used.
 	:return: None no caso de não haver correspondencias nos mesmos indices da lista. Caso contrário retorna o primeiro indice onde os elementos são iguais.
 	"""
 	for i in range(len(list1)):
 		if list1[i] == list2[i]:
 			return i
-		return None
+	return None
+
+def insert_list_in_index(lista, index, list_to_insert):
+    """
+    Insere uma lista numa lista num determinado indice, removendo o valor do indice original.
+    :param lista: Lista original.
+    :param index: Indice onde queremos inserir a lista_to_insert na lista.
+    :param list_to_insert: Lista que queremos inserir.
+    :return: Resultado da inserção da lista.
+    """
+    del lista[index]
+    for i in list_to_insert:
+        lista.insert(index, i)
+        index += 1
+    return lista
 
 def main():
 
@@ -129,7 +143,22 @@ def main():
                 n_player += 1
 
             # TODO verificação de colisoes.
+            #colisao:int = verify_same_element(info_caminhos[0].caminhoFinal, info_caminhos[1].caminhoFinal)
+            cam1 = [Node((4,4)), Node((4,5)), Node((4,6)), Node((4,7))]
+            cam2 = [Node((3,4)), Node((4,5)), Node((3,6)), Node((3,7))]
+            colisao = 0
+            while colisao is not None:
+                colisao:int = verify_same_element(cam1, cam2)
+                if colisao is not None:
+                    #changing_caminho = info_caminhos[1].caminhoFinal
+                    changing_caminho = cam1 ### debug
+                    desvio = rp.procura_BFS(changing_caminho[colisao - 1].position, changing_caminho[colisao + 1], changing_caminho[colisao])
+                    desvio = desvio.caminhoFinal
+                    print(desvio)
+                    desvio = desvio [1:-1]
+                    insert_list_in_index(changing_caminho, colisao, desvio)
 
+            # TODO verificação de colisoes. ((END))
 
             # Itera todos os caminhos finais dos carros.
             for caminho in info_caminhos:
@@ -139,71 +168,6 @@ def main():
             rp.print_caminhos(info_caminhos)
             enter = input("Prima enter para continuar.")
 
-
-        # DFS
-        elif saida == 6:
-            start = time.time()
-            caminho = rp.procura_DFS(rp.start[0])
-            end = time.time()
-            duracao = (end-start) * 1000
-            cost = rp.calcula_custo(caminho)
-            if caminho:
-                for p in caminho:
-                    print(p)
-                print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
-
-            print("\nFez o seguinte caminho:")
-            rp.print_caminho(caminho)
-            enter = input("Prima enter para continuar.")
-
-        # BFS
-        elif saida == 7:
-            start = time.time()
-            caminho = rp.procura_BFS(rp.start[0])
-            end = time.time()
-            duracao = (end-start) * 1000
-            cost = rp.calcula_custo(caminho)
-            if caminho:
-                for p in caminho:
-                    print(p)
-                print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
-
-            print("\nFez o seguinte caminho:")
-            rp.print_caminho(caminho)
-            enter = input("Prima enter para continuar.")
-
-        # Greedy
-        elif saida == 8:
-            start = time.time()
-            paths = rp.greedy(rp.start[0])
-            end = time.time()
-            duracao = (end-start) * 1000
-            for caminho in paths:
-                cost = rp.calcula_custo(caminho)
-                if caminho:
-                    for p in caminho:
-                        print(p)
-                    print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
-
-            print("\nFez o seguinte caminho:")
-            rp.print_caminhos(paths)
-            enter = input("Prima enter para continuar.")
-
-        # A*
-        elif saida == 9:
-            start = time.time()
-            caminho = rp.procura_aStar(rp.start[0])
-            end = time.time()
-            duracao = (end-start) * 1000
-            cost = rp.calcula_custo(caminho)
-            if caminho:
-                for p in caminho:
-                    print(p)
-                print(f"Com o custo: {cost}\nCom o tempo: {duracao}ms")
-
-            print("\nFez o seguinte caminho:")
-            rp.print_caminho(caminho)
-            enter = input("Prima enter para continuar.\n")
         else:
             print("Wrong input!")
             enter = input("Prima enter para continuar.")
