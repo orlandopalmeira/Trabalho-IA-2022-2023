@@ -748,6 +748,15 @@ class RaceP:
                     n = parents[n]
                 reconst_path.append(start)
                 reconst_path.reverse()
+
+                ### MATCHING DAS VELOCIDADES COM O CAMINHO FINAL ### # FIXME - por enquanto isto é inutil.
+                i = 0
+                new_hist_vel = []
+                for node, velocidade in zip(caminho_do_algoritmo, historico_de_velocidades):
+                    if reconst_path[i] == node:
+                        i += 1
+                        new_hist_vel.append(velocidade)
+                #################################################
                 return InfoCaminho(reconst_path, caminho_do_algoritmo)
 
             # for all neighbors of the current node do

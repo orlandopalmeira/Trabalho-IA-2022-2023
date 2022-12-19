@@ -154,18 +154,23 @@ def main():
             cam2 = [Node((3,4)), Node((4,5)), Node((3,6)), Node((3,7))]
             cam2 = InfoCaminho(cam2, [])
             colisao: int = 0
+            # colisao = verify_same_element(info_caminhos[0], info_caminhos[1])
+            colisao = verify_same_element(cam1, cam2)
             while colisao is not None:
-                #colisao = verify_same_element(info_caminhos[0], info_caminhos[1])
+                print(f"Ocorreu colisão em {colisao}. Recalculando caminhos...")
+                # TODO - critério de escolha de changing_caminho.
+                #changing_caminho = info_caminhos[1].caminhoFinal
+                changing_caminho = cam1
+                lista_de_nodos = changing_caminho.getCaminhoFinal() # Passa do objeto Infocaminho para uma lista de nodos.
+                desvio = rp.procura_BFS(lista_de_nodos[colisao - 1].position, lista_de_nodos[colisao + 1], lista_de_nodos[colisao])
+                desvio = desvio.getCaminhoFinal()[1:-1] # Caminho alternativo encontrado.
+                insert_list_in_index(lista_de_nodos, colisao, desvio) # altera o path para o path com o desvio.
+                changing_caminho.setCaminhoFinal(lista_de_nodos) # insere o novo caminho no InfoCaminho.
+
+                # Re-verificação de colisões.
+                # colisao = verify_same_element(info_caminhos[0], info_caminhos[1])
                 colisao = verify_same_element(cam1, cam2)
-                if colisao is not None:
-                    # TODO - critério de escolha de changing_caminho.
-                    #changing_caminho = info_caminhos[1].caminhoFinal
-                    changing_caminho = cam1
-                    lista_de_nodos = changing_caminho.getCaminhoFinal() # Passa do objeto Infocaminho para uma lista de nodos.
-                    desvio = rp.procura_BFS(lista_de_nodos[colisao - 1].position, lista_de_nodos[colisao + 1], lista_de_nodos[colisao])
-                    desvio = desvio.getCaminhoFinal()[1:-1] # Caminho alternativo encontrado.
-                    insert_list_in_index(lista_de_nodos, colisao, desvio) # altera o path para o path com o desvio.
-                    changing_caminho.setCaminhoFinal(lista_de_nodos) # insere o novo caminho no InfoCaminho.
+
 
             # TODO verificação de colisoes. ((END))
 
