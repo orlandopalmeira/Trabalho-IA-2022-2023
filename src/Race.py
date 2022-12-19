@@ -659,7 +659,7 @@ class RaceP:
                         i += 1
                         new_hist_vel.append(velocidade)
                 #################################################
-                caminho = InfoCaminho(caminho_final, caminho_do_algoritmo)
+                caminho = InfoCaminho(caminho_final, caminho_do_algoritmo, historico_de_velocidades)
                 return caminho
 
             # para todos os vizinhos do nodo corrente
@@ -749,7 +749,7 @@ class RaceP:
                 reconst_path.append(start)
                 reconst_path.reverse()
 
-                ### MATCHING DAS VELOCIDADES COM O CAMINHO FINAL ### # FIXME - por enquanto isto é inutil.
+                ### MATCHING DAS VELOCIDADES COM O CAMINHO FINAL ###
                 i = 0
                 new_hist_vel = []
                 for node, velocidade in zip(caminho_do_algoritmo, historico_de_velocidades):
@@ -757,7 +757,7 @@ class RaceP:
                         i += 1
                         new_hist_vel.append(velocidade)
                 #################################################
-                return InfoCaminho(reconst_path, caminho_do_algoritmo)
+                return InfoCaminho(reconst_path, caminho_do_algoritmo, historico_de_velocidades)
 
             # for all neighbors of the current node do
             for (custo, adjacente) in self.getNeighbours(n):  # definir função getneighbours  tem de ter um par nodo peso

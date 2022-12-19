@@ -1,24 +1,46 @@
+import math
 import sys
 import time
 
 from Race import RaceP
 from Node import Node
-from src.InfoCaminho import InfoCaminho
+from InfoCaminho import InfoCaminho
 
+def min_vel(t1, t2):
+    """
+    Retorna o indice do menor tuplo de velocidade (Exemplo: t1 < t2, retorna 0, caso contrario 1).
+    :param t1: Tuplo de velocidade
+    :param t2: Tuplo de velocidade
+    :return: Retorna o indice do menor tuplo de velocidade.
+    """
+    x1, y1 = t1
+    x2, y2 = t2
+    t1 = math.sqrt(x1**2 + y1**2)
+    t2 = math.sqrt(x2**2 + y2**2)
+    if t1 < t2:
+        return 0
+    else:
+        return 1
 
 def verify_same_element(cam1, cam2):
     """
-    Retorna o indice em que os caminhos coincidem.
+    Retorna um tuplo (indice_colisao, indice da lista onde vao ocorrer as alteraçoes)
     :param cam1: Objeto InfoCaminho 1
     :param cam2: Objeto InfoCaminho 2
-    :return: None no caso de não haver correspondencias nos mesmos indices da lista. Caso contrário retorna o primeiro indice onde os caminhos coincidem.
+    :return: Retorna um tuplo (indice_colisao, ind_change(0 ou 1 sendo o indice da lista que vai ser alterada)).
     """
     list1 = cam1.caminhoFinal
     list2 = cam2.caminhoFinal
-    for i in range(len(list1)):
+    for i in range(min(len(list1), len(list2))):
         if list1[i] == list2[i]:
-            return i
-    return None
+            if cam1.velocidades or cam2.velocidades:
+                vel0 = cam1.velocidades[i]
+                vel1 = cam2.velocidades[i]
+                min_ind = min_vel(vel0, vel1)
+                return i, min_ind
+            else:
+                return i, 0 # Para o caso de não haver velocidades.
+    return None, None
 
 def insert_list_in_index(lista, index, list_to_insert):
     """
@@ -148,31 +170,32 @@ def main():
                 info_caminhos.append(returnedCaminho)
                 n_player += 1
 
-            # TODO verificação de colisoes.
-            cam1 = [Node((4,4)), Node((4,5)), Node((4,6)), Node((4,7))]
-            cam1 = InfoCaminho(cam1, [])
-            cam2 = [Node((3,4)), Node((4,5)), Node((3,6)), Node((3,7))]
-            cam2 = InfoCaminho(cam2, [])
-            colisao: int = 0
-            # colisao = verify_same_element(info_caminhos[0], info_caminhos[1])
-            colisao = verify_same_element(cam1, cam2)
-            while colisao is not None:
-                print(f"Ocorreu colisão em {colisao}. Recalculando caminhos...")
-                # TODO - critério de escolha de changing_caminho.
-                #changing_caminho = info_caminhos[1].caminhoFinal
-                changing_caminho = cam1
-                lista_de_nodos = changing_caminho.getCaminhoFinal() # Passa do objeto Infocaminho para uma lista de nodos.
-                desvio = rp.procura_BFS(lista_de_nodos[colisao - 1].position, lista_de_nodos[colisao + 1], lista_de_nodos[colisao])
-                desvio = desvio.getCaminhoFinal()[1:-1] # Caminho alternativo encontrado.
-                insert_list_in_index(lista_de_nodos, colisao, desvio) # altera o path para o path com o desvio.
-                changing_caminho.setCaminhoFinal(lista_de_nodos) # insere o novo caminho no InfoCaminho.
-
-                # Re-verificação de colisões.
+            # Verificação de colisoes.
+            ########################################
+            if len(info_caminhos) > 1:
+                cam1 = [Node((4,4)), Node((4,5)), Node((4,6)), Node((4,7)), Node((4,8))]
+                cam1 = InfoCaminho(cam1, [])
+                cam2 = [Node((3,4)), Node((4,5)), Node((3,6)), Node((3,7))]
+                cam2 = InfoCaminho(cam2, [])
+                ########################################
+                colisao: int = 0
                 # colisao = verify_same_element(info_caminhos[0], info_caminhos[1])
-                colisao = verify_same_element(cam1, cam2)
+                colisao, ind_change = verify_same_element(cam1, cam2)
+                while colisao is not None and colisao != len(info_caminhos[ind_change].caminhoFinal) - 1:
+                    print(f"Ocorreu colisão em {colisao}. Menor velocidade no indice {ind_change}. Recalculando caminho...")
+                    #changing_caminho = info_caminhos[ind_change].caminhoFinal
+                    changing_caminho = cam2  #### FIXME (REMOVER E DESCOMENTAR LINHA EM CIMA) Escolha de caminho hardcoded para debug com caminhos fixos.
+                    lista_de_nodos = changing_caminho.getCaminhoFinal() # Passa do objeto Infocaminho para uma lista de nodos.
+                    desvio = rp.procura_BFS(lista_de_nodos[colisao - 1].position, lista_de_nodos[colisao + 1], lista_de_nodos[colisao])
+                    desvio = desvio.getCaminhoFinal()[1:-1] # Caminho alternativo encontrado.
+                    insert_list_in_index(lista_de_nodos, colisao, desvio) # altera o path para o path com o desvio.
+                    changing_caminho.setCaminhoFinal(lista_de_nodos) # insere o novo caminho no InfoCaminho.
 
+                    # Re-verificação de colisões.
+                    # colisao = verify_same_element(info_caminhos[0], info_caminhos[1])
+                    colisao, ind_change = verify_same_element(cam1, cam2)
 
-            # TODO verificação de colisoes. ((END))
+                # TODO verificação de colisoes. ((END))
 
             # Itera todos os caminhos finais dos carros.
             for caminho in info_caminhos:

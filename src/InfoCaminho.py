@@ -3,7 +3,7 @@ class InfoCaminho:
     """
     Classe que contém informação sobre o caminho que um algoritmo determinou.
     """
-    def __init__(self , caminho_final, caminho_do_algoritmo):
+    def __init__(self , caminho_final, caminho_do_algoritmo, velocidades = []):
         """
         Construtor da classe InfoCaminho
         :param caminho_final: Lista de nodos que representam o caminho final
@@ -13,6 +13,7 @@ class InfoCaminho:
         self.nameofalgoritm = None
         self.caminhoFinal = caminho_final
         self.caminhoDoAlgoritmo = caminho_do_algoritmo
+        self.velocidades = velocidades
 
 
     def setnplayer(self, num: int):
