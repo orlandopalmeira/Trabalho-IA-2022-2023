@@ -47,7 +47,7 @@ class InfoCaminho:
             return False
         else: return True
 
-    def print(self, rp):
+    def printInfo(self, rp):
         """
         Printa no standard output toda a informação relativa ao caminho.
         :param rp: Recebe um objeto RaceP para poder calcular do caminho final, tendo em conta o grafo do problema.
@@ -66,6 +66,7 @@ class InfoCaminho:
                 print(p, end=" -> " if p != self.getCaminhoFinal()[-1] else " ")
             cost = rp.calcula_custo(self.getCaminhoFinal())
             print(f"\nCusto do caminho final do jogador {self.getnplayer()}: {cost}")
+
         else:
-            print(f"\nCaminho para o jogador {self.getnplayer()} não foi encontrado!")
+            print(f"\nCaminho para o jogador {self.getnplayer()} não foi encontrado!\n")
 

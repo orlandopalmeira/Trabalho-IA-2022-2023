@@ -33,7 +33,7 @@ def verify_same_element(cam1, cam2):
     list2 = cam2.caminhoFinal
     for i in range(min(len(list1), len(list2))):
         if list1[i] == list2[i]:
-            if cam1.velocidades or cam2.velocidades:
+            if cam1.velocidades and cam2.velocidades:
                 vel0 = cam1.velocidades[i]
                 vel1 = cam2.velocidades[i]
                 min_ind = min_vel(vel0, vel1)
@@ -171,39 +171,46 @@ def main():
                 n_player += 1
 
             # Verificação de colisoes.
-            ########################################
             if len(info_caminhos) > 1:
-                cam1 = [Node((4,4)), Node((4,5)), Node((4,6)), Node((4,7)), Node((4,8))]
-                cam1 = InfoCaminho(cam1, [])
-                cam2 = [Node((3,4)), Node((4,5)), Node((3,6)), Node((3,7))]
-                cam2 = InfoCaminho(cam2, [])
-                ########################################
+                """
+                ################## Atribuição fixa de caminhos para Testes ##################
+                cam1 = [Node((4,5)), Node((4,6)), Node((4,7)), Node((4,8)), Node((4,9))]
+                cam2 = [Node((6,7)), Node((5,7)), Node((4,7)), Node((3,7))]
+                info_caminhos[0].setCaminhoFinal(cam1)
+                info_caminhos[1].setCaminhoFinal(cam2)
+                #############################################################################
+                """
+
                 colisao: int = 0
-                # colisao = verify_same_element(info_caminhos[0], info_caminhos[1])
-                colisao, ind_change = verify_same_element(cam1, cam2)
+                colisao, ind_change = verify_same_element(info_caminhos[0], info_caminhos[1])
                 while colisao is not None and colisao != len(info_caminhos[ind_change].caminhoFinal) - 1:
-                    print(f"Ocorreu colisão em {colisao}. Menor velocidade no indice {ind_change}. Recalculando caminho...")
-                    #changing_caminho = info_caminhos[ind_change].caminhoFinal
-                    changing_caminho = cam2  #### FIXME (REMOVER E DESCOMENTAR LINHA EM CIMA) Escolha de caminho hardcoded para debug com caminhos fixos.
+                    print(f"\n------ Ocorreu colisão na {colisao}ª iteração. Menor velocidade no {ind_change + 1}º caminho. Recalculando caminho... ------\n")
+                    print(f"Caminho anterior: {info_caminhos[ind_change].caminhoFinal}")
+                    changing_caminho = info_caminhos[ind_change]
                     lista_de_nodos = changing_caminho.getCaminhoFinal() # Passa do objeto Infocaminho para uma lista de nodos.
                     desvio = rp.procura_BFS(lista_de_nodos[colisao - 1].position, lista_de_nodos[colisao + 1], lista_de_nodos[colisao])
                     desvio = desvio.getCaminhoFinal()[1:-1] # Caminho alternativo encontrado.
                     insert_list_in_index(lista_de_nodos, colisao, desvio) # altera o path para o path com o desvio.
                     changing_caminho.setCaminhoFinal(lista_de_nodos) # insere o novo caminho no InfoCaminho.
+                    print(f"Novo Caminho: {info_caminhos[ind_change].caminhoFinal}")
+                    print("---------------------------------------------------------------------------------")
 
                     # Re-verificação de colisões.
-                    # colisao = verify_same_element(info_caminhos[0], info_caminhos[1])
-                    colisao, ind_change = verify_same_element(cam1, cam2)
+                    colisao, ind_change  = verify_same_element(info_caminhos[0], info_caminhos[1])
 
-                # TODO verificação de colisoes. ((END))
+                # Fim da verificação de colisoes.
 
-            # Itera todos os caminhos finais dos carros.
+            # Printa a informação de todos os caminhos finais dos carros.
             for caminho in info_caminhos:
-                caminho.print(rp)
+                print(f"\n******** Jogador {caminho.n_player} ********")
+                caminho.printInfo(rp)
+                rp.print_caminho(caminho.caminhoFinal)
+                print(f"*************************************")
 
-            print("\nImagem dos caminhos:")
-            rp.print_caminhos(info_caminhos)
-            enter = input("Prima enter para continuar.")
+            if len(info_caminhos) > 1:
+                print("\n-------- Desenho conjunto dos caminhos --------")
+                rp.print_caminhos(info_caminhos) # Desenha uma matriz conjunta com os caminhos.
+                enter = input("Prima enter para continuar.")
 
         else:
             print("Wrong input!")

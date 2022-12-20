@@ -405,6 +405,7 @@ class RaceP:
         #self.print_caminho(path) ### TO PRINT THE WAY STEP BY STEP.
         #print(" ")
         if start.position in end:
+            lista = list(visited)
             return InfoCaminho(path, list(visited))
             #return path
 
