@@ -79,7 +79,7 @@ def main():
         print("\n**** Menu ****")
         print("1-Imprimir Grafo ")
         print("2-Desenhar Grafo")
-        print("3-Indicar posições inicial e finais do circuito")
+        print("3-Indicar posições iniciais e finais do circuito")
         print("4-Imprimir nodos do Grafo")
         print("5-Aplicar algoritmos aos carros")
         """
@@ -124,7 +124,7 @@ def main():
 
         # Utilizar algoritmos
         elif saida == 5:
-            n_player = 0
+            n_player = 1
             player_algoritms = []
             name_algoritms = []
             for player in rp.start:
@@ -192,7 +192,7 @@ def main():
                     desvio = desvio.getCaminhoFinal()[1:-1] # Caminho alternativo encontrado.
                     insert_list_in_index(lista_de_nodos, colisao, desvio) # altera o path para o path com o desvio.
                     changing_caminho.setCaminhoFinal(lista_de_nodos) # insere o novo caminho no InfoCaminho.
-                    print(f"Novo Caminho: {info_caminhos[ind_change].caminhoFinal}")
+                    print(f"Novo Caminho:     {info_caminhos[ind_change].caminhoFinal}")
                     print("---------------------------------------------------------------------------------")
 
                     # Re-verificação de colisões.
@@ -202,7 +202,7 @@ def main():
 
             # Printa a informação de todos os caminhos finais dos carros.
             for caminho in info_caminhos:
-                print(f"\n******** Jogador {caminho.n_player} ********")
+                print(f"\n******** Jogador {caminho.n_player+1} ********")
                 caminho.printInfo(rp)
                 rp.print_caminho(caminho)
                 print(f"*************************************")
@@ -215,7 +215,7 @@ def main():
                 info_caminhos.sort(key=lambda lc: lc.getCostOfCaminhoFinal())
                 for i in range(len(info_caminhos)):
                     ic = info_caminhos[i]
-                    print(f"{i+1}º lugar - Jogador {ic.n_player} com o algoritmo {ic.nameofalgoritm} e custo {ic.getCostOfCaminhoFinal()}.")
+                    print(f"{i+1}º lugar - Jogador {ic.n_player+1} com o algoritmo {ic.nameofalgoritm} e custo {ic.getCostOfCaminhoFinal()}.")
                 print("---------------------------------------------------")
                 enter = input("Prima enter para continuar.")
 

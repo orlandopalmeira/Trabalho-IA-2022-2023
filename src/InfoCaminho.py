@@ -57,18 +57,18 @@ class InfoCaminho:
         :return: Void
         """
         # Printagem do caminho do algoritmo.
-        print(f"\nExpansão dos nós com o algoritmo {self.nameofalgoritm} do jogador {self.getnplayer()}: (lenght = {len(self.getCaminhoDoAlgoritmo())})")
+        print(f"\nExpansão dos nós com o algoritmo {self.nameofalgoritm} do jogador {self.getnplayer()+1}: (lenght = {len(self.getCaminhoDoAlgoritmo())})")
         for p in self.getCaminhoDoAlgoritmo():
             print(p, end=" -> " if p != self.getCaminhoDoAlgoritmo()[-1] else " ")
 
         # Printagem do caminho final.
         if self.existeCaminho():
             print(
-                f"\nCaminho final do jogador {self.getnplayer()} com o algoritmo {self.nameofalgoritm}: (lenght = {len(self.getCaminhoFinal())})")
+                f"\nCaminho final do jogador {self.getnplayer()+1} com o algoritmo {self.nameofalgoritm}: (lenght = {len(self.getCaminhoFinal())})")
             for p in self.getCaminhoFinal():
                 print(p, end=" -> " if p != self.getCaminhoFinal()[-1] else " ")
             cost = rp.calcula_custo(self.getCaminhoFinal())
-            print(f"\nCusto do caminho final do jogador {self.getnplayer()}: {cost}\n")
+            print(f"\nCusto do caminho final do jogador {self.getnplayer()+1}: {cost}\n")
         else:
-            print(f"\nCaminho para o jogador {self.getnplayer()} não foi encontrado!\n")
+            print(f"\nCaminho para o jogador {self.getnplayer()+1} não foi encontrado!\n")
 
