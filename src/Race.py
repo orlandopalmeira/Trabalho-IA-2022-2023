@@ -145,13 +145,13 @@ class RaceP:
         return ret
 
 
-    def print_caminho(self, caminho_de_nodos):
+    def print_caminho(self, info_caminho: InfoCaminho):
         """
         Desenha numa matriz, o caminho fornecido.
-        :param caminho_de_nodos: Lista de nodos que representam um caminho.
+        :param info_caminho: Objeto InfoCaminho que contém informação sobre os caminhos.
         :return: void
         """
-        if not caminho_de_nodos:
+        if not info_caminho.existeCaminho():
             print("Não foi encontrado nenhum caminho!")
             return
 
@@ -160,21 +160,19 @@ class RaceP:
         for i in range(len(self.matrix)):
             new_matrix.append(self.matrix[i].copy())
 
-        # retorna apenas os tuplos de posicao dos nodos.
-        path = get_positions_from_nodes(caminho_de_nodos)
 
-        step = 'a'
-        for p in path:
-            l = p[0]
-            c = p[1]
+        # retorna apenas os tuplos de posicao dos nodos.
+        path = get_positions_from_nodes(info_caminho.getCaminhoFinal())
+
+        l,c = path[0]
+        new_matrix[l][c] = colorize("a", "red")
+        step = 'b'
+        for p in path[1:]:
+            l,c = p
             char = new_matrix[l][c]
             res = f"{step}"
-            if char == "P":
-                res = colorize(res, "red")
-            elif char == "F":
+            if char == "F":
                 res = colorize(res, "blue")
-            #elif p == path[-1]: ##### FIXME DEBUG PARA MOSTRAR COM COR DIFERENTE O ULTIMO PASSO.
-            #    res = colorize(res, "purple")
             else:
                 res = colorize(res, "green")
             new_matrix[l][c] = res

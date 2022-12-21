@@ -58,8 +58,8 @@ def insert_list_in_index(lista, index, list_to_insert):
 
 def main():
 
-    circuit = input("Indique a path do ficheiro do circuito: ")
-    #circuit = "race.txt" # FIXME Maneira mais rápida para testar. Alterar no final.
+    #circuit = input("Indique a path do ficheiro do circuito: ")
+    circuit = "race.txt" # FIXME Maneira mais rápida para testar. Alterar no final.
     #circuit = "raceold.txt"
     try:
         rp = RaceP(circuit)
@@ -204,7 +204,7 @@ def main():
             for caminho in info_caminhos:
                 print(f"\n******** Jogador {caminho.n_player} ********")
                 caminho.printInfo(rp)
-                rp.print_caminho(caminho.caminhoFinal)
+                rp.print_caminho(caminho)
                 print(f"*************************************")
 
             if len(info_caminhos) > 1:
