@@ -614,7 +614,6 @@ class RaceP:
         # Lista onde vão ser armazenados os nodos que o algoritmo percorre.
         caminho_do_algoritmo = []
 
-        # TODO (REMINDER) historico de velocidades NAO UTILIZADO
         # Lista de tuplo que faz match com o caminho do algoritmo, e indica as velocidades do carro, na determinada posição.
         historico_de_velocidades = []
 
@@ -701,7 +700,6 @@ class RaceP:
         # Lista que guardará todos os nodos que o algoritmo percorre.
         caminho_do_algoritmo = []
 
-        # FIXME - inutilizado por enquanto.
         historico_de_velocidades = []
 
         # parents contains an adjacency map of all nodes

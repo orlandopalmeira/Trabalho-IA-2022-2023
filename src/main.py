@@ -58,8 +58,8 @@ def insert_list_in_index(lista, index, list_to_insert):
 
 def main():
 
-    #circuit = input("Indique a path do ficheiro do circuito: ")
-    circuit = "race.txt" # FIXME Maneira mais rápida para testar. Alterar no final.
+    circuit = input("Indique a path do ficheiro do circuito: ")
+    #circuit = "race.txt" # FIXME Maneira mais rápida para testar. Alterar no final.
     #circuit = "raceold.txt"
     try:
         rp = RaceP(circuit)
