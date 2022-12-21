@@ -208,8 +208,15 @@ def main():
                 print(f"*************************************")
 
             if len(info_caminhos) > 1:
-                print("\n-------- Desenho conjunto dos caminhos --------")
+                print("\n--------- Desenho conjunto dos caminhos ---------")
                 rp.print_caminhos(info_caminhos) # Desenha uma matriz conjunta com os caminhos.
+
+                print("\n----------- Ordem de chegada dos carros -----------")
+                info_caminhos.sort(key=lambda lc: lc.getCostOfCaminhoFinal())
+                for i in range(len(info_caminhos)):
+                    ic = info_caminhos[i]
+                    print(f"{i+1}º lugar - Jogador {ic.n_player} com o algoritmo {ic.nameofalgoritm} e custo {ic.getCostOfCaminhoFinal()}.")
+                print("---------------------------------------------------")
                 enter = input("Prima enter para continuar.")
 
         else:

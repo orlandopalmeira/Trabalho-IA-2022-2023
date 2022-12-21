@@ -42,6 +42,9 @@ class InfoCaminho:
     def getCaminhoDoAlgoritmo(self):
         return self.caminhoDoAlgoritmo
 
+    def getCostOfCaminhoFinal(self):
+        return len(self.caminhoFinal) - 1
+
     def existeCaminho(self):
         if len(self.caminhoFinal) == 0:
             return False
@@ -65,8 +68,7 @@ class InfoCaminho:
             for p in self.getCaminhoFinal():
                 print(p, end=" -> " if p != self.getCaminhoFinal()[-1] else " ")
             cost = rp.calcula_custo(self.getCaminhoFinal())
-            print(f"\nCusto do caminho final do jogador {self.getnplayer()}: {cost}")
-
+            print(f"\nCusto do caminho final do jogador {self.getnplayer()}: {cost}\n")
         else:
             print(f"\nCaminho para o jogador {self.getnplayer()} não foi encontrado!\n")
 

@@ -389,7 +389,7 @@ class RaceP:
         plt.show()
 
 
-    def procura_DFS(self, start: tuple, path = [], visited=set()):
+    def procura_DFS(self, start: tuple):
         """
         Algoritmo DFS.
         :param path: Caminho feito
@@ -397,16 +397,16 @@ class RaceP:
         :param start: Tuplo que indica a posição onde começa o algoritmo.
         :return: Objeto InfoCaminho que contem informação sobre o caminho determinado pelo algoritmo.
         """
-        return self.__procura_DFS(Node(start), self.goals, path = path, visited=visited)
+        return self.__procura_DFS(Node(start), self.goals, path = [], visited = [])
 
-    def __procura_DFS(self,start: Node, end: list, path=[], visited=set()):
+    def __procura_DFS(self,start: Node, end: list, path=[], visited=[]):
         path.append(start)
-        visited.add(start)
+        if start not in visited:
+            visited.append(start)
         #self.print_caminho(path) ### TO PRINT THE WAY STEP BY STEP.
-        #print(" ")
+        #print()
         if start.position in end:
-            lista = list(visited)
-            return InfoCaminho(path, list(visited))
+            return InfoCaminho(path, visited)
             #return path
 
         for (_, adj) in self.g[start]:
@@ -417,7 +417,7 @@ class RaceP:
 
         path.pop()  # se nao encontra remover o que está no caminho......
         #return None
-        return InfoCaminho([], list(visited))
+        return InfoCaminho([], visited)
 
 
     def procura_BFS(self, start: tuple, end:Node = None, toAvoid:Node = None):
