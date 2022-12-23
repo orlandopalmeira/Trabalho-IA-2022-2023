@@ -70,13 +70,9 @@ def main():
     # circuit = "race"
     # circuit = "test"
     while circuit is None:
-        """Print das opçaos do circuito com print_circuito"""
-        print("\n\nOpção 1:")
-        print_circuit("race")
-        print("\n\nOpção 2:")
-        print_circuit("donut")
-        print("\n\nOpção 3:")
-        print_circuit("test")
+        for i, value in enumerate(opcao_to_circuito.values()):
+            print(f"\n\nOpção {i+1}:")
+            print_circuit(value)
         print("\n\nOpção 4: Indicar um outro ficheiro.\n")
         opt = input("Opção: ")
         if opt == "4":
