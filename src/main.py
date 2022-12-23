@@ -56,6 +56,13 @@ def insert_list_in_index(lista, index, list_to_insert):
         index += 1
     return lista
 
+def print_circuit(file: str):
+    fp = open(file, "r")
+    for line in fp:
+        if not line.strip():
+            print(line, end="")
+
+
 def main():
 
     circuit = input("Indique a path do ficheiro do circuito: ")
@@ -218,7 +225,7 @@ def main():
                     ic = info_caminhos[i]
                     print(f"{i+1}º lugar - Jogador {ic.n_player+1} com o algoritmo {ic.nameofalgoritm} e custo {ic.getCostOfCaminhoFinal()}.")
                 print("---------------------------------------------------")
-                enter = input("Prima enter para continuar.")
+            enter = input("Prima enter para continuar.")
 
         else:
             print("Wrong input!")
