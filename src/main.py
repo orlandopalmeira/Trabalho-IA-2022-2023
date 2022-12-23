@@ -65,10 +65,11 @@ def print_circuit(file: str):
 
 def main():
 
-    opcao_to_circuito = {"1": "race", "2": "donut", "3": "test"}
+    opcao_to_circuito = {"1": "race", "2": "donut", "3": "small"}
     circuit = None
     # circuit = "race"
-    # circuit = "test"
+    # circuit = "donut"
+    # circuit = "small"
     while circuit is None:
         for i, value in enumerate(opcao_to_circuito.values()):
             print(f"\n\nOpção {i+1}:")
