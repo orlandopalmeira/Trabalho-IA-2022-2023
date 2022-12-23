@@ -59,7 +59,7 @@ def insert_list_in_index(lista, index, list_to_insert):
 def print_circuit(file: str):
     fp = open(file, "r")
     for line in fp:
-        if not line.strip():
+        if line.strip():
             print(line, end="")
 
 
@@ -69,13 +69,13 @@ def main():
     opcao_to_circuito = {"1": "race", "2": "donut", "3": "test"}
     while circuit is None:
         """Print das opçaos do circuito com print_circuito"""
-        print("Opção 1:")
+        print("\n\nOpção 1:")
         print_circuit("race")
-        print("Opção 2:")
+        print("\n\nOpção 2:")
         print_circuit("donut")
-        print("Opção 3:")
+        print("\n\nOpção 3:")
         print_circuit("test")
-        print("Opção 4: Indicar um outro ficheiro.")
+        print("\n\nOpção 4: Indicar um outro ficheiro.\n")
         opt = input("Opção: ")
         if opt == "4":
             circuit = input("Indique a path do ficheiro do circuito: ")
