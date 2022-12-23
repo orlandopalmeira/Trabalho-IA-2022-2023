@@ -65,8 +65,10 @@ def print_circuit(file: str):
 
 def main():
 
-    circuit = None
     opcao_to_circuito = {"1": "race", "2": "donut", "3": "test"}
+    circuit = None
+    # circuit = "race"
+    # circuit = "test"
     while circuit is None:
         """Print das opçaos do circuito com print_circuito"""
         print("\n\nOpção 1:")
@@ -82,9 +84,6 @@ def main():
             break
         circuit = opcao_to_circuito.get(opt)
 
-
-    #circuit = "race"
-    #circuit = "test"
     try:
         rp = RaceP(circuit)
     except FileNotFoundError:
