@@ -66,19 +66,19 @@ def print_circuit(file: str):
 def main():
 
     circuit = None
-    opcao_to_circuito = {"1": "race.txt", "2": "donut.txt", "3": "resto"}
+    opcao_to_circuito = {"1": "race", "2": "donut", "3": "resto"}
     while circuit is None:
         """Print das opçaos do circuito com print_circuito"""
         print("Opção 1:")
-        print_circuit("race.txt")
+        print_circuit("race")
         print("Opção 2:")
-        print_circuit("donut.txt")
+        print_circuit("donut")
         #opt = input("Indique a path do ficheiro do circuito: ")
         opt = input("Opção: ")
         circuit = opcao_to_circuito.get(opt)
 
-    #circuit = "race.txt" #
-    #circuit = "raceold.txt"
+    #circuit = "race" #
+    #circuit = "test"
     try:
         rp = RaceP(circuit)
     except FileNotFoundError:
@@ -250,7 +250,7 @@ if __name__ == "__main__":
 
 '''
 # Testing
-rp = RaceP("race.txt")
+rp = RaceP("race")
 rp.cria_grafo()
 
 # Printa o caminho e o custo para o stdout.
