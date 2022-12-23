@@ -65,7 +65,17 @@ def print_circuit(file: str):
 
 def main():
 
-    circuit = input("Indique a path do ficheiro do circuito: ")
+    circuit = None
+    while circuit is None:
+        opt = input("Indique a path do ficheiro do circuito: ")
+        """Print das opçaos do circuito com print_circuito"""
+        print("Opção 1:")
+        print_circuit("race.txt")
+        print("Opção 2:")
+        print_circuit("donut.txt")
+        opcao_to_circuito = {"1":"race.txt", "2":"donut.txt", "3":"resto"}
+        circuit = opcao_to_circuito.get(opt)
+
     #circuit = "race.txt" #
     #circuit = "raceold.txt"
     try:
