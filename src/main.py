@@ -185,6 +185,7 @@ def main():
                 colisao, ind_change = verify_same_element(info_caminhos[0], info_caminhos[1])
                 while colisao is not None and colisao != len(info_caminhos[ind_change].caminhoFinal) - 1:
                     print(f"\n------ Ocorreu colisão na {colisao}ª iteração. Menor velocidade no {ind_change + 1}º caminho. Recalculando caminho... ------\n")
+                    print(f"Caminho adversário: {(info_caminhos[0].caminhoFinal if ind_change== 1 else info_caminhos[0].caminhoFinal)}") ######
                     print(f"Caminho anterior: {info_caminhos[ind_change].caminhoFinal}")
                     changing_caminho = info_caminhos[ind_change]
                     lista_de_nodos = changing_caminho.getCaminhoFinal() # Passa do objeto Infocaminho para uma lista de nodos.
