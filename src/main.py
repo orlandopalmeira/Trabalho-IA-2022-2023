@@ -65,14 +65,14 @@ def print_circuit(file: str):
 
 def main():
 
-    opcao_to_circuito = {"1": "race", "2": "donut", "3": "small"}
+    opcao_to_circuito = {"1": "circuits/race", "2": "circuits/donut", "3": "circuits/small"}
     circuit = None
-    # circuit = "race"
-    # circuit = "donut"
-    # circuit = "small"
+    # circuit = "circuits/race"
+    # circuit = "circuits/donut"
+    # circuit = "circuits/small"
     while circuit is None:
-        for i, value in enumerate(opcao_to_circuito.values()):
-            print(f"\n\nOpção {i+1}:")
+        for i, value in enumerate(opcao_to_circuito.values(), start=1):
+            print(f"\n\nOpção {i}:")
             print_circuit(value)
         print("\n\nOpção 4: Indicar um outro ficheiro.\n")
         opt = input("Opção: ")
@@ -80,6 +80,7 @@ def main():
             circuit = input("Indique a path do ficheiro do circuito: ")
             break
         circuit = opcao_to_circuito.get(opt)
+
 
     try:
         rp = RaceP(circuit)
@@ -205,15 +206,15 @@ def main():
                 colisao, ind_change = verify_same_element(info_caminhos[0], info_caminhos[1])
                 while colisao is not None and colisao != len(info_caminhos[ind_change].caminhoFinal) - 1:
                     print(f"\n------ Ocorreu colisão na {colisao}ª iteração. Menor velocidade no {ind_change + 1}º caminho. Recalculando caminho... ------\n")
-                    print(f"Caminho adversário: {(info_caminhos[0].caminhoFinal if ind_change== 1 else info_caminhos[0].caminhoFinal)}") ######
-                    print(f"Caminho anterior: {info_caminhos[ind_change].caminhoFinal}")
+                    print(f"Caminho adversário: {(info_caminhos[0].caminhoFinal if ind_change == 1 else info_caminhos[1].caminhoFinal)}") ######
+                    print(f"Caminho anterior:   {info_caminhos[ind_change].caminhoFinal}")
                     changing_caminho = info_caminhos[ind_change]
                     lista_de_nodos = changing_caminho.getCaminhoFinal() # Passa do objeto Infocaminho para uma lista de nodos.
                     desvio = rp.procura_BFS(lista_de_nodos[colisao - 1].position, lista_de_nodos[colisao + 1], lista_de_nodos[colisao])
                     desvio = desvio.getCaminhoFinal()[1:-1] # Caminho alternativo encontrado.
                     insert_list_in_index(lista_de_nodos, colisao, desvio) # altera o path para o path com o desvio.
                     changing_caminho.setCaminhoFinal(lista_de_nodos) # insere o novo caminho no InfoCaminho.
-                    print(f"Novo Caminho:     {info_caminhos[ind_change].caminhoFinal}")
+                    print(f"Novo Caminho:       {info_caminhos[ind_change].caminhoFinal}")
                     print("---------------------------------------------------------------------------------")
 
                     # Re-verificação de colisões.
