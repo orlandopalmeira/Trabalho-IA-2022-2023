@@ -15,5 +15,7 @@
 
 </div>
 
+### Nota: 18 valores
+
 <h3><i>Keywords</i></h3>
 IA, Inteligência Artificial, inteligencia artificial, universidade do minho, uminho, miei, lei, engenharia informatica
